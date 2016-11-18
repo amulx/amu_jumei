@@ -1,0 +1,34 @@
+setcookie(name,value,expire,path,domain,secure)
+
+============================================================
+name     必需。规定 cookie 的名称。
+value    必需。规定 cookie 的值。
+expire   可选。规定 cookie 的有效期。
+path     可选。规定 cookie 的服务器路径。
+domain   可选。规定 cookie 的域名。
+secure   可选。规定是否通过安全的 HTTPS 连接来传输 cookie。
+============================================================
+
+setcookie('pam_passport_basic_uname',input::get('uname'),time()+365*24*3600,'/');
+
+
+
+
+可以通过 $HTTP_COOKIE_VARS["user"] 或 $_COOKIE["user"] 来访问名为 "user" 的 cookie 的值。
+
+
+
+
+setcookie("cookie[three]","cookiethree");
+setcookie("cookie[two]","cookietwo");
+setcookie("cookie[one]","cookieone");
+
+// 输出 cookie （在重载页面后）
+if (isset($_COOKIE["cookie"]))
+  {
+  foreach ($_COOKIE["cookie"] as $name => $value)
+    {
+    echo "$name : $value <br />";
+    }
+  }
+?>

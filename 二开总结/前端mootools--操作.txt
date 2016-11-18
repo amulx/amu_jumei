@@ -1,0 +1,23 @@
+1°¢ajax
+   var url =   '<{url route="shopadmin" app="desktop" ctl="users" act="get_area"}>&parentid=' + this.value;
+   var myRequest = new Request({
+                    url: url,
+                    method: 'get',
+                    onRequest: function(){},
+                    onSuccess: function(responseText){}
+                 });
+  myRequest.send();
+
+
+2°¢selectøÿº˛
+     var arr = JSON.decode(responseText);
+     if (arr.length > 0)
+     {
+      	areaLv3.setStyle('visibility', 'visible');
+        areaLv3.getElements('option').destroy();
+        areaLv3.adopt(new Element('option',{'value':0,'text':"«Î—°‘Ò"}));
+        for(var i= 0; i<arr.length; i++)
+        {
+         	areaLv3.adopt(new Element('option',{'value':arr[i].id,'text':arr[i].value}));
+         }
+     }

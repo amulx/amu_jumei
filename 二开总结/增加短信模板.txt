@@ -1,0 +1,63 @@
+1、在config/messenger.php配置文件中新增短信模板相关信息。例如：
+        /*
+         |--------------------------------------------------------------------------
+         | 发送优惠券领取验证码
+         |--------------------------------------------------------------------------
+         */
+        'account-coupon' => array(
+                'label' => '优惠券领取验证码',
+                'email' => 'false',
+                'sms' => 'true',
+                'sendType' => 'notice',
+                'use_reply'=>'false',
+                'varmap' => '验证码<{$vcode}>',
+        ),
+
+2、在app/system/lib/data/user/vcode.php中的sendtypeToTmpl方法中新增模板类型：
+        case 'coupon':
+            $tmpl = 'account-coupon';
+            break;
+
+3、最后在需要发送短信码的页面的地方新增相应的type类型
+<input type="hidden" name="type" value="coupon">
+    <div class="form-inline">
+      <div class="shopex-input-row form-inline-adaptive phoneYanZheng">
+        <label>验证码：</label>
+        <input type="text" name="vcode" class="shopex-input-clear valInput" placeholder="请输入验证码" required="" data-caution="请输入验证码" data-input-clear="2"><span class="shopex-icon shopex-icon-clear shopex-hidden"></span>
+      </div>
+      <div class="form-inline-unadaptive">
+        <button type="button" disabled="true" id="send_vcode" class="shopex-btn shopex-btn-warning shopex-btn-block btn-action">短信获取</button>
+      </div>
+    </div>
+
+
+
+	$('#send_vcode').on('click', function(e) {
+	    var type = form.find('input[name=type]').val();
+	    var uname = form.find('input[name=uname]').val();
+	    if($(this).hasClass('disabled')) return false;
+	    sendVerify(this, 'uname='+uname+'&type=' +type);
+	})
+
+  function sendVerify(el, data) {
+    var url = "<{url action=topwap_ctl_passport@sendVcode}>";
+    var textCont = $(el);
+    $(el).addClass('disabled');
+    textCont.html('<i>0</i>');
+    var cd = new countdown(textCont.find('i'), {
+      start: 120,
+      secondOnly: true,
+      callback: function(e) {
+        $(el).removeClass('disabled');
+        textCont.html('重发验证码');
+      }
+    });
+    $.post(url, data, function(rs) {
+      if(rs.error) {
+        cd.stop();
+        alert(rs.message);
+        $(el).removeClass('disabled');
+        textCont.html('重发验证码');
+      }
+    });
+  }

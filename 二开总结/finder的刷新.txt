@@ -1,0 +1,132 @@
+1、desktop_controller::begin,$this->end
+
+ public function saveCooperative()
+    {
+        $this->begin('?app=topapi&ctl=admin_cooperative&act=index');
+        $data = $_POST;
+        if (!empty($data['cp_id'])) {
+
+        }
+        else
+        {
+            //$mdlCp = app::get('topapi')->model('cooperative_partner');
+            $saveData['cp_name'] = trim($data['cp_name']);
+            $saveData['app_id'] = $data['app_id'];
+            $saveData['app_secret'] = $data['app_secret'];
+            $saveData['addtime'] = time();
+            //logger::info("[topapi_ctl_admin_cooperative.saveCooperative] " .json_encode($saveData));
+            if($this->cooperativePartnerModel->insert($saveData)){
+                $this->end(true, app::get('topapi')->_('保存成功'));
+            }
+        }
+        $this->end(false, app::get('topapi')->_('保存失败'));
+    }
+
+
+================================================================================================================
+
+2、javascript
+<script>
+    (function(){
+        var _form = $('createForm');
+        var btn =$('create-form-submit');
+        var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+        _form.store('target',{
+            onSuccess:function(response){
+                var hash_res_obj = JSON.decode(response);
+
+                if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+                    try{
+                        var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+                    }catch(e){}
+
+                    if(_dialogIns){
+                        _dialogIns.close();
+                        window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();  
+                    }
+                }
+            }
+        });
+
+        btn.addEvent('click',function(){
+            _form.fireEvent('submit',{stop:$empty});
+        });
+
+    })();
+</script>
+
+================================================================================================================
+finder类中增加其他列的方法：
+1、保持：变量名与函数名一致，例如：
+    public $column_edit = "编辑";
+    public $column_edit_order = 1;
+
+    public function column_edit(&$colList, $list)
+2、column_edit_order 为排序
+3、finder类中编辑的列记得到后台打勾选：配置列表项
+
+
+
+================================================================================================================
+当finder中不显示表结构数据时，检查以下情况：
+1、dbschema 中字段是否拥有 'in_list' => true, 'default_in_list' => true,  属性
+2、检查finder文件是否存在，并配置为service
+
+
+========================================查看详情================================================================
+public $detail_basic = "查看";
+    public function detail_basic($item_id)
+    {
+        $pagedata['item_id'] = $item_id;
+        return view::make('viparea/admin/item/basic.html', $pagedata)->render();
+    }
+
+
+================================================================================================================
+增加finder列表的自定义列
+
+finder列表的列分为以下三种：
+查看列 (分为下列查看和弹出查看)
+自定义列(也可称函数列)，可以通过一种方法扩展
+普通列(数据表里有的字段，也即dbschema里有的字段)
+两列操作和标签都不是dbschema里的字段，还能显示出来是因为他们是自定义列.
+
+通过下面的步骤实现：
+注册一个service，其id是desktop_finder.xxx,xxx是finder方法的第一个参数.
+上例中是b2c_mdl_goods，最终结果在相应的应用中services.xml中如下样子：
+    <service id="desktop_finder.b2c_mdl_goods">
+        <class>b2c_finder_goods</class>
+    </service>
+
+b2c_finder_goods类里有两种方法，两种属性，属性和方法成对出现：
+第一种 属性以detail_开头，对应的方法也以detail_开头 例如：
+    var $detail_basic = '基本信息';
+    function detail_basic($gid){
+        ...
+        return $str;
+    }
+属性detail_basic是作为列头显示的，
+方法detail_basic的返回值是点击查看里出现的内容
+[如果有多个detail_开头的方法，则显示第一个里面的内容]
+第二种：属性以column_开头，对应的方法也以column_开头
+    var $column_editbutton = '操作';
+    public function column_editbutton($row)
+    {
+        ...
+        return $str;
+    }
+属性column_editbutton是作为列头显示的，
+方法column_editbutton的返回值是每行此列的显示内容，
+方法column_editbutton的参数是当前行的数组。
+finder自定义列初始化宽度
+
+在finder自定义列中设置
+ ...
+   	var $column_try = '测试';
+   	var $column_try_width = 100;
+	public function column_try($row)
+	{
+		return '====';
+	}
+ ...

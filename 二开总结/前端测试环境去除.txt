@@ -1,0 +1,11 @@
+ÐÞ¸Ä£ºsite\lib\view\helper.phpÌæ»»:
+
+$html = ecos_cactus('site','check_demosite',$html);
+
+Îª£º
+if(defined('DEV_CHECKDEMO') && DEV_CHECKDEMO){
+            $pattern = "/<title>(.*)<\/title>/";
+            preg_match($pattern,$html,$title);
+            $newtitle = "<title>".$title[1]."</title>";
+            $html = preg_replace($pattern,$newtitle,$html);
+        }

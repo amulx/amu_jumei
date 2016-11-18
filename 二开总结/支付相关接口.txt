@@ -1,0 +1,4 @@
+外部支付接口统一调用的api类
+ectools_payment_api@parse
+
+'trade.pay.finish' => ['uses' => 'systrade_api_trade_payFinish@tradePay', 'version'=>['v1']],

@@ -1,0 +1,52 @@
+多语言机制
+下面说的是基于商派品牌的数据多语言实现
+
+a、确定那些字段需要多语言。（brand_name、brand_desc、brand_logo）
+b、在相关表的dbschma中加入多语言字段标示：'is_i18N' => true,
+
+c、update，创建扩展表（具体架构流程看buffet/web/开发经验.txt 第四条）,本例中将创建扩展表sdb_b2c_brand_i18N
+
+d、存数据：
+
+i.入口控制器（b2c/controller/brand.php create 方法）
+
+ii.选择需要多语言的input框，input总name属性为：name="brand_name^en-us" ，
+    在基本属性“brand_name”后应该加上^en-us (en-us 为多语言选项)。
+    加入新的属性i18n="b2c_brand:brand_name:{$brandInfo.brand_id}:en-us" 中间用：分开，
+    顺序分别为：表名、字段名、id、语言种类。(abc/base/lib/component/ui.php)
+    
+    例: gtype[name] 这个样的name，写法为 gtype[name^en-us]
+    写法:
+    <{input type="text"  name="menu[title^en-us]" i18n="site_menus:title:{$menu.id}:en-us" vtype='required' size=15}>
+
+iii.post action方法收集表单数据，整理后直接调用save方法插入数据库（多语言数据插入扩展表。）-(abc/dbeav/lib/model.php,abc/base/lib/db/model.php)
+
+e、查询-（abc/base/lib/db/connections.php）
+
+
+f. 对于后台的多语言字段可以: 用<{t}>[英]<{/t}> <{t}>[中]<{/t}> 标识每个字段
+
+g. 对于后台切换到不同的语言情况下的编辑的字段值，可以用 i18n_default="b2c_goods_cat:cat_name:{$cat.cat_id}" 来标识 (abc/base/lib/component/ui.php)
+   如:
+    原来写法:
+        <{input type="text" value="{$cat.cat_name}" name="cat[cat_name]" vtype='required' class='x-input'}>
+    新写法: 
+        <{input type="text" i18n_default="b2c_goods_cat:cat_name:{$cat.cat_id}" name="cat[cat_name]" vtype='required' class='x-input'}>
+
+
+h. 多语言中，一旦这张表加入 is_i18N => true, 就会生成一张i18n后缀的语言表，
+    会出现以下问题:
+    i. 此表生成后，就算你去掉了 is_i18N => true, i18n表的字段也不会删除
+    ii.如果你手动删除了此表，可能导致表操作出错，因为有关生成这张表的kv还存在，此缓存位置 /[ecstore_path]/data/kvstore/i18N_columns 下，查看内容可知是哪张表的i18N缓存，也要同步删除
+
+j. 因为getList getRow 默认取值是 当前语言状态下的，可以采用以下方式取得非当前语言的数据信息
+        $current_lang = kernel::get_lang(); // 记录当前语言
+        $GLOBALS['runtime']['use_lang'] = 'zh-cn'; // 取得对应语言的数据
+        $seo = app::get('site')->model('seo')->getRow('*', array('id' => $id));
+        $GLOBALS['runtime']['use_lang'] = $current_lang; // 恢复当前语言
+
+k. 解决多语言更新后，finder里的数据没有同步更新, 顺序执行以下命令
+   1. cmd clean_kv_tbdefine
+   2. cmd update_all_tbdefine
+   3. cmd update_all_tbdefine en-us
+

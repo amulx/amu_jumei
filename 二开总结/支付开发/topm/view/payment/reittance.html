@@ -1,0 +1,42 @@
+<div class="order-msg">
+    <header>
+        <div class="list-hd">
+            <div class="backto icon-back">
+                <input type="button" name="returnBcak" onclick="history.back()">
+            </div>
+            <div class="tit">订单信息</div>
+        </div>
+    </header>
+    <div class="main" id="main">
+        <div class="order-fin">
+            <div class="center">
+                <div class="order-fin">
+                    <div class="fin-icon ok">
+                        <span class="icon-ok"></span>
+                    </div>
+                    <div class="success-info">
+                        <span class="info-su">订单提交成功，请您尽快付款！</span>
+                        <span class="thanks">请您在提交订单后尽快完成支付，<br>以免订单被取消。</span>
+                    </div>
+                </div>
+                <div class="pay-amount">
+                    <div class="tit">应付金额</div>
+                    <div class="total"><{$payment.cur_money|cur}></div>
+                </div>
+                <div class="wenXinTiShi">
+                    <div class="w-x-t-s-t">
+                        <span class="reminder">温馨提示：</span>
+                        <span>1、受银行处理时间影响，采用线下汇款方式到账会有延误，<em>建议采用线上支付方式。</em></span>
+                        <span>2、直接向佛山市荟果缘电子商务有限公司的专属账号汇款，到账时间一般为：<em>工行2-3天，跨行3-5天</em>（具体到账时间以银行的实际到账时间为准</span>
+                        <span>3、请在汇款后联系客服人员，<em>告知订单号及汇款人姓名</em>，我们在收到款项后立即为您发货！</span>
+                    </div>
+                    <div class="w-x-t-s-b">
+                        <span><em>收款人信息：</em>佛山市荟果缘电子商务有限公司</span>
+                        <span><em>账户：</em>2013020009200222433</span>
+                        <span><em>开户行：</em>中国工商银行南海支行</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

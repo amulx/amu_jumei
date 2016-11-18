@@ -1,0 +1,45 @@
+windows+centos开发环境配置
+(本例nginx、php、mysql的安装配置使用阿里云一键安装包)
+
+1、安装虚拟机，安装centos，配置nginx和php
+
+2、设置windows共享目录（如//192.168.139.1/www）
+
+3、挂载远程共享目录
+mount -t cifs windows共享目录 挂载点 -o username=windows用户名,password=windows密码,gid=web用户的gid,uid=web用户的uid
+（如mount -t cifs //192.168.139.1/www /alidata/www/ -o username=administrator,password=123456,gid=1001,uid=1001）
+注：挂载点需要配置成web根目录，gid和uid可执行id web用户名查看
+
+4、自动挂载
+在/etc/fstab添加以下内容
+windows共享目录 挂载点 cifs username=windows用户名,password=windows密码,gid=web用户的gid,uid=web用户的uid 0 0
+（如//192.168.139.1/www /alidata/www cifs username=linux,password=passwd,gid=,uid= 0 0）
+
+5、设置nginx和php开机启动
+chkconfig nginx on
+chkconfig php-fpm on
+
+6、完成上面5步就可以在共享目录下创建项目进行开发了，代码会同步的虚拟机的挂载点，直接通过虚拟机的ip就可以访问开发的项目了
+
+
+
+相关命令：
+
+查看已挂载目录
+df -h
+
+取消挂载
+umount /alidata/www/
+
+
+相关问题：
+
+不能自动联网
+修改：/etc/sysconfig/network-scripts/目录下ifcfg-eth0这个文件（虚拟机应该是以ifcfg-eno开头），把ONBOOT="no"改为yes，下一次就不用手动连接了。
+
+nginx和php-fpm不能开机启动
+在/etc/init.d/nginx和/etc/init.d/php-fpm添加以下两行
+# chkconfig: - 85 15
+# description: nginx is a World Wide Web server. It is used to serve
+
+如果需要让另一电脑访问自己电脑的虚拟机，必须把虚拟机的网络改成桥接（虚拟机-设置-网络）

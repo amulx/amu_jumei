@@ -1,0 +1,363 @@
+数据库的增加和修改
+        $messageMdl = app::get('mymessage')->model('message');
+        $result = $messageMdl->save($savedata);
+
+        $msg = app::get('sysuser')->_('修改成功');
+
+        return $this->splash('success',null,$msg);
+
+Doctrine的使用方法：
+方法一：
+    $connectionParams = config::get('database.connections.default');
+    $this->conn = DriverManager::getConnection($connectionParams, new Configuration);
+    $stmt = $conn->query('select * from sysuser_user');
+    //   $data = $stmt->fetchAll();
+    while ($row = $stmt->fetch()){
+          //  var_dump($row);
+    }
+
+方法二：
+        $qb = app::get('base')->database()->createQueryBuilder();
+        $data = $qb->select('cat_id,count(cat_id) as count')->from('sysitem_item')
+                   ->where(app::get('sysitem')->model('item')->_filter($filter))
+                   ->groupBy('cat_id')
+                   ->execute()
+                   ->fetchAll();
+
+方法三：
+        $qb = app::get('base')->database()->createQueryBuilder();
+        if ($analysis_id = $qb->select('id')->from('ectools_analysis')->where($qb->expr()->eq('service', $qb->createPositionalParameter($this->_service)))->execute()->fetchColumn())
+        {
+            
+        }
+        var_dump($qb->getSql());
+
+方法四；
+        $qb = app::get('base')->database()->createQueryBuilder();
+        $rows = $qb->select('action_id')->from('base_lnk_acts')->where($qb->expr()->in('tag_id', $tag))->execute()->fetchAll();
+        $rows = $this->db->select('select action_id from base_lnk_acts where role_id in ('.implode(',',$role_id).')');
+============================================================
+        $connectionParams = config::get('database.connections.default');
+        $conn = DriverManager::getConnection($connectionParams,new Configuration);
+        $sql = 'select * from myapp_goods';
+        $stmt = $conn->fetchAssoc($sql);
+        // $data = $stmt->fetchAll();
+        // $data = $stmt->getSQL();
+
+        var_export($stmt);
+=================================================================
+        $connectionParams = config::get('database.connections.default');
+        $conn = DriverManager::getConnection($connectionParams,new Configuration);
+        $sql = 'select * from myapp_goods';
+        $stmt = $conn->query($sql);
+        $data = $stmt->fetchAll();
+
+        var_export($data);
+===================================================================
+function theme_widget_demand_list(&$setting) {
+
+    $param = array();
+    $setting['limit'] = @$setting['limit'] ?: 10;
+
+    $param['limit'] = $setting['limit'];
+    $param['status'] = 1;
+
+    /////////////////////////////////////////
+
+    $mdlDemand = app::get('syszhongniu')->model('demand');
+
+    // 招标信息
+    $data = $mdlDemand->getList('*', array(
+        'status' => array(
+            'BIDDING', 'SELECTING', 'ACTIVE',
+            'COMMENTING', 'COMPLETE',
+        )
+    ), 0, $param['limit'], array('demand_id desc'));
+    foreach ($data as &$row) {
+        $mdlDemand->updateExtraInfo($row);
+    }
+
+    return $data;
+
+}
+==============================================================
+更新数据库
+        $mdlDemand->update(array(
+            // set
+            'view_count' => intval($demandData['view_count']) + 1
+        ), array(
+            // where
+            'demand_id' => $demand_id,
+        ));
+ =============================================================
+$accountShopModel = app::get('sysshop')->model('account');
+$data = array(
+    'login_account' => 'xinxin',
+    'createtime' => '1432187042',
+    'modified_time' => '1432187042',
+    'login_password' => '$2y$10$kAuKY2zfMiseYU9s6ejS.OSpmcZswlkP0dy6hFE',
+);
+$sellerId = $accountShopModel->insert($data);
+ var_dump($sellerId);
+===================================================================
+        echo 33333;
+        var_dump($flag = app::get('sysitem')->database()->executeUpdate('update sysitem_sku_store set store=store-1001 where item_id=34'));
+        echo '-------';
+        var_dump('+++'.$flag.'-----');
+        exit;
+============================================================================================================
+        $config = config::get('database');
+        $connectionParams = array(
+            'master' => array('host' => '127.0.0.1', 'dbname'=>'bbc', 'user'=>'root', 'password'=>''),
+            //'slaves' => array(array('host' => '127.0.0.1')),
+            'slaves' =>  [array('host' => '127.0.0.1', 'dbname'=>'bbc', 'user'=>'root', 'password'=>'')],
+            'wrapperClass' => 'Doctrine\DBAL\Connections\MasterSlaveConnection',
+            //            'host' => $config['host'],
+            'charset' => 'utf8',
+            'driver' => 'mysqli',
+        );
+        $conn = DriverManager::getConnection($connectionParams, new Configuration);
+
+        $stmt = $conn->query('select * from sysuser_user');
+        while ($row = $stmt->fetch()){
+                    var_dump($row);
+        }
+        exit;
+=================================================================================================================
+        $model = app::get('base')->model('setting');
+        $filter = ['app|than' => 2,
+                   'app|lthan' => 2,
+                   'app|nequal' => 2,
+                   'app|notin' => array(1,2,3,4),
+                   'app|in' => array(1,2,3,4),
+                   'app|between' => [1,10],
+                   'app|has' => 'asdk',
+
+
+        ];
+        echo ($model->_filter($filter));
+=======================================================================================================
+        $filter =array (
+            'key' => 'aa4c2040d3220c132cf2fed9e31fb9ce324e137a',
+            'app' =>'kkk'
+        );
+
+        var_dump(app::get('base')->model('setting')->getList('app, key', $filter));
+===============================================================================
+        $accountShopModel = app::get('sysshop')->model('account');
+$data = array(
+    'login_account' => 'xinxin',
+    'createtime' => '1432187042',
+    'modified_time' => '1432187042',
+    'login_password' => '$2y$10$kAuKY2zfMiseYU9s6ejS.OSpmcZswlkP0dy6hFE',
+);
+$sellerId = $accountShopModel->insert($data);
+ var_dump($sellerId);
+===================================
+        $app = 'base';
+        $db = app::get('base')->database();
+        $rows = $db->executeQuery('SHOW TABLE STATUS like '. $db->quote($app.'\_%'))->fetchAll();
+        var_dump($rows);
+=============================================================================================
+        $time = time();
+        $db = app::get('base')->database();
+        $count = $db->executeQuery('SELECT count(*) FROM base_kvstore WHERE ttl>0 AND (dateline+ttl)<?',
+                            [$db->quote($time, \PDO::PARAM_INT)])->fetchColumn();
+        var_dump($count);
+====================================================================
+
+        $qb = app::get('base')->database()->createQueryBuilder();
+        $qb->insert('ectools_analysis')
+           ->values(array(
+               'service'  => $qb->createPositionalParameter('aaa'),
+               '`interval`' => $qb->createPositionalParameter('xxddd')
+           ))->execute();
+
+        $db = app::get('sysitem')->database();
+        $params = ['num'=>2, 'item_id'=>'success'];
+        var_dump($db->executeUpdate('UPDATE sysitem_item_count SET sold_quantity = sold_quantity + ?? WHERE item_id = ?', [$params['num'], $params['item_id']]));
+=======================================================================================
+        $whereSql = 1;
+        $qb = app::get('sysitem')->database()->createQueryBuilder();
+        echo $qb->select('count(*) as _count')
+                  ->from('sysitem_item', 'I')
+                  ->leftJoin('I', 'sysitem_item_status', 'S', 'I.item_id=S.item_id')
+                  ->where($whereSql)->execute()->fetchColumn();
+        exit;
+======================================================================
+        $limit = 2;
+        if($params['filter']['image_id']=='_ALL_'||$params['filter']['image_id']=='_ALL_')
+        {
+            unset($params['filter']['image_id']);
+        }
+        $qb = app::get('image')->database()->createQueryBuilder();
+        $rows = $qb->select('image_id')->from('image_images')
+                   ->where(app::get('image')->model('images')->_filter($params['filter']))
+                   ->andWhere('last_modified<='.$qb->createPositionalParameter($params['queue_time']))
+                   ->setMaxResults($limit)
+                   ->orderBy('last_modified', 'desc')
+                   ->execute()->fetchAll();
+
+        var_dump($qb->getSql());
+================================================================================
+            $qb = app::get('ectools')->database()->createQueryBuilder();
+            $qb->select('target,flag,value,time')
+               ->from('ectools_analysis_logs')
+               ->where('analysis_id='.$qb->createPositionalParameter($analysis_id))
+               ->andWhere('target ='.$qb->createPositionalParameter($params['target']))
+               ->andWhere('time>='.$qb->createPositionalParameter(strtotime(sprintf('%s 00:00:00', $params['time_from']))))
+               ->andWhere('time<='.$qb->createPositionalParameter(strtotime(sprintf('%s 23:59:59', $params['time_to']))));
+            if(isset($this->_params['type'])) $qb->andWhere('type = '.$qb->createPositionalParameter($params['type']));
+            $rows = $qb->execute()->fetchAll();
+======================================================================================
+        $tag = [1000, 2000];
+        $qb = app::get('desktop')->database()->createQueryBuilder();
+        $rows = $qb->select('rel_id')->from('desktop_tag_rel')->where($qb->expr()->in('tag_id', $tag))->execute()->fetchAll();
+        var_dump($rows);exit;
+
+        echo $qb->getSql();
+=========================================================================================
+        $tables = app::get('base')->database()->executeQuery('SELECT app_id FROM base_apps WHERE status=?', ['active'])->fetchAll();
+        var_dump($tables);
+==========================================================================================
+        $pri_settings = app::get('base')->database()->executeQuery('select app, `key`, value from base_setting')->fetchAll();
+        var_dump($pri_settings);
+==========================================================================================
+        $img = array('ff6485392d25f0499eb08941d22ceeab'=>2, 'asdfsadf'=>4);
+        $qb = app::get('image')->database()->createQueryBuilder();
+        $rows = $qb->select('id,url,s_url,m_url,l_url,last_modified,width,height')->from('image_images')
+           ->where($qb->expr()->in('id', array_map(function($image_id) use ($qb){
+               return $qb->getConnection()->quote($image_id);
+           }, array_keys($img))))->execute()->fetchAll();
+        var_dump($rows);
+
+        var_dump($qb->getSql());
+==============================================================================================
+        $prefix = 'tbdefine';
+        $key = 'basesyscache_resources';
+        $rows = app::get('base')->database()->executeQuery('SELECT * FROM `base_kvstore` WHERE `prefix` = ? AND `key` = ?', [$prefix, $key])->fetchAll();
+        var_dump($rows);
+==================================================================================================
+        $rows = kernel::database()->select(
+            sprintf("SELECT * FROM `base_kvstore` WHERE `prefix` = %s AND `key` = %s", kernel::database()->quote($this->prefix), kernel::database()->quote($key)),
+            true
+        );
+===================================================================================================
+        $data = array (
+            'fullminus_id' => '16',
+            'fullminus_name' => '99-9',
+            'canjoin_repeat' => 0,
+            'join_limit' => 3,
+            'used_platform' => '0',
+            'free_postage' => 1,
+            'condition_value' => '99|9',
+            'shop_id' => 2,
+            'start_time' => 1429632000,
+            'end_time' => 1430150400,
+            'valid_grade' => '1,2,3',
+            'fullminus_rel_itemids' => '44,46,123',
+            'fullminus_desc' => '',
+            'test1' => 0,
+            'promotion_tag' => '满减',
+        );
+
+
+        $model = app::get('syspromotion')->model('fullminus');
+        $model->save($data);
+==================================================================================
+        $params = ['num'=>2, 'item_id'=>'success'];
+        var_dump($db->executeUpdate('UPDATE sysitem_item_count SET sold_quantity = sold_quantity + ? WHERE item_id = ?', [$params['num'], $params['item_id']]));
+======================================================================================
+        $sql = "UPDATE sysitem_item_count SET sold_quantity = sold_quantity + ".intval($params['num'])." WHERE item_id = ".intval($params['item_id']);
+
+
+
+        $db = app::get('systrade')->database();
+        $qb = $db->createQueryBuilder();
+        $subQb = $db->createQueryBuilder();
+
+        $subQb->select('I.item_id')
+              ->from('systrade_order', 'O')
+              ->leftJoin('O', ' sysitem_item', 'I', 'O.item_id=I.item_id')
+              ->where($qb->expr()->andX(
+                  $qb->expr()->neq('O.status', $db->quote('WAIT_BUYER_PAY'))
+              ))
+              ->groupBy('I.item_id');
+        $qb->select('count(*) as _count')
+           ->from('('.$subQb->getSql().')', 'dd');
+===========================================================================================================
+        $conn = db::connection();
+        $qb = $conn->createQueryBuilder()
+              ->select('u.id')
+              ->addSelect('p.id')
+              ->from('users', 'u')
+              ->leftJoin('u', 'phonenumbers', 'u.id = p.user_id');
+        var_dump($qb->getSql());
+===========================================================================================================
+        $time = time();
+        $count = kernel::database()->count('SELECT count(*) FROM base_kvstore WHERE ttl>0 AND (dateline+ttl)<'.$time);
+        $pagesize = 100;
+        $page = ceil($count / 100);
+        $rows = kernel::database()->selectlimit('SELECT `prefix`, `key` FROM base_kvstore WHERE ttl>0 AND (dateline+ttl)<'.$time, $pagesize, $i*$pagesize);
+=========================================================================================================
+        $app_id = 'topc';
+
+        $data = ['queue_name' => 'asasss',
+                 'worker' => 'xxxx',
+                 'params' => 'paaa',
+                 'create_time' => time()];
+
+        app::get('system')->model('queue_mysql')->insert($data);
+
+        $a = app::get('system')->database()->executeUpdate('UPDATE system_queue_mysql force index(PRIMARY) SET owner_thread_id=GREATEST(CONNECTION_ID() ,(@msgID:=id)*0),last_cosume_time=? WHERE queue_name=? and owner_thread_id=-1 order by id LIMIT 1;', [time(), 'asasss']);
+===========================================================================================================
+        $theme = app::get('site')->model('themes');
+        $data = [
+            'theme' => 'test',
+            'config' => array(1,2,3,4,5,6,7),
+        ];
+        //$theme->database()->beginTransaction();
+        db::connection()->beginTransaction();
+        var_dump($theme->insert($data));
+
+               $theme->database()->commit();
+        echo '---'.PHP_EOL;
+        //        $theme->database()->rollback();
+=========================================================================================================
+
+        $db = app::get('syszhongniu')->database();
+        $db->beginTransaction();
+        try
+        {
+
+            $db->commit();
+        }
+        catch(\LogicException $e)
+        {
+            $db->rollback();
+            throw new \LogicException($e->getMessage());
+            return false;
+        }
+
+
+
+===========================================================================================
+   app::get('base')->model('apps')->replace($data,array('app_id'=>$app_id));
+==========================================================================================
+
+atIds";a:1:{i:0;s:2:"53";}}}s:12:"案例展示";a:4:{s:5:"title";s:12:"案例展示";s:3:"num";s:1:"8";s:10:"order_sort";s:1:"0";s:6:"filter";a:2:{s:14:"goods_keywords";s:6:"搜索";s:10:"shopCatIds";a:1:{i:0;s:2:"22";}}}s:9:"互联网";a:4:{s:5:"title";s:9:"互联网";s:3:"num";s:1:"8";s:10:"order_sort";s:1:"0";s:6:"filter";a:2:{s:14:"goods_keywords";s:6:"中国";s:10:"shopCatIds";a:1:{i:0;s:1:"1";}}}}
+=====================================
+appid:wxc2f2c4e972a8f3b1
+Appsecret:28ea3739e709152c6dd657245973d555
+Mchid:1332290301
+key:dengzhiyonglihaiying197807051983
+=====================================================
+        $qb = app::get('image')->database()->createQueryBuilder();
+        $rows = $qb->select('id,img_type')->from('image_images')
+                   ->where(app::get('image')->model('images')->_filter($params['filter']))
+                   ->andWhere('last_modified<='.$qb->createPositionalParameter($params['queue_time']))
+                   ->setMaxResults($limit)
+                   ->orderBy('last_modified', 'desc')
+                   ->execute()->fetchAll();
+================================================================
+app::get('image')->database()->executeQuery('select count(*) as c from image_image where '.$where)->fetchColumn();

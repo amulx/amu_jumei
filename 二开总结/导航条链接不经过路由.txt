@@ -1,0 +1,13 @@
+1、找到nav挂件目录
+2、编辑：theme_widget_nav_filter.php
+3、修改为：if (!filter_var($val['action'], FILTER_VALIDATE_URL))
+            {
+                $result[$setting['channel']][$key]['url'] = action($val['action'], (array)$val['filter']);
+            }
+            else
+            {
+                $result[$setting['channel']][$key]['url'] = $val['action'];
+            }
+
+
+被过滤的链接地址必须为完成的地址：http://www.xxxx.xxx

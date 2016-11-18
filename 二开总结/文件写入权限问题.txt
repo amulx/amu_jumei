@@ -1,0 +1,3 @@
+原因：crontab都是在root账户下配置的，并不是配在www账户下的
+
+解决方法：crontab命令里可以指定用哪个用户执行crontab  例如 sudo crontab -uwww -e 这样编辑，定时任务执行脚本用的也就是www账户了，不然现在服务器都是在root下配的，定时任务执行就会变成root文件了

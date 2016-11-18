@@ -1,0 +1,10 @@
+<{input type="object" value=$item object="item" app="sysitem" filter="use_platform|noequal=2" name="item[items]" select="checkbox" multiple="true" textcol="title"}>
+
+object  -->  model名
+app     -->  app名
+filter  -->  过滤条件
+textcol --> 显示的字段
+
+
+=============================解析==========================================
+app\desktop\lib\view\helper.php

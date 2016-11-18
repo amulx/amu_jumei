@@ -1,0 +1,1 @@
+$result = kernel::single('base_httpclient')->get($url);   //app/base/lib/httpclient.php

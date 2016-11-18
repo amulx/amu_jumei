@@ -1,0 +1,10 @@
+ECStore执行crontab报错解决一例
+问题描述：
+按《ECStore2.0 定时任务配置》这篇文章配置好crontab后，导入导出队列无反应，状态仍然为“等待执行”。查看/data/logs/queue下的最新日志文件，发生大量的如下错误：
+2015-11-17 12：09：19 EMERG ERROR：30001 @
+2015-11-17 12：09：19 EMERG ERROR：30001 @
+2015-11-17 12：09：19 EMERG ERROR：30001 @
+咨询了下官方技术人员，回答称30001错误是因为php禁用了proc_open造成的。
+
+解决办法如下：
+打开php.ini，找到 disable_function 查看其中的函数是否有 proc_open，如有将其删除，重启php-fpm。故障解决。

@@ -1,0 +1,2 @@
+更新缓存后出现custom_html挂件重复定义问题，解决方法：
+清除data\cache\secache.php文件

@@ -1,0 +1,5 @@
+注：phpStudy环境
+
+1、cmd help 提示错误
+   环境变量path使用b2c时添加：D:\phpStudy\php53n
+   环境变量path使用bbc时添加：D:\phpStudy\php54n

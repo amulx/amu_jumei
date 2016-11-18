@@ -1,0 +1,22 @@
+=======================================App目录已有的二开========================================
+1、CUSTOM_CORE_DIR使用方法与规则
+	首先我们需要在系统的config.php中加入一行"define('CUSTOM_CORE_DIR',ROOT_DIR.'/xxx');"来定义二次开发的环境目录。xxx代表二次开发目录名，二者需要一致。
+然后我们在与APP文件夹同级的目录下新建立一个名为xxx的文件夹，把需要接管的文件按原目录(APP下目录)重建。把需要接管的文件按照原APP，原路径，以及原文件名重建(如果需要还原，把新文件删掉即可)。如果需要改动dbschema,或者xml文件，后台更新维护才能生效。
+
+
+2、使用CUSTOM_CORE_DIR
+	在配置文件config/config.php中加入二次开发的环境目录配置define('CUSTOM_CORE_DIR',ROOT_DIR.'/custom');
+
+修改文件
+如果在二次开发中需要修改 app/b2c/controller/admin/brand.php 文件
+
+那么我们可以需要在app 同级下建立custom文件夹，然后在custom文件夹中建立 /b2c/controller/admin/brand.php 文件
+
+custom 中的文件命名规则和在 app 下是一样的,这样custom中的brand.php 接管了 app下的brand.php
+
+如果是修改只要修改custom 中的文件就可以了，如果需要还原只要把custom中的文件删除即可。
+
+
+=======================================新建App========================================
+1、新建App需要放到app目录
+2、需要使用cmd install xxx来安装或者后台维护才能生效

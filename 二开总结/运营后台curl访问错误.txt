@@ -1,0 +1,1 @@
+把config目录下的link.php中的https改成http

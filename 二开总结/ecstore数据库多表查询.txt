@@ -1,0 +1,69 @@
+=========================不建议使用==================================
+$db = kernel::database();
+    $sql = 'SELECT id, special_id, sdb_starbuy_special_goods.product_id as product_id, type_id,promotion_price,release_time,begin_time,end_time,`limit`,remind_way,remind_time,timeout,
+            cdown,initial_num,`status`,description,sy_show,sdb_b2c_products.last_modify FROM sdb_starbuy_special_goods INNER JOIN sdb_b2c_products ON sdb_starbuy_special_goods.product_id = sdb_b2c_products.product_id
+            WHERE status=true and type_id=2 order by sdb_b2c_products.last_modify desc';
+    $startgoods = $db->selectlimit($sql, $setting['limit'], 0);
+
+===========================建议使用=================================
+$whereSql = $this->__preMysqlSearchFilter($filter);
+
+$qb = app::get('sysitem')->database()->createQueryBuilder();
+
+$itemTableAlias = $qb->getConnection()->quoteIdentifier($this->itemTable);
+$itemTableStatusAlias = $qb->getConnection()->quoteIdentifier($this->itemStatustable);
+$itemTableCountAlias = $qb->getConnection()->quoteIdentifier($this->itemCountTable);
+
+//需要返回的字段，格式化将返回的字段对应到字段的表中
+$columns = $this->__getSelectColumns($cols);
+
+$qb->select($columns)
+     ->from($this->itemTable, $itemTableAlias)
+     ->setFirstResult($offset)
+     ->setMaxResults($limit)
+     ->leftJoin($itemTableAlias, $this->itemStatustable, $itemTableStatusAlias, "{$itemTableAlias}.item_id={$itemTableStatusAlias}.item_id")
+     ->leftJoin($itemTableAlias, $this->itemCountTable, $itemTableCountAlias, "{$itemTableAlias}.item_id={$itemTableCountAlias}.item_id")
+     ->groupBy($groupBy)
+     ->where($whereSql);
+
+=======================or操作========================================
+      $qb = app::get('topapi')->database()->createQueryBuilder();
+        $qb->select('cp_id')->from('topapi_cooperative_partner')->where($qb->expr()->orx('cp_name=\'' .$cpName .'\'', 'app_id=\'' .$appId .'\'', 'app_secret=\'' .$appSecret .'\''));
+        //echo $qb->getsql();
+        $data = $qb->execute()->fetchAll();
+        if ($data) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+===========================参考=================================
+app/base/testcase/dbal.php
+
+
+
+SELECT cp_id FROM topapi_cooperative_partner WHERE (cp_name=测试1131) OR (app_id=111) OR (app_secret=222){"error":"\u5408\u4f5c\u4f19\u4f34\u4fe1\u606f\u5fc5\u987b\u552f\u4e00","redirect":null,"splash":true}
+
+
+==================================================================================================
+ $db = app::get('advertisement')->database();
+ foreach ($areas as $area)
+ {
+                $qb = $db->createQueryBuilder();
+                $qb->select('a.adv_image')->from('advertisement_records', 'a')
+                    ->leftJoin('a', 'advertisement_position', 'b', 'a.pos_id=b.pos_id')
+                    ->leftJoin('a', 'desktop_account', 'c', 'a.adv_target_user=c.account_id')
+                    ->where($qb->expr()->andX($qb->expr()->eq('a.adv_status', $db->quote('successful')), $qb->expr()->andX($qb->expr()->eq('a.disabled', 1), $qb->expr()->andX($qb->expr()->eq('b.pos_tag', $db->quote($params['pos_tag'])), $qb->expr()->eq('c.user_area', $db->quote($area))))))
+                    ->groupBy('a.createtime DESC')
+                    ->setMaxResults($num);
+
+                //logger::info('[advertisement_api_getRecords.get] :sql=' .$qb->getSql());
+                $rows =  $qb->execute()
+                        ->fetchAll();
+                foreach ($rows as $item)
+                {
+                    $res[] = $item['adv_image'];
+                }
+            }
+}

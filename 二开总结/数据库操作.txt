@@ -1,0 +1,79 @@
+1、多表查询（BBC3.0.6不支持）
+$db = kernel::database();
+    $sql = 'SELECT id, special_id, sdb_starbuy_special_goods.product_id as product_id, type_id,promotion_price,release_time,begin_time,end_time,`limit`,remind_way,remind_time,timeout,
+            cdown,initial_num,`status`,description,sy_show,sdb_b2c_products.last_modify FROM sdb_starbuy_special_goods INNER JOIN sdb_b2c_products ON sdb_starbuy_special_goods.product_id = sdb_b2c_products.product_id
+            WHERE status=true and type_id=2 order by sdb_b2c_products.last_modify desc';
+    $startgoods = $db->selectlimit($sql, $setting['limit'], 0);
+
+
+
+=========================================================================================================
+2、 $qb = app::get('systrade')->database()->createQueryBuilder();
+        $qb->select('count(*) as cancle_trade ,shop_id as shop_id ,sum(payment) as cancle_fee')
+           ->from('systrade_trade')
+           ->where($qb->expr()->orX('status="TRADE_CLOSED"', 'status="TRADE_CLOSED_BY_SYSTEM"'))
+           ->andWhere('end_time>='.$qb->createPositionalParameter($params['time_start']))
+           ->andWhere('end_time<'.$qb->createPositionalParameter($params['time_end']))
+           ->groupBy('shop_id');
+        $rows = $qb->execute()->fetchAll();
+
+
+==========================================================================================================
+3、       $db = app::get('ectools')->database();
+        $analysis_info = $db->executeQuery('select * from ectools_analysis where service=?', ['sysstat_analysis_shopsale'])->fetch();
+
+==========================================================================================================
+
+// 错误编写方式：
+$mdlCp = app::get('topapi')->model('cooperative_partner');
+$mdlCp->insert(array(
+                'cp_name' => $data['cp_name'],
+                'app_id' => $data['app_id'],
+                'app_secret' => $data['app_secret'],
+                'addtime' => time(),
+            ));
+
+正确编写方式： 
+$mdlCp = app::get('topapi')->model('cooperative_partner');
+$saveData['cp_name'] = trim($data['cp_name']);
+$saveData['app_id'] = $data['app_id'];
+$saveData['app_secret'] = $data['app_secret'];
+$saveData['addtime'] = time();
+logger::info("[topapi_ctl_admin_cooperative.saveCooperative] " .json_encode($saveData));
+$mdlCp->insert($saveData);
+
+================================================================================================================
+$itemIds = array_column($data['list'], 'item_id');   //array_column — 返回数组中指定的一列
+$promotionTag = app::get('sysitem')->model('item_promotion')->getList('*',array('item_id'=>$itemIds));
+
+
+================================================================================================================
+$arr = $this->app->model('users')->getRow('super',array('user_id'=>$arr['account_id']));
+================================================================================================
+        $count = app::get('jumei')->database()->executeQuery("SELECT COUNT(I.item_id) from sysitem_item I LEFT JOIN sysitem_item_count C  on I.item_id=C.item_id LEFT JOIN sysitem_item_status ST on I.item_id=ST.item_id where ST.approve_status = 'onsale'")->fetchColumn();
+        $limit = 20;
+        $totalpage = ceil($count / $limit); 
+        if ($page >= $totalpage) {
+            return $this->splash('error',null,'没有更多商品了',true);
+        }
+        $qb = app::get('jumei')->database()->createQueryBuilder();
+        $qb->select('I.item_id,I.title,I.image_default_id,C.sold_quantity,I.price')
+           ->from('sysitem_item','I')
+           ->leftJoin('I','sysitem_item_count', 'C','I.item_id=C.item_id')
+           ->leftJoin('I', 'sysitem_item_status', 'ST', 'I.item_id=ST.item_id')
+           ->setFirstResult($page * $limit)
+           ->setMaxResults($limit)
+           ->andWhere("ST.approve_status = 'onsale'")
+           ->addOrderBy('I.modified_time','DESC')
+           ->addOrderBy('C.sold_quantity','DESC');
+          // return $qb->getSql();  
+        $pagedata['items']= $qb->execute()->fetchAll();
+========================================================================================
+        $qb = app::get('systrade')->database()->createQueryBuilder();
+        $qb->select('count(*) as userordernum ,sum(payment) as userfee,user_id as user_id')
+           ->from('systrade_trade')
+           ->where('status="TRADE_FINISHED"')
+           ->andWhere('end_time>='.$qb->createPositionalParameter($params['time_start']))
+           ->andWhere('end_time<'.$qb->createPositionalParameter($params['time_end']))
+           ->groupBy('user_id')
+           ->addOrderBy('userfee', 'desc');

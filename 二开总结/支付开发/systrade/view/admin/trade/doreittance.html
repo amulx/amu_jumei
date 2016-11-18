@@ -1,0 +1,48 @@
+<form id="doreittanceForm" class="tableform" method="POST" action="?app=systrade&ctl=admin_trade&act=saveReittance" >
+    <input type="hidden" name="payment[payment_id]" value="<{$payment.payment_id}>">
+    <input type="hidden" name="payment[tid]" value="<{$payment.tid}>">
+    <input type="hidden" name="pay[payed_fee]" value="<{$payment.payed_fee}>">
+    <div class="division">
+        <table width="100%" cellspacing="0" cellpadding="0" >
+            <tr>
+                <th><em class="red">*</em><label for="meno"><{t}>汇款银行:<{/t}></label></th>
+                <td><{input type="text" vtype="required" name="pay[meno]" class="x-input" maxlength="20" size="32"}></td>
+            </tr>
+            <tr>
+                <th><em class="red">*</em><label for="pay_account"><{t}>汇款账户:<{/t}></label></th>
+                <td><{input type="text" vtype="required" name="pay[pay_account]" class="x-input" maxlength="20" size="46"}></td>
+            </tr>
+            <tr>
+                <th><em class="red">*</em><label for="trade_no"><{t}>汇款单号:<{/t}></label></th>
+                <td><input type="text" vtype="required" name="pay[trade_no]" class="x-input" maxlength="30" size="46"></td>
+            </tr>
+            <tr>
+                <th><label for="payed_fee"><{t}>支付金额:<{/t}></label></th>
+                <td><label><{$payment.payed_fee|cur}></label></td>
+            </tr>
+        </table>
+        <br>
+        <table width="100%" cellspacing="0" cellpadding="0" >
+            <tr>
+                <th><em class="red">*</em><label for="bank" ><{t}>收款银行:<{/t}></label></th>
+                <td><{input type="text" vtype="required" name="pay[bank]" class="x-input" maxlength="20" size="32" value="中国工商银行南海支行"}></td>
+            </tr>
+            <tr>
+                <th><em class="red">*</em><label for="account" ><{t}>收款账户:<{/t}></label></th>
+                <td><{input type="text" vtype="required" name="pay[account]" class="x-input" maxlength="20" size="46" value="2013020009200222433"}></td>
+            </tr>
+        </table>
+    </div>
+    <div class="table-action">
+        <button class="btn btn-primary" type="submit"><span><span><{t}>确定<{/t}></span></span></button>
+    </div>
+</form>
+<script>
+    $('doreittanceForm').store('target',{
+        onComplete:function(rs){
+            rs = JSON.decode(rs);
+            if($('doreittanceForm').getParent('.dialog') && rs.success)
+                $('doreittanceForm').getParent('.dialog').retrieve('instance').close();
+        }
+    });
+</script>

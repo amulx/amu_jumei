@@ -1,0 +1,25 @@
+systrade_finder_trade
+
+
+public function detail_basic($tradeId)
+    {
+        //订单基本信息查询
+        $objTrade = kernel::single('systrade_data_trade');
+        $trade = $objTrade->getTradeInfo('*',array('tid'=>$tradeId));
+        $trade['status_des'] = $this->tradeStatus[$trade['status']];
+        $pagedata['trade'] = $trade;
+
+        //订单支付信息查询
+        $params['tids'] = $tradeId;
+        //$params['status'] =implode(',',array('succ','progress'));
+        $mdlPayBill = app::get('ectools')->model('trade_paybill');
+        $payBill = $mdlPayBill->getRow('payment_id', array('tid' => $tradeId));
+        $params['payment_id'] = $payBill['payment_id'];
+        $params['fields'] = "*";
+        $payment = app::get('systrade')->rpcCall('payment.bill.get',$params);
+        $pagedata['payment'] = $payment;
+        //订单发货信息查询
+        $pagedata['logi'] = app::get('systrade')->rpcCall('delivery.logistics.tracking.get',array('tid'=>$tradeId));
+
+        return view::make('systrade/admin/trade/detail.html', $pagedata)->render();
+    }

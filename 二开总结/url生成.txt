@@ -1,0 +1,12 @@
+1、php文件
+            $url = url::action('topc_ctl_item@index',array('item_id'=>$row['item_id']));
+            $colList[$k] = "<a href='".$url."' target='_blank' >".$row['title']."</a>";
+
+
+2、html文件
+
+          <a href="<{url action=topc_ctl_item@index item_id=$aGoods.item_id}>" target="_blank"><{$aGoods.title}></a>
+
+3、url跳转
+	return redirect::route('topc');
+	return redirect::action('topwap_ctl_passport@goAppLogin');

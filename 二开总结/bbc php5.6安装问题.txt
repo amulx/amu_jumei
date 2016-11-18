@@ -1,0 +1,5 @@
+1、使用命令行创建数据库注意要：utf8
+CREATE DATABASE IF NOT EXISTS bbc20160116 DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+
+2、注意：/tmp目录下bbc前缀文件
+rm -rf /tmp/bbc*

@@ -1,0 +1,2 @@
+1、查找base_kvstore表，value字段找到错误的services记录，删除
+2、查找base_app_content表，content_name字段找到错误的service记录，删除

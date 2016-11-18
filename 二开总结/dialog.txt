@@ -1,0 +1,55 @@
+========================html=========================
+ <!-- 微信二维码弹框-->
+ <div id="dialog" style="display:none;">
+        <div class="agreement">
+            <div class="title">微信扫一扫</div>
+            <div><img id="imgQrCode"></div>
+            <!--<a href="javascript:void(0);" class="btn btn-import btn-lg dialog-btn-close"><span><span>同意并继续</span></span></a></div>-->
+        </div>
+  </div>
+
+
+========================jq==========================
+$('.action-open-dialog').click(function (e) {
+        $('#dialog').dialog({
+            width: 890,
+            height: 400,
+            title:'微信登录',
+            onShow: function() {
+                $.get("<{url action=topc_ctl_weixin@index}>", null, function (rs) {
+                    //alert(rs.message);
+                    if (rs.error) {
+                        alert(rs.message);
+                        cd.stop();
+                        Message.error(rs.message);
+                        //$(el).removeClass('disabled');
+                        //textCont.html('重发验证码');
+                    }
+                    else if (rs.redirect) {
+                        alert(rs.message);
+                        Message.success(rs.message, function () {
+                            Message.error(rs.message);
+                            //location.href = rs.redirect;
+                        });
+                    }
+                    else {
+                        alert(1);
+                        $("#imgQrCode").attr('src',rs.message);
+
+                    }
+                });
+            }
+        });
+    });
+
+=============================button================================
+                <input type="button" value="确认汇款" onclick="new Dialog('?app=systrade&ctl=admin_trade&act=doReittance&payment[payment_id]=<{$payment.payment_id}>&payment[tid]=<{$trade.tid}>',{title:'<{t}>确认汇款<{/t}>',modal:true,width:500,height:350})">
+
+=============================运营后台-close=================================
+$('doreittanceForm').store('target',{
+        onComplete:function(rs){
+            rs = JSON.decode(rs);
+            if($('doreittanceForm').getParent('.dialog') && rs.success)
+                $('doreittanceForm').getParent('.dialog').retrieve('instance').close();
+        }
+    });

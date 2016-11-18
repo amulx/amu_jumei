@@ -1,0 +1,8 @@
+1、修改：config/deploy.xml 文件，增加：
+    <product_custom>mth</product_custom>   <!-- 二开项目名 -->
+    <product_custom_version>1.0.0</product_custom_version>  <!-- 二开版本号 -->
+2、修改：desktop/view/dashboard.html，增加（125行）：
+      <{t}> 定制版本：<{/t}> V<{$deploy.product_custom_version}>(<{$deploy.product_custom}>)
+3、修改：base/xmlschema/deploy.xsd,增加（285行）：
+    <xs:element ref="product_custom" />
+    <xs:element ref="product_custom_version" />

@@ -1,0 +1,16 @@
+http://www.ec-os.net/doc.html
+
+
+去掉激活码：
+/ecstore/app/desktop/lib/cert/certcheck.php
+
+17和115行
+
+在方法里的第一行 加return;
+
+
+感谢您注册ShopEX用户账号
+
+
+您的ShopExID为：88140601198855
+您的密码为：sl4aaa

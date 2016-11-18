@@ -1,0 +1,3 @@
+cmd kvrecovery命令执行时要加上php的路径，格式为：
+
+/php/bin/php app/base/cmd kvrecovery

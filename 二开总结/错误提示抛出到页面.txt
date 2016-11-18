@@ -1,0 +1,10 @@
+        try {
+            $apiData['parent_user_id']=1;
+            $apiData['user_id'] = 10;
+            $apiData['openid'] = 'erwrwerewrwererer';
+            app::get('topwap')->rpcCall('user.distri.add', $apiData);                
+        } catch (Exception $e) {
+            $msg = $e->getMessage();
+            logger::info('[topwap.passport.goLogin4] : openid-----------hava openid but no user_id'.$_SESSION['user_openid']);
+            return $this->splash('error',null,$msg,true);            
+        }

@@ -1,0 +1,5 @@
+1、不经过router
+    action="?app=systrade&ctl=admin_trade&act=doReittance"
+
+2、经过route
+    action="<{url action=topm_ctl_paycenter@dopayment}>"

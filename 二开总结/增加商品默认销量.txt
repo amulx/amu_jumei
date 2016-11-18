@@ -1,0 +1,24 @@
+1、app\sysitem\dbschema\item.php
+增加以下字段：    
+   'defalut_sales'    => array(
+            'type'=>'number',
+            'default' => 0
+            'label' => app::get('sysitem')->_('预设销量'),
+            'comment' => app::get('sysitem')->_('预设销量'),
+            'in_list' => false,
+            'default_in_list' => false,
+        ),
+
+2、app\topshop\view\item\edit.html
+在商品库存后增加如下代码：
+<div class="form-group">
+                  <label for="" class="col-sm-2 control-label">预设销量：</label>
+                  <div class="col-sm-3">
+                      <input type="number" name="item[defalut_sales]" value="<{$item.defalut_sales|default:'0'}>" required min="0" class="form-control">
+                  </div>
+                  <span>件</span> &nbsp;&nbsp;
+            </div>
+
+3、app\topc\view\items\basic\price.html
+修改销量一行代码为：
+    <div class="dt">销  量：</div><div class="dd"><em><{$item.sold_quantity +  $item.defalut_sales}></em></div>

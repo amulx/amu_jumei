@@ -1,0 +1,4 @@
+===================================================================
+-----调用的是base_static_app::setConf
+-----到base_setting表写入一条记录
+app::get('viparea')->setConf('vip.ticket',$_POST['vipticket']);
