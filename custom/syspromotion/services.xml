@@ -1,0 +1,19 @@
+<services>
+    <service id="desktop_finder.syspromotion_mdl_activity">
+        <class>syspromotion_finder_activity</class>
+    </service>
+    <service id="desktop_finder.syspromotion_mdl_activity_register">
+        <class>syspromotion_finder_activity_register</class>
+    </service>
+    <service id="desktop_finder.syspromotion_mdl_xydiscount">
+        <class>syspromotion_finder_activity_xydiscount</class>
+    </service>
+    <service id="desktop_finder.syspromotion_mdl_registereddiscount">
+        <class>syspromotion_finder_registereddiscount</class>
+    </service>
+    <!--清除初始化数据-->
+    <service id="desktop_debug_clean_data">
+        <class>syspromotion_data_clean</class>
+    </service>
+</services>
+

@@ -1,0 +1,90 @@
+
+  <div id="offCanvasContentScroll" class="shopex-scroll-wrapper" >
+	<div class="rateBox">
+	    <section class="rateList">
+	    	<{include file="topwap/default/bsdatas.html"}>
+	    </section>
+	</div>
+  </div>
+
+
+
+
+<script>
+
+	var count = 1;
+	var totalpage = "<{$pagers.total}>";
+	var listwrapper = $('.rateList');
+
+	shopex.init({
+		swipeBack: false,
+		pullRefresh: {
+		  	container: '#offCanvasContentScroll',
+		  	down: {
+		      	callback: pulldownRefresh
+		  	},
+		  	up: {
+		      	contentrefresh: '正在加载...',
+		      	callback: pullupRefresh
+		  	}
+		}
+	});
+
+  /**
+   * 下拉刷新具体业务实现
+   */
+  function pulldownRefresh() {
+      setTimeout(function() {
+          count = 1;
+          var param = {
+            'pages': count
+          }
+          var reqdata = $.extend(param);
+          getList(reqdata,function(rs){
+            if(rs.indexOf('nodata-wrapper') > 0) {
+              if(!hasnodata) {
+                listwrapper.html('');
+                $('#offCanvasContentScroll').append(rs);
+              }
+            } else {
+              listwrapper.html(rs);
+            }
+             shopex('#offCanvasContentScroll').pullRefresh().endPulldownToRefresh()
+             shopex('#offCanvasContentScroll').pullRefresh().enablePullupToRefresh(); //refresh completed
+          });
+      }, 200);
+  }
+  /**
+   * 上拉加载具体业务实现
+   */
+  function pullupRefresh() {
+    setTimeout(function() {
+        shopex('#offCanvasContentScroll').pullRefresh().endPullupToRefresh((++count > totalpage)); //参数为true代表没有更多数据了。
+        var param = {
+          'pages': count
+        }
+        var reqdata = $.extend(param);
+        getList(reqdata,function(rs){
+          if(rs.indexOf('nodata-wrapper') > 0) {
+              if(!hasnodata) {
+                listwrapper.html('');
+                $('#offCanvasContentScroll').append(rs);
+              }
+            } else {
+              listwrapper.append(rs);
+            }
+        });
+    }, 200);
+  }
+
+  function getList(param,callback){
+    hasnodata = $('#offCanvasContentScroll').find('.nodata-wrapper').length > 0 ? true : false;
+    $.ajax({
+      url: '<{url action=topwap_ctl_default@ajaxGetbsList}>',
+      type: 'get',
+      dataType: 'html',
+      data: param,
+      success: callback
+    });
+  };
+</script>

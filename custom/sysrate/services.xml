@@ -1,0 +1,26 @@
+<services>
+
+    <service id="desktop_finder.sysrate_mdl_appeal">
+        <class>sysrate_finder_appeal</class>
+    </service>
+    <service id="desktop_finder.sysrate_mdl_traderate">
+        <class>sysrate_finder_traderate</class>
+    </service>
+
+
+    <service id="desktop_finder.sysrate_mdl_feedback">
+        <class>sysrate_finder_feedback</class>
+    </service>
+
+    <service id="desktop_finder.sysrate_mdl_consultation">
+        <class>sysrate_finder_consultation</class>
+    </service>
+    <service id="desktop_finder.sysrate_mdl_buyersaid">
+        <class>sysrate_finder_buyersaid</class>
+    </service>
+    <!--清除初始化数据-->
+    <service id="desktop_debug_clean_data">
+        <class>sysrate_data_clean</class>
+    </service>
+</services>
+

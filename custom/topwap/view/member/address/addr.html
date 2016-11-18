@@ -1,0 +1,78 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>收货地址<{/t}></div>
+</header> -->
+<section>
+  <form class="form-container" action="<{url action=topwap_ctl_member_address@saveAddress}>" method="post">
+    <input type="hidden" name="addr_id" id="addr_id" value="<{$addrInfo.addr_id}>">
+    <input type="hidden" name="next_page" id="next_page" value="<{$next_page}>">
+    <section class="shopex-input-group">
+      <div class="shopex-input-row">
+        <label><{t}>收件人：<{/t}></label>
+        <input type="text" name="name" required value="<{$addrInfo.name}>" class="shopex-input-clear" placeholder="<{t}>请填写收件人姓名<{/t}>" data-caution="<{t}>请填写收件人姓名<{/t}>">
+      </div>
+      <div class="shopex-input-row">
+        <label><{t}>手机号码：<{/t}></label>
+        <input type="text" name="mobile" required value="<{$addrInfo.mobile}>" data-validate="mobile" data-caution="<{t}>请填写联系人手机号码&&手机格式不正确<{/t}>" class="shopex-input-clear" placeholder="<{t}>请填写联系人手机号码<{/t}>">
+      </div>
+      <div class="shopex-input-row">
+        <label><{t}>邮政编码：<{/t}></label>
+        <input type="text" name="zip" data-validate="zip" maxlength="6" value="<{$addrInfo.zip}>" class="shopex-input-clear" placeholder="">
+      </div>
+      <div id="showCityPicker" class="shopex-input-row">
+        <label><{t}>所在地区：<{/t}></label>
+        <input type="text" value="<{$addrInfo.area}>" id="cityResult" readonly>
+        <input type="hidden" name="area" required value="<{$addrInfo.region_id}>" id="cityResultId">
+      </div>
+      <div class="shopex-input-row">
+        <label><{t}>街道地址：<{/t}></label>
+        <input type="text" name="addr" required value="<{$addrInfo.addr}>" class="shopex-input-clear">
+      </div>
+    </section>
+    <section class="shopex-input-row shopex-checkbox shopex-left">
+      <label><{t}>设置默认地址<{/t}></label>
+      <input name="def_addr" value="1" type="checkbox" class="input-action" >
+    </section>
+    <section class="shopex-content-padded form-op-section">
+      <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" ><{t}>完成<{/t}></button>
+    </section>
+  </form>
+</section>
+
+<script>
+  (function($, doc) {
+    $.init();
+    $.ready(function() {
+
+      var cityPicker = new $.PopPicker({
+        layer: 3
+      });
+
+      $.ajax({
+        url: '<{$env.base_url}>/app/ectools/statics/scripts/region.json',
+        type: 'GET',
+        dataType: 'json',
+        success: function(rs){
+          cityPicker.setData(rs);
+        },
+      })
+
+      var showCityPickerButton = doc.getElementById('showCityPicker');
+      var cityResult = doc.getElementById('cityResult');
+      var cityResultId = doc.getElementById('cityResultId');
+      showCityPickerButton.addEventListener('tap', function(event) {
+        cityPicker.show(function(items) {
+          cityResult.value = (items[0] || {}).value + " " + (items[1] || {}).value + " " + (items[2].value? (items[2] || {}).value : " ");
+          cityResultId.value = (items[0] || {}).id + "," + (items[1] || {}).id + "," + (items[2].id? (items[2] || {}).id : "")
+          //返回 false 可以阻止选择框的关闭
+          //return false;
+        });
+      }, false);
+    });
+  })(shopex, document);
+
+  $('#showCityPicker3').on('tap',function(){
+    $('input').blur();
+  })
+</script>
+

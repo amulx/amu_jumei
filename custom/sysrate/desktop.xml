@@ -1,0 +1,54 @@
+<desktop>
+    <permissions>
+        <!--会员-->
+        <permission id="consultation" display='true' parent='0' workground='sysuser.wrokground.rate'>商品咨询管理列表</permission>
+        <permission id="consultation_delete" display='true' parent='0' workground='sysuser.wrokground.rate'>咨询删除</permission>
+        <permission id="consultation_display" display='true' parent='0' workground='sysuser.wrokground.rate'>咨询显示隐藏操作</permission>
+
+        <permission id="traderate" display='true' parent='0' workground='sysuser.wrokground.rate'>商品评价管理列表</permission>
+        <permission id="traderate_delete" display='true' parent='0' workground='sysuser.wrokground.rate'>商品评价管理删除</permission>
+        <permission id="appeal" display='true' parent='0' workground='sysuser.wrokground.rate'>商品评价申诉管理列表</permission>
+        <permission id="appeal_check" display='true' parent='0' workground='sysuser.wrokground.rate'>商品评价申诉审核</permission>
+
+        <permission id="buyersaid" display='true' parent='0' workground='sysuser.wrokground.rate'>买家说管理列表</permission>
+
+
+        <!--意见反馈-->
+        <permission id="feedback" display='true' parent='0' workground='sysshop.workground.shoptype'>意见反馈管理列表</permission>
+        <permission id="feedback_delete" display='true' parent='0' workground='sysshop.workground.shoptype'>意见反馈管理删除</permission>
+        <permission id="feedback_action" display='true' parent='0' workground='sysshop.workground.shoptype'>意见反馈处理关闭</permission>
+    </permissions>
+
+    <workground name="会员" id="sysuser.wrokground.user" controller="admin_user" action="index" order='30'>
+        <menugroup name="评价管理">
+            <menu controller='traderate' action='index' permission='traderate' display='true' order='30'>评论列表</menu>
+            <menu controller='traderate' action='index' permission='traderate_delete' params="action:dodelete" display='false' order='30'>评论列表删除</menu>
+            <menu controller='traderate' action='showRateView' permission='traderate' display='false' order='30'>查看评价详情</menu>
+            <menu controller='traderate' action='doDelAppendRate' permission='traderate_delete' display='false' order='30'>追评删除</menu>
+            
+            <menu controller='appeal' action='index' permission='appeal' display='true' order='30'>申诉列表</menu>
+            <menu controller='appeal' action='checkView' permission='appeal_check' display='false' order='30'>申诉审核</menu>
+            <menu controller='appeal' action='check' permission='appeal_check' display='false' order='30'>申诉审核</menu>
+
+            <menu controller='buyersaid' action='index' permission='buyersaid' display='true' order='30'>买家说</menu>
+        </menugroup>
+    </workground>
+
+    <workground name="商家" id="sysshop.workground.shoptype" controller="admin_shoptype" action="index" order='90'>
+        <menugroup name="意见反馈">
+            <menu controller='feedback' action='index' permission='feedback' display='true' order='10'>意见反馈列表</menu>
+            <menu controller='feedback' action='index' permission='feedback_delete' display='false' params="action:dodelete" order='10'>意见反馈删除</menu>
+            <menu controller='feedback' action='showFeedback' permission='feedback_action' display='false' order='10'>意见反馈处理并关闭</menu>
+            <menu controller='feedback' action='doClosed' permission='feedback_action' display='false' order='10'>意见反馈处理并关闭</menu>
+        </menugroup>
+    </workground>
+
+    <workground name="商品" id="sysitem.workground.item" controller="admin_item" action="index" order='90'>
+        <menugroup name="商品咨询">
+            <menu controller='consultation' action='index' permission='consultation' display='true' order='30'>咨询列表</menu>
+            <menu controller='consultation' action='to_display' permission='consultation_display' display='false' order='30'>咨询显示隐藏操作</menu>
+            <menu controller='consultation' action='to_delete' permission='consultation_delete' display='false' order='30'>咨询删除</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

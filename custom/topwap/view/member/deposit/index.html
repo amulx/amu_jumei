@@ -1,0 +1,16 @@
+<!--   <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title"><{$title}></div>
+    <i class="header-right txt-func"><a href="<{url action=topwap_ctl_member_deposit@view}>">明细</a></i>
+  </header> -->
+
+  <section>
+    <section class="user-header pre-deposit-header">
+      <div class="content-center">
+        <i class="bbc-icon bbc-icon-deposit-amount fontB"></i><br>账户余额 <mark><{$deposit.deposit|cur}></mark>
+      </div>
+    </section>
+    <section class="shopex-content-padded form-op-section"><a href="<{url action=topwap_ctl_member_deposit@rechargeSubmit}>" class="shopex-btn shopex-btn-warning shopex-btn-block bbc-btn-warning">充值</a></section>
+    <section class="lookDetai"><a href="<{url action=topwap_ctl_member_deposit@view}>">查看明细</a></section>
+  </section>
+

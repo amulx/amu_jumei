@@ -1,0 +1,24 @@
+<{foreach from=$promotionItemList item=item}>
+<li>
+  <div class="thumbnail">
+    <div class="thumb-img">
+      <a class="shopex-linkto" href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+        <{if $item.image_default_id}>
+        <img src="<{$item.image_default_id|storager}>" alt="">
+        <{else}>
+        <img src="<{$defaultImageId.M.default_image|storager}>" alt="">
+        <{/if}>
+      </a>
+    </div>
+    <div class="caption">
+      <h1 class="goods-title"><span class="tag"><{$title}></span><{$item.title}></h1>
+      <div class="price">
+        <div class="amount CNY"><{$item.price|cur}></div>
+        <!--
+        <div class="purchased">已有352人购买</div>
+        -->
+      </div>
+    </div>
+  </div>
+</li>
+<{/foreach}>

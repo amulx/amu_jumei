@@ -1,0 +1,105 @@
+<section class="container no-header member-page">
+  <div class="user-header">
+    <a class="user-setting bbc-icon bbc-icon-setting" href="<{url action=topwap_ctl_member@setting}>"></a>
+    <{if $nologin == "false"}>
+    <div class="box-display user-login">
+      <a class="user-login-avatar bbc-icon bbc-icon-user-s" href="<{url action=topwap_ctl_passport@goLogin}>"></a><br>
+      <span><{t}>会员登录<{/t}></span>
+    </div>
+    <{else}>
+    <div class="box-display user-logined">
+      <a class="user-name" href="<{url action=topwap_ctl_member@detail}>"><{t}>您好，<{/t}><{$account}><i class="bbc-icon bbc-icon-forward"></i></a><br>
+      <span class="member-level"><i class="bbc-icon bbc-icon-member-level"></i> <{$userInfo.grade_name}></span>
+    </div>
+    <{/if}>
+  </div>
+  <section class="section-white">
+    <div class="section-title user-title">
+      <div class="title-txt"><i class="user-icon bbc-icon bbc-icon-list user-order"></i> <{t}>我的订单<{/t}></div>
+      <div class="more-link"><a href="<{url action=topwap_ctl_member_trade@tradeList}>"><{t}>查看全部订单<{/t}></a><i class="bbc-icon bbc-icon-forward"></i></div>
+    </div>
+    <div class="box-display content-vertical-padded user-orders fontS">
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@tradeList s=1}>"><i class="bbc-icon bbc-icon-pay"><{if $nupay}><span class="shopex-badge bbc-badge"><{$nupay}></span><{/if}></i><br><{t}>待付款<{/t}></a>
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@tradeList s=2}>"><i class="bbc-icon bbc-icon-package"><{if $nudelivery}><span class="shopex-badge bbc-badge"><{$nudelivery}></span><{/if}></i><br><{t}>待发货<{/t}></a>
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@tradeList s=3}>"><i class="bbc-icon bbc-icon-logistics"><{if $nuconfirm}><span class="shopex-badge bbc-badge"><{$nuconfirm}></span><{/if}></i><br><{t}>待收货<{/t}></a>
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@tradeList s=4}>"><i class="bbc-icon bbc-icon-message-gap"><{if $nurate}><span class="shopex-badge bbc-badge"><{$nurate}></span><{/if}></i><br><{t}>待评价<{/t}></a>
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@canceledTradeList}>"><i class="bbc-icon bbc-icon-history-gap"><{if $canceled}><span class="shopex-badge bbc-badge"><{$canceled}></span><{/if}></i><br><{t}>取消记录<{/t}></a>
+    </div>
+  </section>
+  <section class="section-white">
+    <div class="section-title user-title">
+      <div class="title-txt"><i class="user-icon bbc-icon bbc-icon-assets user-assets"></i> <{t}>我的资产<{/t}></div>
+    </div>
+    <div class="box-display content-vertical-padded user-">
+      <a class="box-item-flex1 content-center shopex-col-xs-4" href="<{url action=topwap_ctl_member_deposit@index}>"><em class="deposit-amount"><{$deposit.deposit|default:0|cur}></em><br><span class="font-gray-20 fontS"><{t}>预存款<{/t}></span></a>
+      <a class="box-item-flex1 content-center shopex-col-xs-4" href="<{url action=topwap_ctl_member_coupon@index}>"><em><{$coupon.count}></em>张<br><span class="font-gray-20 fontS"><{t}>优惠券<{/t}></span></a>
+      <a class="box-item-flex1 content-center shopex-col-xs-4" href="<{url action=topwap_ctl_member_point@point}>"><em><{$userInfo.point|default:0}></em><br><span class="font-gray-20 fontS"><{t}>积分<{/t}></span></a>
+    </div>
+  </section>
+  <section class="section-white">
+    <ul class="shopex-table-view">
+      <li class="shopex-table-view-cell mebKf">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member@customerService}>"><i class="user-icon "></i> <{t}>客服中心<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_aftersales@aftersalesList}>"><i class="user-icon bbc-icon bbc-icon-history user-returns"></i> <{t}>退换货记录<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member@security}>"><i class="user-icon bbc-icon bbc-icon-password user-safe"></i> <{t}>安全中心<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_favorite@index}>"><i class="user-icon bbc-icon bbc-icon-star-empty user-favorite"></i> <{t}>我的收藏<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_rate@index}>"><i class="user-icon bbc-icon bbc-icon-rate user-rate"></i> <{t}>我的评价<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_history@index}>"><i class="user-icon icon-zuji"></i> <{t}>我的足迹<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell" id="share" style="display:none">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_share@index}>"><i class="user-icon sharemb share-icon"></i> <{t}>推荐给朋友<{/t}></a>
+      </li>
+       <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_complaints@complaintsList}>"><i class="user-icon bbc-icon bbc-icon-communication user-complain"></i> <{t}>我的投诉<{/t}></a>
+      </li>       
+
+
+      <!--
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href=""><i class="user-icon bbc-icon bbc-icon-info user-feedback"></i> <{t}>帮助与反馈<{/t}></a>
+      </li>
+      -->
+    </ul>
+  </section>
+</section>
+
+<script>
+  var nums = "<{$nums}>";
+</script>
+<script type="text/javascript">
+var browser = {
+ versions: function () {
+  var u = navigator.userAgent, app = navigator.appVersion;
+  return {   //移动终端浏览器版本信息
+   trident: u.indexOf('Trident') > -1, //IE内核
+   presto: u.indexOf('Presto') > -1, //opera内核
+   webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+   gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+   mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+   ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+   android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+   iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+   iPad: u.indexOf('iPad') > -1, //是否iPad
+   webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+  };
+ }(),
+ language: (navigator.browserLanguage || navigator.language).toLowerCase()
+}
+if (browser.versions.mobile) {
+    var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+          $('#share').css('display','block');
+    }
+} 
+
+</script>

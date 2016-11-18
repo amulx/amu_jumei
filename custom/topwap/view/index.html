@@ -1,0 +1,274 @@
+<!-- Style 开始-->
+<section>
+<!--   <div class="loveStyle">
+  <div class="lsTop clearfix">
+    <span class="popular">流行风格</span><a class="more" href="<{url action=topwap_ctl_item_list@index kname=气质通勤 cat_id=427}>">更多<i></i></a>
+  </div>
+  <div class="styleList">
+    <a href="<{url action=topwap_ctl_item_list@index kname=女装 cat_id=427 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/ad5.jpg" alt=""></a>
+    <a href="<{url action=topwap_ctl_item_list@index kname=女装 cat_id=427 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/ad6.jpg" alt=""></a>
+    <a href="<{url action=topwap_ctl_item_list@index kname=女装 cat_id=427 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/ad7.jpg" myName="<{$env.base_full_url}>/themes/jmmobilemall/images/a1Big.jpg" alt="a1.jpg"></a>
+    <div class="ub imgThree">
+      <a class="ub-f1" href="<{url action=topwap_ctl_item_list@index kname=气质通勤 keyword=气质 cat_id=427 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/styleone.jpg" alt=""></a>
+      <a class="ub-f1 conterImg" href="<{url action=topwap_ctl_item_list@index kname=风尚韩版 keyword=韩版 cat_id=427 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/styletwo.jpg" alt=""></a>
+      <a class="ub-f1" href="<{url action=topwap_ctl_item_list@index kname=明星同款 keyword=同款 cat_id=427 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/stylethree.jpg" alt=""></a>
+    </div>
+  </div>
+</div>  
+<div class="loveStyle">
+  <div class="lsTop pinZhi clearfix">
+    <span>品质好货</span><a class="more" href="<{url action=topwap_ctl_item_list@index kname=品质好货 keyword=女装}>">更多<i></i></a>
+  </div>
+  <div class="styleList">
+    <div class="ub">
+      <a class="ub-f1" href="<{url action=topwap_ctl_item_list@index kname=连衣裙 keyword=连衣裙 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/ad8.jpg" alt=""></a>
+      <div class="ub-f1 twoproduct">
+        <a class="first" href="<{url action=topwap_ctl_item_list@index kname=衬衫 keyword=衬衫 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/ad9.jpg" alt=""></a>
+        <a href="<{url action=topwap_ctl_item_list@index kname=T恤 keyword=T恤 type=more}>"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/ad10.jpg" alt=""></a>
+      </div>
+    </div>
+  </div>
+</div> -->
+  <!--工厂直销 开始-->
+  <section class="index-product">
+    <div class="ipTop"><span><i></i>工厂直供</span></div>
+    <div class="productBtm">
+    <ul class="shopex-table-view pro-list-grid goods-list">
+      <{foreach from=$items item=item}> 
+      <li data-link="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+        <{if $item.starttime|cdate:FDATE eq $today_ymd|cdate:FDATE}><span class="today">爆款</span><{/if}>
+        <div class="thumbnail">
+          <div class="thumb-img">
+            <a href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>"><img src="<{$item.image_default_id}>" alt="<{$item.title}>"></a>
+          </div>
+          <div class="caption">
+            <h1 class="goods-title"><{$item.title}></h1>
+            <div class="price">
+              <div class="amount"><{$item.price|cur}></div>
+              <div class="purchased">已销售<{$item.sold_quantity}></div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <{/foreach}>
+    </ul>
+  </div>
+    <div class="clear"></div>
+  
+  </section>
+  <!--工厂直销 结束-->
+<!--  <div class="rateBox">
+    <div class="lsTop">
+      <span class="hotRate">买家说<em>（热门评论）</em></span>
+    </div>
+    <section class="rateList">
+      <div class="oneRate clearfix">
+        <div class="customShow"><span class="nowrap">买家A</span></div>
+        <div class="jiBie clearfix">
+          <div class="clearfix">
+            <span class="fl rateType"><em>评价:</em><em class="bbc-icon good-rate bbc-icon-rate">好评</em></span>
+            <span class="fl nowrap">采购量：100件</span>
+          </div>
+          <span class="rateMiaoshu">衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，</span>
+        </div>
+        <div class="cospro"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/pr.jpg" alt=""></div>
+      </div>      
+      <div class="oneRate clearfix">
+        <div class="customShow"><span class="nowrap">买家A</span></div>
+        <div class="jiBie clearfix">
+          <div class="clearfix">
+            <span class="fl rateType"><em>评价:</em><em class="bbc-icon good-rate bbc-icon-rate">好评</em></span>
+            <span class="fl nowrap">采购量：100件</span>
+          </div>
+          <span class="rateMiaoshu">衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，</span>
+        </div>
+        <div class="cospro"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/pr.jpg" alt=""></div>
+      </div>      
+      <div class="oneRate clearfix">
+        <div class="customShow"><span class="nowrap">买家A</span></div>
+        <div class="jiBie clearfix">
+          <div class="clearfix">
+            <span class="fl rateType"><em>评价:</em><em class="bbc-icon good-rate bbc-icon-rate">好评</em></span>
+            <span class="fl nowrap">采购量：100件</span>
+          </div>
+          <span class="rateMiaoshu">衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，衣服面料舒服，</span>
+        </div>
+        <div class="cospro"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/pr.jpg" alt=""></div>
+      </div>
+      <a href="<{url action=topwap_ctl_default@buyersaidList}>" class="more-icon moreRate">查看更多评论</a>
+    </section>
+  </div>   -->
+</section>
+<!-- Style 结束-->
+<!-- <div class="product">
+  <div class="productTop">
+    <div class="clearfix">
+      <span class="zhe">1折特卖</span>
+      <span class="you">全场包邮</span>
+      <span class="tui">7天无理由退货</span>
+    </div>
+  </div> 
+  <div class="productBtm">
+    <ul class="shopex-table-view pro-list-grid goods-list clearfix">
+      <{foreach from=$items item=item}> 
+      <li data-link="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+        <{if $item.starttime|cdate:FDATE eq $today_ymd|cdate:FDATE}><span class="today">今日</span><{/if}>
+        <div class="thumbnail">
+          <div class="thumb-img">
+            <a href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>"><img src="<{$item.image_default_id}>" alt="<{$item.title}>"></a>
+          </div>
+          <div class="caption">
+            <h1 class="goods-title"><{$item.title}></h1>
+            <div class="price">
+              <div class="amount"><{$item.price|cur}></div>
+              <div class="purchased">已销售<{$item.sold_quantity}></div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <{/foreach}>
+    </ul>
+  </div>
+</div> -->
+<!-- <div>
+<div id="loading" style="text-align:center;" class="clearfix"><span style="display:inline-block; vertical-align: middle; margin-right:5px;" class="shopex-spinner"></span><em style="display:inline-block; height:24px; line-height:24px; color:#666; font-size:12px;">加载中...</em></div>
+<div id="nothing" style="display:inline-block; text-align:center; height:24px; line-height:24px; color:#666; font-size:14px; width:100%; display:none;">没有更多数据了</div>
+</div> -->
+<!-- <section class="hotFixed">
+  <div>
+      <ul class="clearfix">
+        <li class="first">热搜</li>
+        <{foreach from=$hotsearch item=hotid key=hotname}>
+          <li data-link ="<{url action=topwap_ctl_item_list@index keyword=$hotname}>"><a><{$hotname}></a></li>
+        <{/foreach}>
+      </ul>
+  </div>
+</section> -->
+<script>
+
+var url= "<{$download_url}>";
+if(url){
+  $('.go-app-new a').attr("href",url);
+  $('.go-app-new').show();
+}else{
+  $('.go-app-new').hide();
+}
+
+var hotsearch = <{$hotsearch}>;
+var hot = '';
+$.each( hotsearch, function(index,id){
+    var url = "<{url action=topwap_ctl_item_list@index keyword=}>"+index;
+    hot +='<li data-link ="'+url+'"><a>'+index+'</a></li>';
+});
+$('.hotFixedIndex .clearfix').append(hot);
+
+// var p = 0;
+//  var myLoad =function(){ 
+//             p++;
+            // $.get('<{url action=topwap_ctl_default@ajaxIndex}>', {p:p
+            //   }, function(data){
+            //       if(data.error==true){
+            //         Message.error(data.message, 3);
+            //       }else{
+            //           var datas = data.message;
+            //           var html = "";
+            //         $.each(datas,function(n,value){
+
+            //               html +="<li data-link=\"<{url action=topwap_ctl_item_detail@index}>?item_id="+value.item_id+"\"><div class=\"thumbnail\"><div class=\"thumb-img\"><a href=\"<{url action=topwap_ctl_item_detail@index}>?item_id="+value.item_id+"\"><img src=\""+value.image_default_id+"\" alt=\"\"></a></div><div class=\"caption\"><h1 class=\"goods-title\">"+value.title+"</h1><div class=\"price\"><div class=\"amount\"><{$price|cur}></div><div class=\"purchased\">已销售"+value.sold_quantity+"</div></div></div></div></li>";
+            //         })
+
+            //         $('.productBtm ul').append(html);
+            //       }
+            //   }
+            // );
+//     $.ajax({
+//       url: '<{url action=topwap_ctl_default@ajaxIndex}>',
+//       type: 'get',
+//       dataType: 'html',
+//       data:{p:p},
+//       success: function(datas){
+//         if(datas.error){
+//           $('#loading').css('display','none');
+//           $('#nothing').css('display','block');
+//           $('#nothing').addClass('nothing');
+//         }else{
+//           $('.productBtm ul').append(datas);
+//         }
+//       }
+//     });
+
+// }
+// $(window).scroll(function(){
+//   if(!$('#nothing').hasClass('nothing')){
+//     var scrollTop = $(this).scrollTop();
+//     var scrollHeight = $(document).height();
+//     var windowHeight = $(this).height();
+//     if(scrollTop + windowHeight== scrollHeight){
+//       myLoad();
+//     }
+//   }
+// });
+
+var callshareinfo=function()
+{
+  var name = decodeURIComponent($.cookie('UNAME') || '');
+  if (name) {
+        var shareinfo=JSON.stringify({"title":"爆款批发，工厂拿货","desc":"这里有各地最新爆款，最新流行女装，按需自动配款，直接工厂拿货，价格低到笑，一件也可批发，您还等什么赶紧来吧。","link":"<{$redirect_uri}>","imgUrl":"<{$env.base_full_url}>/themes/jmmobilemall/images/200.png"});
+        // return shareinfo;
+        sharetoapp.share(shareinfo);
+  } else{
+    window.location.href = '<{url action=topwap_ctl_passport@goLogin}>';
+  }
+ }
+  $('header').hide();
+  $('.top-search-icon').on('tap','i',function(even){
+    $('.top-search-icon').hide();
+    $('header').show();
+  });  
+  $('.index-headerdel').on('tap','i',function(){
+    $('header').hide();
+    $('.top-search-icon').show();
+    $('.hotFixedIndex').hide();
+  });
+  /*头部图片高度 开始*/
+  window.onload = function(){
+    var top3 = $('.home-header').height();
+    var top2 = $('.go-app-new').height();
+    var wH =$(window).height() - top2;
+    $('.hotFixedIndex').css('height',''+wH+'px');
+    $('.indexSlider').css('padding-top',''+top2+'px');
+    $('.top-search-icon').css('top',''+top2+'px');
+    $('.home-header').css('top',''+top2+'px');
+   var d_Value=$('.searchIndex input').val();//获取到他的默认的值
+    $('.searchIndex input').focus(function(){
+        if($(this).val()==d_Value){
+            $(this).val("");//当前输入框的值设置为空
+            // var wHeight =$(document).height();
+            $('.hotFixedIndex').css({'height':''+wH+'px','display':'block'});
+            $('.headerLeft').addClass('headerdel');
+            $('.headerdel').find('a').attr('href','');
+        }
+    });  
+    //失去焦点
+    $('.searchIndex input').blur(function(){
+        if($(this).val()==""){
+        $('.headerLeft').removeClass('headerdel');
+        $('.hotFixedIndex').css('display','none');
+        $('#goods_search').find('button').attr('disabled',true);
+        }else{
+            $('#goods_search').find('button').removeAttr('disabled');
+        }
+    });
+    $('.searchIndex').on('tap','.headerdel a',function(){
+      $('.searchIndex input').val($('.search input'));
+    });
+}
+  $(".closed").on("touchend", function (event) {
+  $('.go-app-new').hide();
+  $('.top-search-icon').css('top','0px');
+      $('.indexSlider').css('padding-top','0px');
+      $('.home-header').css('top','0px');
+      event.preventDefault();
+  });
+  /*头部图片高度 开始*/
+</script>

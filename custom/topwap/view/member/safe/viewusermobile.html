@@ -1,0 +1,18 @@
+
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+</header> -->
+  <section class="bangDingPhone">
+      <section class="shopex-content-padded">
+        <label>已绑定手机号：</label>
+        <div class="fontM font-orange"><{$user.mobile}></div>
+      </section>
+      <section class="shopex-content-padded">
+        <a href="<{url action=topwap_ctl_member_safe@setUserMobile}>" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning"><{t}>绑定新手机号<{/t}></a>
+      </section>
+      <section class="shopex-content-padded content-center">
+        <a href="<{url action=topwap_ctl_member_safe@unbindMobile verifyType=mobile op=delete}>"><mark><{t}>解绑手机号<{/t}></mark></a>
+      </section>
+  </section>
+  

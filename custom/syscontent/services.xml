@@ -1,0 +1,12 @@
+<services>
+    <service id="desktop_finder.syscontent_mdl_article">
+        <class>syscontent_finder_article</class>
+    </service>
+    <service id="desktop_finder.syscontent_mdl_partnershipe">
+        <class>syscontent_finder_partnershipe</class>
+    </service>
+    <!--清除初始化数据-->
+    <service id="desktop_debug_clean_data">
+        <class>syscontent_data_clean</class>
+    </service>
+</services>

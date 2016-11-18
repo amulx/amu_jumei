@@ -1,0 +1,31 @@
+
+<{foreach from=$items.historydates item=dates}>
+	<span class="zujiTime"><i></i><{$dates}></span>
+	<ul>
+	<{foreach from=$items.itemhistory item=history}>
+	<{if $dates eq $history.datetime}>
+	<li class="shopex-table-view-cell">
+	<i class="delBtnZuJi" data-id="<{$history.item_id}>">×</i>
+		<!-- <div class="zhezhao"></div> -->
+<!-- 		<div class="shopex-slider-right shopex-disabled">
+			<a data-id="<{$history.item_id}>" href="<{url action=topwap_ctl_member_history@ajaxDelItemHistory}>" class="action-del shopex-btn shopex-btn-red"><i class="bbc-icon bbc-icon-remove"></i></a>
+		</div> -->
+		<div class="shopex-slider-handle">
+			<a class="thumbnail shopex-navigate-right shopex-linkto" href="<{url action=topwap_ctl_item_detail@index item_id=$history.item_id}>">
+				<div class="thumb-img">
+					<img src="<{$history.image_default_id|default:$defaultImageId.S.default_image|storager}>" alt="">
+				</div>
+				<div class="caption">
+					<h1 class="goods-title"><{$history.goods_name}></h1>
+					<div class="price">
+						<div class="amount"><{$history.goods_price|cur}></div>
+					</div>
+				</div>
+			</a>
+		</div>
+		<input type="hidden" value="<{$history.item_id}>" name="id[]"/>
+	</li>
+	<{/if}>
+	<{/foreach}>
+	</ul>
+<{/foreach}>

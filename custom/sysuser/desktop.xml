@@ -1,0 +1,66 @@
+<desktop>
+    <permissions>
+        <!--会员-->
+        <permission id="user" display='true' parent='0' workground='sysuser.wrokground.user'>查看会员列表</permission>
+        <permission id="user_del" display='true' parent='0' workground='sysuser.wrokground.user'>删除会员</permission>
+        <permission id="grade" display='true' parent='0' workground='sysuser.wrokground.user'>查看会员等级</permission>
+        <permission id="grade_edit" display='true' parent='0' workground='sysuser.wrokground.user'>编辑会员等级</permission>
+        <permission id="grade_del" display='true' parent='0' workground='sysuser.wrokground.user'>删除会员等级</permission>
+        <permission id="point" display='true' parent='0' workground='sysuser.wrokground.user'>查看会员积分明细</permission>
+        <permission id="editpoint" display='true' parent='0' workground='sysuser.wrokground.user'>修改会员积分</permission>
+        <permission id="edituserinfo" display='true' parent='0' workground='sysuser.wrokground.user'>修改会员信息</permission>
+        <!-- <permission id="experience" display='true' parent='0' workground='sysuser.wrokground.user'>查看会员经验值</permission> -->
+        <!-- <permission id="editexp" display='true' parent='0' workground='sysuser.wrokground.user'>修改会员经验值</permission> -->
+        <permission id="editpwd" display='true' parent='0' workground='sysuser.wrokground.user'>修改会员密码</permission>
+        <permission id="editdeposit" display='true' parent='0' workground='sysuser.wrokground.user'>修改预存款</permission>
+        <permission id="user_license" display='true' parent='0' workground='sysuser.wrokground.user"'>注册协议</permission>
+        <permission id="trustlogincfg" display='true' parent='0' workground='sysuser.wrokground.user"'>信任登录</permission>
+        <permission id="cash" display='true' parent='0' workground='systrade.workground.trades'>提现</permission>
+    </permissions>
+
+    <workground name="会员" id="sysuser.wrokground.user" controller="admin_user" action="index" order='30'>
+        <menugroup name="会员管理">
+            <menu controller='admin_user' action='index' permission='user' display='true' order='20'>会员列表</menu>
+            <menu controller='admin_user' action='index' params="action:dodelete" permission='user_del' display='false' order='20'>删除会员</menu>
+            <menu controller='admin_user' action='license' permission='user_license' display='true' order='30'>注册协议</menu>
+            <menu controller='admin_user' action='updateDeposit' permission='editdeposit' display='false' order='20'>修改预存款</menu>
+            <menu controller='admin_user' action='editUserInfo' permission='edituserinfo' display='false' order='20'>编辑会员信息</menu>
+            <menu controller='admin_user' action='saveUserInfo' permission='edituserinfo' display='false' order='20'>保存会员信息</menu>
+            <menu controller='admin_user' action='updatePwd' permission='editpwd' display='false' order='20'>更新会员密码</menu>
+            <menu controller='admin_user' action='resetDepositPassword' permission='editpwd' display='false' order='20'>重置支付密码</menu>
+            <menu controller='admin_user' action='changePoint' permission='editpoint' display='false' order='20'>编辑会员积分</menu>
+
+            <menu controller='admin_grade' action='index' permission='grade' display='true' order='20'>会员等级</menu>
+            <menu controller='admin_grade' action='index' params="action:dodelete" permission='grade_del' display='false' order='20'>删除会员等级</menu>
+            <menu controller='admin_grade' action='create' permission='grade_edit' display='false' order='20'>添加会员等级页面</menu>
+            <menu controller='admin_grade' action='saveGrade' permission='grade_edit' display='false' order='20'>保存会员等级</menu>
+            <!-- <menu controller='admin_experience' action='index' permission='experience' display='false' order='20'>会员经验值</menu> -->
+            <menu controller='admin_point' action='index' permission='point' display='false' order='20'>会员积分值</menu>
+        </menugroup>
+        <menugroup name="信任登录管理">
+            <menu controller='admin_trustlogincfg' action='index' permission='trustlogincfg' display='true' order='20'>信任登录配置</menu>
+            <menu controller='admin_trustlogincfg' action='config' permission='trustlogincfg' display='false' order='40'>信任登录全局配置页面</menu>
+            <menu controller='admin_trustlogincfg' action='saveConfig' permission='trustlogincfg' display='false' order='40'>保存信任登录全局配置</menu>
+            <menu controller='admin_trustlogincfg' action='setting' permission='trustlogincfg' display='false' order='40'>信任登录单个配置页面</menu>
+            <menu controller='admin_trustlogincfg' action='saveSetting' permission='trustlogincfg' display='false' order='40'>保存信任登录单个配置</menu>
+        </menugroup>
+
+        <menugroup name="属性管理">
+            <menu controller='admin_properties' action='index' permission='user' display='true' order='20'>属性列表</menu>
+        </menugroup>
+    </workground>
+
+    <workground name="交易" id="systrade.workground.trades" action="index" order='80'>
+        <menugroup name="交易信息">
+            <menu controller='admin_user' action='cash' permission='cash' display='true' order="90">预存款提现列表</menu>
+            <menu controller='admin_user' action='cashVerify' permission='cash' display='false' order="90">提现审核</menu>
+            <menu controller='admin_user' action='cashCompeletePage' permission='cash' display='false' order="90">提现提交页面</menu>
+            <menu controller='admin_user' action='cashCompelete' permission='cash' display='false' order="90">提现保存</menu>
+        </menugroup>
+    </workground>
+
+    <adminpanel group="desktop_other" permission="other" controller="admin_trustlogincfg" action='index' display='true'>
+        信任登录配置
+    </adminpanel>
+
+</desktop>

@@ -1,0 +1,122 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">会员信息</div>
+  <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+<section>
+  <section class="section-white">
+    <ul class="shopex-table-view function-list">
+      <li class="shopex-table-view-cell">
+      <{if $userInfo.login_account}>
+      <div class="shopex-table">
+          <div class="shopex-table-cell shopex-col-xs-4">用户名:</div>
+          <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$userInfo.login_account}></div>
+      </div>
+      <{else}>
+        <a href="<{url action=topwap_ctl_member@goSetLoginAccount}>" class="shopex-navigate-right">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-4">用户名:</div>
+            <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$userInfo.login_account}></div>
+          </div>
+        </a>
+        <{/if}>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_member@goSetUsername}>" class="shopex-navigate-right">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-4">姓名：</div>
+            <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$userInfo.username}></div>
+          </div>
+        </a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_member@goSetName}>" class="shopex-navigate-right">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-4">昵称：</div>
+            <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$userInfo.name}></div>
+          </div>
+        </a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_member@goSetSex}>" class="shopex-navigate-right">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-4">性别：</div>
+            <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+              <{if $userInfo.sex==1}>男<{/if}>
+              <{if $userInfo.sex==0}>女<{/if}>
+              <{if $userInfo.sex==2}>保密<{/if}>
+            </div>
+          </div>
+        </a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a id="birthday" href="#" data-options='{"type":"date","beginYear":1930,"endYear":2050}' class="shopex-navigate-right">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-4">生日：</div>
+            <div id="result" class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$userInfo.birthday|cdate:'FDATE'}></div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <section class="section-white">
+    <ul class="shopex-table-view">
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_member_address@addrList}>" class="shopex-navigate-right">收货地址</a>
+      </li>
+    </ul>
+  </section>
+</section>
+
+<!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+  <div class="shopex-popover-arrow"></div>
+  <div>
+    <ul class="shopex-table-view">
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<{script src="date/shopex.picker.min.js" app="topwap"}>
+<script>
+  (function($) {
+    $.init();
+    var result = $('#result')[0];
+    var btn = $('#birthday')[0];
+    btn.addEventListener('tap', function() {
+      var optionsJson = this.getAttribute('data-options') || '{}';
+      var options = JSON.parse(optionsJson);
+      var id = this.getAttribute('id');
+      var picker = new $.DtPicker(options);
+      picker.show(function(rs) {
+
+        result.innerText = rs.text;
+
+        $.post('<{url action=topwap_ctl_member@saveUserInfo}>',{'user[birthday]':rs.text},function(re){
+          if(re.success && re.redirect){
+            shopex.alert(re.message,'',function(){
+              location.href=re.redirect;
+            });
+          }else{
+            shopex.alert(re.message);
+          }
+        });
+
+        picker.dispose();
+      });
+    }, false);
+  })(shopex);
+</script>
+

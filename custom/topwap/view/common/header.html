@@ -1,0 +1,55 @@
+<meta charset="utf-8" />
+<!--↑↑模板中请务必使用HTML5的标准head结构↑↑-->
+<meta name="generator" content="b2b2c" />
+<meta name="author" content="shopex UED Team" />
+<{if $seo.keywords}><meta name="keywords" content="<{$seo.keywords}>" /><{/if}>
+<{if $seo.description}><meta name="description" content="<{$seo.description}>" /><{/if}>
+<{if $seo.nofollow}>
+<meta name="nofollow" content="nofollow" />
+<{/if}>
+<{if $seo.noindex}>
+<meta name="noindex" content="noindex" />
+<{/if}>
+<{if $seo.noarchive}>
+<meta name="noarchive" content="noarchive" />
+<{/if}>
+
+<{if $seo.icon}>
+<link rel="icon" href="<{$seo.icon}>" type="image/x-icon" />
+<link rel="shortcut icon" href="<{$seo.icon}>" type="image/x-icon" />
+<{/if}>
+
+<title><{$wapTitle}></title>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<link type='image/x-icon' href='<{$appleDesktop}>' rel='apple-touch-icon-precomposed'>
+
+<{if config::get('app.debug', false)}>
+<{css src="debug/shopex.picker.css" app="topwap"}>
+<{css src="debug/shopex.picker.min.css" app="topwap"}>
+<{css src="debug/shopex.poppicker.css" app="topwap"}>
+<{css src="debug/style.css" app="topwap"}>
+<{css src="debug/widgets.css" app="topwap"}>
+
+<{script src="zepto.js" app="topwap"}>
+<{script src="shopex.js" app="topwap"}>
+
+<{script src="shopex.picker.js" app="topwap"}>
+<{script src="shopex.poppicker.js" app="topwap"}>
+<{script src="shopex.zoom.js" app="topwap"}>
+<{script src="shopex.previewimage.js" app="topwap"}>
+<{script src="common.js" app="topwap"}>
+<{script src="validate.js" app="topwap"}>
+
+<{else}>
+
+<{css src="min/style.min.css" app="topwap"}>
+<{script src="min/core.min.js" app="topwap"}>
+<{script src="min/main.min.js" app="topwap"}>
+
+<{/if}>
+
+

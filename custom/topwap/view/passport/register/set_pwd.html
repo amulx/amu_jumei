@@ -1,0 +1,28 @@
+<form class="form-container" action="<{url action=topwap_ctl_passport@doRegister}>" method="post" id="form_register">
+  <input type="hidden" name="key" value="topwap_signup">
+  <input type="hidden" name="pam_user[account]" value="<{$uname}>">
+  <input type="hidden" name="pid" value="<{$pid}>">
+  <input type="hidden" name="openid" value="<{$openid}>">
+  <section class="shopex-input-group">
+    <div class="shopex-input-row">
+      <label class="foutLabel">设置密码：</label>
+      <input type="password" name="pam_user[password]" class="shopex-input-password" placeholder="请输入新密码，6~20位" required minlength="6" maxlength="20" data-caution="请填写密码，6-20个字符&&输入不正确，最少6个字符&&输入不正确，最多20个字符">
+    </div>
+    <div class="shopex-input-row foutLabel">
+      <label class="foutLabel">确认密码：</label>
+      <input type="password" name="pam_user[pwd_confirm]" class="shopex-input-clear" maxlength="20" placeholder="再次填写密码" required data-equalto="pam_user[password]" data-caution="密码与确认密码不相符，请重新填写">
+    </div>
+  </section>
+  <div class="content-padded font-gray-20 fontS">6-22个字符，至少包含数字、大写英文、小写英文中的两种</div>
+  <section class="shopex-content-padded form-op-section">
+    <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" >完成</button>
+  </section>
+</form>
+
+<script>
+  $('#form_register').find('button[type=submit]').data('ajaxConfig', {
+    "update": "#view_make",
+    callback: function(rs) {
+    }
+  });
+</script>

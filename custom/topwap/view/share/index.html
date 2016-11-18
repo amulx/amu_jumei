@@ -1,0 +1,102 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>分享<{/t}></div>
+  <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+  <div class="shopex-popover-arrow"></div>
+  <div>
+    <ul class="shopex-table-view">
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<section class="container">
+  <div>
+    <div id="qrcode" class="qrcode">
+      <img src="<{$qrcode}>" style="display: block;">
+    </div>
+    <span class="ewm">好友面对面，扫码分享</span>
+    <div class="shareTop shareBtn">推荐给朋友</div>
+  </div>
+</section>
+ <div class="fixedFanXiang"><span></span></div>
+ <div class="fenxiangBg"></div>
+<script>
+  /*
+   * 注意：
+   * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+   * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+   * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+   *
+   * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+   * 邮箱地址：weixin-open@qq.com
+   * 邮件主题：【微信JS-SDK反馈】具体问题
+   * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+   */
+  wx.config({
+//    debug: true,
+    appId: '<{$appid}>',
+    timestamp: '<{$timestamp}>',
+    nonceStr: '<{$nonceStr}>',
+    signature: '<{$signature}>',
+    jsApiList: [
+      // 所有要调用的 API 都要加到这个列表中
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage'
+    ]
+  });
+wx.ready(function () {
+  var shareData = {
+    title: '爆款批发，工厂拿货', // 分享标题
+    desc: '这里有各地最新爆款，最新流行女装，按需自动配款，直接工厂拿货，价格低到笑，一件也可批发，您还等什么赶紧来吧。', // 分享描述
+    link: '<{$redirect_uri}>', // 分享链接
+    imgUrl: '<{$env.base_full_url}>/themes/jmmobilemall/images/200.png', // 分享图标
+  };
+    // 在这里调用 API
+  wx.onMenuShareTimeline(shareData);
+
+  wx.onMenuShareAppMessage(shareData);
+});
+
+  wx.error(function(res){
+    alert('发送失败');
+    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+
+});
+var callshareinfo=function()
+{
+  var shareinfo=JSON.stringify({"title":"爆款批发，工厂拿货","desc":"这里有各地最新爆款，最新流行女装，按需自动配款，直接工厂拿货，价格低到笑，一件也可批发，您还等什么赶紧来吧。","link":"<{$redirect_uri}>","imgUrl":"<{$env.base_full_url}>/themes/jmmobilemall/images/200.png"});
+  sharetoapp.pay(shareinfo);
+ }
+</script>  
+<script type="text/javascript">
+  /*
+  var qrcode = new QRCode(document.getElementById("qrcode"), {
+  width : 180,
+  height : 180
+  });
+qrcode.makeCode('<{$redirect_uri}>');
+*/
+$('.shareBtn').on('tap',function(){
+  $('.fixedFanXiang').css('display','block');
+  $('.fenxiangBg').css('display','block');       
+});
+$('.fixedFanXiang').on('tap',function(){
+  $('.fixedFanXiang').css('display','none');
+  $('.fenxiangBg').css('display','none');       
+});
+</script>

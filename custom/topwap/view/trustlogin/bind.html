@@ -1,0 +1,134 @@
+<div class="body-padding">
+<!--   <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title">绑定账号</div>
+  </header> -->
+  <section class="container">
+    <form id="bind_acount_form" class="form-container" action="<{url action=topwap_ctl_trustlogin@bindExistsUser}>" method="post">
+      <input type="hidden" name="vcodekey" value="topwap_signin">
+      <input type="hidden" name="flag" value="<{$flag}>">
+      <input type="hidden" name="openid" value="<{$openid}>">
+      <div class="content-padded content-center">
+        <div class="trust-login-avatar"><img src="<{$avatar|storager}>" alt=""></div>
+        <div>Hi~
+          <{$realname}>，绑定已有账号</div>
+      </div>
+      <section class="shopex-input-group">
+        <div class="shopex-input-row">
+          <label>手机号：</label>
+          <input type="text" class="shopex-input-clear" name="uname" placeholder="请输入您的手机号">
+        </div>
+        <div class="shopex-input-row">
+          <label>密码：</label>
+          <input type="password" class="shopex-input-password" name="password" placeholder="请输入密码">
+        </div>
+        <div class="form-inline">
+          <div class="shopex-input-row form-inline-adaptive">
+            <label>验证码：</label>
+            <input type="text" name="verifycode" class="" placeholder="请输入验证码">
+          </div>
+          <div class="form-inline-unadaptive">
+            <img align="absmiddle" class="auto-change-verify-handle" src="<{url action=toputil_ctl_vcode@gen_vcode key=topwap_signin width=120 height=35}>" alt="" width="100" height="30">
+          </div>
+        </div>
+      </section>
+      <section class="content-horizontal-padded form-op-section">
+        <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">完成</button>
+      </section>
+    </form>
+    <form id="new_acount_form" class="form-container" action="<{url action=topwap_ctl_trustlogin@bindSignupUser}>" style="display: none;" method="post">
+      <input type="hidden" name="vcodekey" value="topwap_signup">
+      <input type="hidden" name="flag" value="<{$flag}>">
+      <input type="hidden" name="openid" value="<{$openid}>">
+      <div class="content-padded content-center">
+        <div class="trust-login-avatar"><img src="<{$avatar|storager}>" alt=""></div>
+        <div>Hi~
+          <{$realname}>，您可以注册新账号</div>
+      </div>
+      <section class="shopex-input-group">
+        <div class="shopex-input-row">
+          <label>手机号：</label>
+          <input type="text" id="uname" class="shopex-input-clear" name="pam_account[login_name]" placeholder="请输入您的手机号">
+        </div>
+        <div class="shopex-input-row">
+          <label>设置密码：</label>
+          <input type="password" class="shopex-input-password" name="pam_account[login_password]" placeholder="请输入密码">
+        </div>
+        <div class="shopex-input-row">
+          <label>确认密码：</label>
+          <input type="password" class="shopex-input-password" name="pam_account[psw_confirm]" placeholder="请确认密码">
+        </div>
+        <!--
+        <div class="form-inline">
+          <div class="shopex-input-row form-inline-adaptive">
+            <label>图片验证码：</label>
+            <input type="text" name="verifycode" class="" placeholder="请输入图片验证码">
+          </div>
+          <div class="form-inline-unadaptive">
+            <img align="absmiddle" class="auto-change-verify-handle" src="<{url action=toputil_ctl_vcode@gen_vcode key=topwap_signup width=120 height=35}>" alt="" width="100" height="30">
+          </div>
+        </div>
+        -->
+        <div class="form-inline">
+          <div class="shopex-input-row form-inline-adaptive">
+            <label>手机验证码：</label>
+            <input type="text" name="vcode" class="" placeholder="请输入手机验证码">
+          </div>
+          <div class="form-inline-unadaptive" style="padding-right:0.2rem;">
+            <button type="button" id="send_vcode" class="shopex-btn shopex-btn-warning shopex-btn-block bbc-btn-warning btn-action">发送验证码</button>
+          </div>
+        </div>
+      </section>
+      <section class="content-horizontal-padded form-op-section">
+        <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">完成</button>
+      </section>
+    </form>
+    <section class="action-bar content-horizontal-padded">
+      <button id="new_acount" type="button" class="shopex-btn shopex-btn-block box-item-flex1" onclick="return false;">成为新用户</button>
+      <button id="bind_acount" style="display: none" type="button" class="shopex-btn shopex-btn-block box-item-flex1" onclick="return false;">绑定老账号</button>
+    </section>
+  </section>
+</div>
+<script>
+$('#bind_acount').on('tap', function() {
+  $('#new_acount_form').hide();
+  $('#bind_acount_form').show();
+  $(this).hide();
+  $('#new_acount').show();
+})
+$('#new_acount').on('tap', function() {
+  $('#new_acount_form').show();
+  $('#bind_acount_form').hide();
+  $(this).hide();
+  $('#bind_acount').show();
+})
+$('#send_vcode').on('tap', function(e) {
+  var uname = $('#uname').val();
+  if($(this).hasClass('disabled')) return false;
+  sendVerify($(this), 'uname='+uname+'&type=signup');
+})
+function sendVerify(el, data) {
+  if(!el.attr('disabled')) {
+    var url = "<{url action=topwap_ctl_passport@sendVcode}>";
+    var textCont = el;
+    el.attr('disabled', 'disabled');
+    textCont.html('<i>0</i>');
+    var cd = new countdown(textCont.find('i'), {
+      start: 120,
+      secondOnly: true,
+      callback: function(e) {
+        el.removeAttr('disabled');
+        textCont.html('重发验证码');
+      }
+    });
+    $.post(url, data, function(rs) {
+      if(rs.error) {
+        cd.stop();
+        shopex.alert(rs.message);
+        el.removeAttr('disabled');
+        textCont.html('重发验证码');
+      }
+    });
+  }
+}
+</script>

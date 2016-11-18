@@ -1,0 +1,75 @@
+<style>
+  body {
+    background: #FBFBFB;
+  }
+</style>
+<!-- <section class="container shopex-row shopex-fullscreen category-nav has-footer"> -->
+<section class="container shopex-row category-nav has-footer ">
+<!--   <div class="shopex-col-xs-3">
+    <div id="segmentedControls" class="shopex-segmented-control shopex-segmented-control-inverted shopex-segmented-control-vertical">
+      <{foreach from=$data item=catlv1 key=lv1key}>
+      <a class="shopex-control-item" href="#content<{$lv1key}>"><{$catlv1.cat_name}></a>
+      <{/foreach}>
+    </div>
+  </div> -->
+<!--   <div id="segmentedControlContents" class="category-nav-content">
+    <{foreach from=$data item=catlv1 key=lv1key name=lv1cat}>
+    <div id="content<{$lv1key}>" class="shopex-control-content <{if $env.foreach.lv1cat.first}>shopex-active<{/if}>">
+      <{foreach from=$catlv1.lv2 item=catlv2 key=lv2key}>
+      <div class="category-nav-group">
+        <div class="category-nav-header"><i></i><{$catlv2.cat_name}></div>
+        <div class="category-nav-list">
+          <{foreach from=$catlv2.lv3 item=catlv3 key=lv3key}>
+          <a class="category-nav-item" href="<{url action=topwap_ctl_item_list@index cat_id=$catlv3.cat_id}>"><{$catlv3.cat_name}></a>
+          <{/foreach}>
+        </div>
+      </div>
+      <{/foreach}>
+    </div>
+    <{/foreach}>
+  </div> -->
+  <div id="segmentedControlContents" class="category-nav-content">
+
+    <!-- <{foreach from=$data item=catlv1 key=lv1key name=lv1cat}> -->
+
+    <div id="content<{$lv1key}>" class="shopex-control-content <{if $env.foreach.lv1cat.first}>shopex-active<{/if}>">
+      <{foreach from=$data item=catlv2 key=lv2key}>
+      <div class="category-nav-group">
+        <div class="category-nav-header"><i></i><{$catlv2.class_name}></div>
+        <div class="category-nav-list">
+          <{foreach from=$catlv2.hotkeywords_arr item=catlv3 key=lv3key}>
+          <a class="category-nav-item" href="<{url action=topwap_ctl_item_list@index keyword=$catlv3 cat_id=$catlv2.cat_id}>"><{$catlv3}></a>
+          <{/foreach}>
+        </div>
+      </div>
+      <{/foreach}>
+    </div>
+    <!-- <{/foreach}> -->
+  </div>
+</section>
+<section class="hotFixed">
+  <div>
+      <ul class="clearfix">
+        <li class="first">热搜</li>
+        <{foreach from=$hotsearch item=hotid key=hotname}>
+          <li data-link ="<{url action=topwap_ctl_item_list@index keyword=$hotname}>"><a><{$hotname}></a></li>
+        <{/foreach}>
+        <!-- <li><a href="javascript:;">搜索1</a></li>
+        <li><a href="javascript:;">搜索2</a></li>
+        <li><a href="javascript:;">搜索3</a></li>
+        <li><a href="javascript:;">搜索4</a></li>
+        <li><a href="javascript:;">我的搜索</a></li>
+        <li><a href="javascript:;">我的搜索</a></li> -->
+      </ul>
+  </div>
+</section>
+<script>
+//  shopex.init({
+//    swipeBack: true //启用右滑关闭功能
+//  });
+//  var controls = document.getElementById("segmentedControls");
+//  var contents = document.getElementById("segmentedControlContents");
+//
+//  controls.querySelector('.shopex-control-item').classList.add('shopex-active');
+//  contents.querySelector('.shopex-control-content').classList.add('shopex-active');
+</script>

@@ -1,0 +1,176 @@
+<!--p>
+<span class="btn btn-default"><input type="checkbox" name="" id="selectAll"> 全选</span>
+<button type="button" class="btn btn-default text-blue">
+  下单时间<i class="icon-arrow-down-a"></i></button>
+</p-->
+<div class="data-list">
+  <{if $orderlist}>
+  <{foreach from=$orderlist item=item}>
+  <table class="table table-primary table-goods table-order">
+    <thead>
+      <tr>
+        <td colspan="6">
+          <span>订单号：<{$item.tid}></span>
+          <span>订单总额：<span class="text-orange"><{$item.payment|cur}></span></span>
+          <span>下单时间: <{$item.created_time|cdate}></span>
+          <span>订单状态：
+            <span class="red">
+              <{if $item.status == "WAIT_SELLER_SEND_GOODS" && $item.pay_type == "offline"}>
+              未付款（货到付款）
+              <{elseif $item.status == "WAIT_BUYER_CONFIRM_GOODS" && $item.pay_type == "offline"}>
+              已发货、未付款（货到付款）
+              <{else}>
+              <{$item.status_depict}>
+              <{/if}>
+            </span>
+          </span>
+          <span>售后状态：
+          <span><{if $item.aftersale}><a style="float:none" class="label label-danger" href="<{url action=topshop_ctl_aftersales@detail bn=$item.aftersale.aftersales_bn}>"><{$progress[$item.aftersale.progress]}></a><{else}>无<{/if}></span>
+          </span>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col-1">
+          <label class="checkbox-inline">
+            <input type="checkbox" value="<{$item.tid}>">&nbsp;
+          </label>
+        </td>
+        <td class="col-2">
+
+          <{foreach from=$item.order item=order}>
+          <div class="goods2">
+            <div class="left">
+              <{if $order.pic_path}>
+              <img src="<{$order.pic_path}>" alt="<{$order.title}>">
+              <{else}>
+              <img src="<{$image_default_id.S.default_image}>" alt="<{$order.title}>">
+              <{/if}>
+            </div>
+            <div class="right">
+              <a href="<{url action=topc_ctl_item@index item_id=$order.item_id}>"><{$order.title}></a>
+              <{if $order.spec_nature_info}>(<{$order.spec_nature_info}>)<{/if}>
+              <div><span class="text-orange"><{$order.price|cur}></span>&nbsp;x&nbsp;<{$order.num}></div>
+              <div>商品来源：<a style="float:none"  target=_blank href="<{$order.source_link}>"><{if $order.source eq 1}>淘宝<{else}>天猫<{/if}></a></div>
+            </div>
+          </div>
+          <{/foreach}>
+          <!--
+          <div><a href="#">查看更多商品</a></div>
+          -->
+        </td>
+        <td class="col-3">
+          <div>应付：<span class="text-orange"><{$item.payment|cur}></span></div>
+          <{if $item.discount_fee>0}><div>促销优惠：<span class="text-orange">-<{$item.discount_fee|cur}></span></div><{/if}>
+          <{if $item.points_fee > 0}><div>积分抵扣：<span class="text-orange">-<{$item.points_fee|cur}></span></div><{/if}>
+          <div>运费：<{$item.post_fee|cur}></div>
+        </td>
+        <td class="col-4">
+          <div>
+            <div>会员用户名:<{$item.user_login_name}></div>
+            <div>收货人:<{$item.receiver_name}></div>
+            <div>收货人手机:<{$item.receiver_mobile}></div>
+            <div>收货人电话:<{$item.receiver_phone}></div>
+          </div>
+        </td>
+        <td class="col-5">
+          <div>
+            <div>是否要发票：<{if $item.need_invoice}> 是<{else}> 否<{/if}></div>
+            <div>订单备注：<span class="text-orange"><{$item.trade_memo}></span></div>
+          </div>
+        </td>
+        <td class="col-6">
+          <div>
+            <a href="<{url action=topshop_ctl_trade_detail@index tid=$item.tid}>" target="view_window">订单详情</a>
+          </div>
+          <{if $item.status == "WAIT_SELLER_SEND_GOODS"}>
+            <{if $item.cancel_status == 'NO_APPLY_CANCEL' || $item.cancel_status == 'FAILS' }>
+            <a href="<{url action=topshop_ctl_trade_flow@goDelivery tid=$item.tid}>">发货</a>
+            <{elseif $item.cancel_status == 'WAIT_PROCESS'}>
+            <a href ="<{url action=topshop_ctl_trade_cancel@index tid=$item.tid}>">审核取消订单</a>
+            <{elseif $item.cancel_status == 'REFUND_PROCESS'}>
+            <a href ="<{url action=topshop_ctl_trade_cancel@index tid=$item.tid}>">退款处理</a>
+            <{/if}>
+            <{if $item.cancel_status == 'NO_APPLY_CANCEL'}>
+            <br><a href="<{url action=topshop_ctl_trade_list@ajaxCloseTrade tid=$item.tid response=html}>" data-toggle="modal" data-target="#orderCancel">取消订单</a>
+            <{/if}>
+          <{elseif $item.status == "WAIT_BUYER_PAY" &&  $item.cancel_status == 'NO_APPLY_CANCEL'}>
+          <div>
+            <a href="<{url action=topshop_ctl_trade_list@ajaxCloseTrade tid=$item.tid response=html}>" class="btn btn-warning" data-toggle="modal" data-target="#orderCancel">取消订单</a>
+          </div>
+
+          <{if $item.shipping_type!='ziti'}>
+          <div><a href="<{url action=topshop_ctl_trade_list@modifyPrice tid=$item.tid response=html}>" data-toggle="modal" data-target="#orderEdit">修改运费</a></div>
+          <{/if}>
+
+          <span><span>待付款</span></span>
+          <{elseif $item.status == "WAIT_BUYER_CONFIRM_GOODS"}>
+          <{if $item.pay_type == "online"}>
+          <{if $item.cancel_status == 'NO_APPLY_CANCEL' || $item.cancel_status == 'FAILS' }>
+          待确认收货<br>
+          <{if $item.shipping_type =='ziti'}>
+          <{assign var=tid value=$item.tid}>
+          <{if $deliveryVcode.$tid }>
+            <{if $deliveryVcode.$tid.status == 'WITH_CHECK' }>
+              <a href="<{url action=topshop_ctl_trade_list@ajaxSendDeliverySms tid=$item.tid response=html}>" data-toggle="modal" data-target="#sendDeliverySms">重发提货码</a><br>
+              <a href="<{url action=topshop_ctl_trade_list@ajaxCheckDeliveryVcode tid=$item.tid response=html}>" class="btn btn-primary" data-toggle="modal" data-target="#checkDeliveryVcode">验证提货码</a><br>
+            <{/if}>
+          <{else}>
+            <a href="<{url action=topshop_ctl_trade_list@ajaxSendDeliverySms tid=$item.tid response=html}>" data-toggle="modal" data-target="#sendDeliverySms">发送提货码</a><br>
+          <{/if}>
+          <{/if}>
+          <a href="<{url action=topshop_ctl_trade_list@ajaxCloseRejection tid=$item.tid response=html}>" data-toggle="modal" data-target="#orderRejection">拒收</a>
+          <{elseif $item.cancel_status == 'WAIT_PROCESS'}>
+          <a href ="<{url action=topshop_ctl_trade_cancel@index tid=$item.tid}>">审核取消订单</a>
+          <{elseif $item.cancel_status == 'REFUND_PROCESS'}>
+          <a href ="<{url action=topshop_ctl_trade_cancel@index tid=$item.tid}>">退款处理</a>
+          <{/if}>
+          <{elseif $item.pay_type == "offline"}>
+            <{if $item.cancel_status == 'NO_APPLY_CANCEL' || $item.cancel_status == 'FAILS' }>
+            <a href="<{url action=topshop_ctl_trade_list@ajaxFinishTrade tid=$item.tid}>" class="btn btn-primary" data-toggle="modal" data-target="#delivery">付款并收货</a><br>
+            <{if $item.shipping_type =='ziti'}>
+              <{assign var=tid value=$item.tid}>
+              <{if $deliveryVcode.$tid }>
+                <{if $deliveryVcode.$tid.status == 'WITH_CHECK' }>
+                <a href="<{url action=topshop_ctl_trade_list@ajaxSendDeliverySms tid=$item.tid response=html}>" data-toggle="modal" data-target="#sendDeliverySms">重发提货码</a><br>
+                <a href="<{url action=topshop_ctl_trade_list@ajaxCheckDeliveryVcode tid=$item.tid response=html}>" class="btn btn-primary" data-toggle="modal" data-target="#checkDeliveryVcode">验证提货码</a><br>
+                <{/if}>
+              <{else}>
+                <a href="<{url action=topshop_ctl_trade_list@ajaxSendDeliverySms tid=$item.tid response=html}>" data-toggle="modal" data-target="#sendDeliverySms">发送提货码</a><br>
+              <{/if}>
+            <{/if}>
+            <a href="<{url action=topshop_ctl_trade_list@ajaxCloseTrade tid=$item.tid response=html}>" data-toggle="modal" data-target="#orderCancel">取消订单</a>
+            <{elseif $item.cancel_status == 'WAIT_PROCESS'}>
+            <a href ="<{url action=topshop_ctl_trade_cancel@index tid=$item.tid}>">审核取消订单</a>
+            <{/if}>
+          <{/if}>
+          <{elseif $item.status == "TRADE_FINISHED"}>
+          已完成
+          <{elseif $item.status == "TRADE_CLOSED" || $item.status == "TRADE_CLOSED_BY_SYSTEM"}>
+          已关闭
+          <{/if}>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <{/foreach}>
+
+  <div class="text-right">
+    <{pagers data=$pagers}>
+    <{if $count > 0}>
+    <span class="page-number">共&nbsp;<em class="text-aqua"><{$count}></em>&nbsp;条记录</span>
+    <{/if}>
+  </div>
+  <{else}>
+  <p class="text-muted well no-shadow text-center">暂无数据</p>
+  <{/if}>
+</div>
+<script>
+  $('.pagination li a').click(function(e){
+    e.preventDefault();
+    if($(this).parent('li').hasClass('disabled')) return;
+    var urlData = $(this).attr('href');
+    $(this).parents('.data-list').empty().load(urlData)
+  })
+</script>

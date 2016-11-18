@@ -1,0 +1,27 @@
+<div class="tab-bg-nav">
+	<nav class="que-list-tab">
+		<a  class="current" href="javascript:;">订单问题</a>
+		<a class=""> 物流配送</a>
+		<a class="active">退款售后</a>
+	</nav>
+</div>
+<section class="content-list">
+	<div <{if $id==0}>class="current"<{/if}>>
+		<{foreach from=$订单问题 item=value key=keyz}>
+			<a href="<{url action=topwap_ctl_member@otherDetail article_id=$value.article_id}>"><p><{$value.title}><i></i></p></a>
+		<{/foreach}>
+	</div>	
+	<div <{if $id==1}>class="current"<{/if}>>
+		<{foreach from=$物流配送 item=value key=keyo}>
+			<a href="<{url action=topwap_ctl_member@otherDetail article_id=$value.article_id}>"><p><{$value.title}><i></i></p></a>
+		<{/foreach}>
+	</div>	
+	<div <{if $id==2}>class="current"<{/if}>>
+		<{foreach from=$退款售后 item=value key=keyt}>
+			<a href="<{url action=topwap_ctl_member@otherDetail article_id=$value.article_id}>"><p><{$value.title}><i></i></p></a>
+		<{/foreach}>
+	</div>
+</section>
+<footer>
+	
+</footer>

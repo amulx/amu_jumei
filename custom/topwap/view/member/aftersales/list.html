@@ -1,0 +1,62 @@
+<{foreach from=$list item=row key=id}>
+<section class="section-white">
+  <div class="content-padded">
+    <div class="shopex-table">
+      <div class="shopex-table-cell shopex-col-xs-8">
+        <a class="inline-overflow" href="<{url action=topwap_ctl_shop@index shop_id=$row.shop_id}>">订单状态</a> 
+        <!-- <i class="bbc-icon bbc-icon-forward"></i> -->
+      </div>
+      <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+        <mark>
+          <{if $row.status == '0'}>
+          待处理
+          <{elseif $row.status == '1'}>
+          处理中
+          <{elseif $row.status == '2'}>
+          已处理
+          <{elseif $row.status == '3'}>
+          已驳回
+          <{/if}>
+        </mark>
+      </div>
+    </div>
+  </div>
+  <div class="content-padded theme-border-top function-list theme-position-relative">
+    <a href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$row.oid}>" class="shopex-navigate-right">
+      <div class="shopex-table">
+        <div class="shopex-table-cell shopex-col-xs-8 checkout-goods-list">
+          <div class="checkout-goods-warp">
+            <div class="thumbnail">
+              <div class="thumb-img">
+                <{if $row.sku.pic_path }>
+                <img src="<{$row.sku.pic_path|storager}>">
+                <{else}>
+                <img src="<{$defaultImageId.T.default_image|storager}>">
+                <{/if}>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="shopex-table-cell shopex-col-xs-2 shopex-text-right">共<{$row.num}>件</div>
+      </div>
+    </a>
+  </div>
+  <div class="content-padded theme-border-top theme-position-relative">
+    <div class="shopex-table">
+      <div class="shopex-table-cell shopex-col-xs-8">
+        实付金额：
+        <mark><{$row.sku.price|cur}></mark>
+      </div>
+      <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+        <{if $row.progress == '1'}>
+          <a href="<{url action=topwap_ctl_member_aftersales@createAfterlogistics id=$row.aftersales_bn}>" class="shopex-btn shopex-btn-warning bbc-btn-warning bbc-btn-sm">填写回寄信息</a>
+        <{/if}>
+        <{if $row.sku.complaints_status == "NOT_COMPLAINTS" && $row.progress == '3' }>
+          <a  class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_complaints@complaintsShopFormView oid=$row.oid tid=$row.tid}>">投诉商家</a>
+        <{/if}>
+      </div>
+    </div>
+  </div>
+</section>
+<{/foreach}>
+

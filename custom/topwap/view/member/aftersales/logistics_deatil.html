@@ -1,0 +1,37 @@
+<section class="container">
+	<!-- <header class="page-header">
+		<i
+			class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+		<div class="header-title"><{$title}></div>
+	</header> -->
+	<section>
+		<div class="shopex-input-group fontS">
+			<div class="shopex-input-row">
+				<label>运单号</label>
+				<div class="shopex-input-info content-right"><{$logi_no}></div>
+			</div>
+			<div class="shopex-input-row">
+				<label>物流公司</label>
+				<div class="shopex-input-info content-right"><{$logi_name}></div>
+			</div>
+			<{if $info.track.tracker}>
+			<div class="shopex-input-row">
+				<div class="clearfix">
+					<label>物流信息</label>
+				</div>
+				</div>
+        	<div class="shopex-input-row">
+				<ul class=" order-logistics-view">
+					<{foreach from=$info.track.tracker item=tracker}>
+					<li class="shopex-table-view-cell">
+						<div class="logistics-info"><{$tracker.AcceptStation}></div>
+						<div class="logistics-time"><{$tracker.AcceptTime}></div>
+						<div class="view-cell-dot"></div>
+					</li>
+					<{/foreach}>
+				</ul>
+			</div>
+			<{/if}>
+		</div>
+	</section>
+</section>

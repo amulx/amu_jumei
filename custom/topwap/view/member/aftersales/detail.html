@@ -1,0 +1,360 @@
+<style>
+.shopex-preview-image.shopex-fullscreen {
+        position: fixed;
+        z-index: 20;
+        background-color: #000;
+      }
+      .shopex-preview-header,
+      .shopex-preview-footer {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        z-index: 10;
+      }
+      .shopex-preview-header {
+        height: 44px;
+        top: 0;
+      }
+      .shopex-preview-footer {
+        height: 50px;
+        bottom: 0px;
+      }
+      .shopex-preview-header .shopex-preview-indicator {
+        display: block;
+        line-height: 25px;
+        color: #fff;
+        text-align: center;
+        margin: 15px auto 4px;
+        width: 70px;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 12px;
+        font-size: 16px;
+      }
+      .shopex-preview-image {
+        display: none;
+        -webkit-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+      }
+      .shopex-preview-image.shopex-preview-in {
+        -webkit-animation-name: fadeIn;
+        animation-name: fadeIn;
+      }
+      .shopex-preview-image.shopex-preview-out {
+        background: none;
+        -webkit-animation-name: fadeOut;
+        animation-name: fadeOut;
+      }
+      .shopex-preview-image.shopex-preview-out .shopex-preview-header,
+      .shopex-preview-image.shopex-preview-out .shopex-preview-footer {
+        display: none;
+      }
+      .shopex-zoom-scroller {
+        position: absolute;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        -webkit-backface-visibility: hidden;
+      }
+      .shopex-zoom {
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+      }
+      .shopex-slider .shopex-slider-group .shopex-slider-item img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+      }
+      .shopex-android-4-1 .shopex-slider .shopex-slider-group .shopex-slider-item img {
+        width: 100%;
+      }
+      .shopex-android-4-1 .shopex-slider.shopex-preview-image .shopex-slider-group .shopex-slider-item {
+        display: inline-table;
+      }
+      .shopex-android-4-1 .shopex-slider.shopex-preview-image .shopex-zoom-scroller img {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .shopex-preview-loading {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: none;
+      }
+      .shopex-preview-loading.shopex-active {
+        display: block;
+      }
+      .shopex-preview-loading .shopex-spinner-white {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -25px;
+        margin-top: -25px;
+        height: 50px;
+        width: 50px;
+      }
+      .shopex-preview-image img.shopex-transitioning {
+        -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+      }
+      @-webkit-keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      @-webkit-keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      p img {
+        max-width: 100%;
+        height: auto;
+      }
+</style>
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+	<a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+  <section>
+    <section class="section-white">
+      <div class="canceled-time box-display content-vertical-padded">
+        <div class="box-item-flex1">
+          <p class="fontS font-gray-20">申请时间：<span><{$info.created_time|cdate:'FDATE_FTIME'}></span></p>
+          <p class="fontS font-gray-20">完成时间：<span><{if $info.status == '2' || $info.status == '3'}><{$info.modified_time|cdate:'FDATE_FTIME'}><{else}>进行中<{/if}></span></p>
+        </div>
+        <mark>
+			<{if $info.status == '0'}>
+            等待商家处理
+            <{elseif $info.status == '1'}>
+            售后处理中
+            <{elseif $info.status == '2'}>
+            售后成功
+            <{elseif $info.status == '3'}>
+            售后驳回
+            <{/if}>
+		</mark>
+      </div>
+
+       <{if $info.aftersales_type == "REFUND_GOODS"}>
+
+          <{if $info.progress == 0}>
+          <{include file="topwap/member/aftersales/status/status_0.html"}>
+          <{elseif $info.progress == 1}>
+          <{include file="topwap/member/aftersales/status/status_1.html"}>
+          <{elseif $info.progress == 2 || $info.progress == 5}>
+          <{include file="topwap/member/aftersales/status/status_2.html"}>
+          <{elseif $info.progress == 3}>
+          <{include file="topwap/member/aftersales/status/status_2_1.html"}>
+          <{elseif $info.progress == 7}>
+          <{include file="topwap/member/aftersales/status/status_4.html"}>
+          <{elseif $info.progress == 8}>
+          <{include file="topwap/member/aftersales/status/status_3.html"}>
+          <{/if}>
+
+          <{elseif $info.aftersales_type == "EXCHANGING_GOODS"}>
+
+          <{if $info.progress == 0}>
+          <{include file="topwap/member/aftersales/status/status0.html"}>
+          <{elseif $info.progress == 1}>
+          <{include file="topwap/member/aftersales/status/status1.html"}>
+          <{elseif $info.progress == 2 || $info.progress == 5 }>
+          <{include file="topwap/member/aftersales/status/status2.html"}>
+          <{elseif $info.progress == 3}>
+          <{include file="topwap/member/aftersales/status/status_2_1.html"}>
+          <{elseif $info.progress == 4}>
+          <{include file="topwap/member/aftersales/status/status4.html"}>
+          <{/if}>
+
+          <{/if}>
+    </section>
+    <section class="section-white">
+      <div class="section-title">
+        <div class="title-txt">订单信息</div>
+      </div>
+      <ul class="shopex-table-view fontS font-gray-0">
+        <li class="shopex-table-view-cell">
+            <div class="shopex-table">
+              <div class="shopex-table-cell shopex-col-xs-4">订单号：</div>
+              <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$info.tid}></div>
+            </div>
+        </li>
+        <li class="shopex-table-view-cell">
+            <div class="shopex-table">
+              <div class="shopex-table-cell shopex-col-xs-4">退换货编号：</div>
+              <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$info.aftersales_bn}></div>
+            </div>
+        </li>
+        <li class="shopex-table-view-cell">
+            <div class="shopex-table">
+              <div class="shopex-table-cell shopex-col-xs-4">退换货类型：</div>
+              <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+              <{if $info.aftersales_type == 'ONLY_REFUND'}>仅退款
+	          <{elseif $info.aftersales_type == 'REFUND_GOODS'}>
+	          退货退款
+	          <{elseif $info.aftersales_type == 'EXCHANGING_GOODS'}>
+	          申请换货
+	          <{/if}>
+              </div>
+            </div>
+        </li>
+        <{if $info.aftersales_type == "EXCHANGING_GOODS"}>
+        <li class="shopex-table-view-cell">
+            <div class="shopex-table">
+              <div class="shopex-table-cell shopex-col-xs-4">退换金额：</div>
+              <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+              <mark>无退款</mark>
+              </div>
+            </div>
+        </li>
+        <{elseif $info.progress >= 5}>
+
+         <li class="shopex-table-view-cell">
+            <div class="shopex-table">
+              <div class="shopex-table-cell shopex-col-xs-4">退换金额：</div>
+              <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+              <mark><{$info.refunds.refund_fee|cur}></mark>
+              </div>
+            </div>
+        </li>
+         <{/if}>
+      </ul>
+    </section>
+    <section class="section-white">
+      <ul class="shopex-table-view fontS font-gray-0">
+        <li class="shopex-table-view-cell">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-4">退换货理由：</div>
+            <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$info.reason}></div>
+          </div>
+        </li>
+        <li class="shopex-table-view-cell">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-4">问题描述：</div>
+            <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$info.description|default:"无详细描述"}></div>
+          </div>
+        </li>
+        <{if $info.evidence_pic}>
+        <li class="shopex-table-view-cell">
+          <div>图片信息：</div>
+          <div>
+            <ul class="thumbnails-list">
+            <{foreach from=$info.evidence_pic item=pic}>
+            <li class="thumb">
+            <img src="<{$pic|storager}>" data-preview-src="<{$pic|storager}>" data-preview-group="1" alt="">
+            </li>
+            <{/foreach}>
+            </ul>
+          </div>
+        </li>
+        <{/if}>
+        <li class="shopex-table-view-cell">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-4">退换货处理说明：</div>
+            <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$info.shop_explanation}></div>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <{if $info.progress == '1'}>
+    <section class="section-white">
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_aftersales@createAfterlogistics id=$info.aftersales_bn}>">
+            填写寄送物流信息
+          </a>
+        </li>
+      </ul>
+    </section>
+    <{/if}>
+    <{if $info.aftersales_type != 'ONLY_REFUND' && $info.sendback_data && $info.progress >= '2' }>
+    <section class="section-white">
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_aftersales@seeAfterlogistics id=$info.aftersales_bn type=user}>">
+            你的寄送物流信息
+          </a>
+        </li>
+      </ul>
+    </section>
+    <{/if}>
+    <{if $info.aftersales_type == 'EXCHANGING_GOODS' && $info.sendconfirm_data }>
+    <section class="section-white">
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_aftersales@seeAfterlogistics id=$info.aftersales_bn type=shop}>">
+            商家寄送物流信息
+          </a>
+        </li>
+      </ul>
+    </section>
+    <{/if}>
+  </section>
+  <!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+<div class="shopex-popover-arrow"></div>
+<div>
+  <ul class="shopex-table-view">
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+    </li>
+  </ul>
+</div>
+</div>
+<script>
+  shopex.init();
+  shopex.previewImage();
+  $('body').on('tap','a',function(e){
+    window.location.href = $(this).attr('href');
+  })
+
+</script>

@@ -1,0 +1,22 @@
+<services>
+    <service id="desktop_finder.sysuser_mdl_user">
+        <class>sysuser_finder_user</class>
+    </service>
+    <service id="desktop_finder.sysuser_mdl_user_deposit_cash">
+        <class>sysuser_finder_user_deposit_cash</class>
+    </service>
+    <service id="desktop_finder.sysuser_mdl_user_grade">
+        <class>sysuser_finder_grade</class>
+    </service>
+    <service id="desktop_finder.sysuser_mdl_properties">
+        <class>sysuser_finder_properties</class>
+    </service>
+    <service id="desktop_finder.sysuser_mdl_trustlogin_cfg">
+        <class>sysuser_finder_trustlogin_cfg</class>
+    </service>
+
+    <!--清除初始化数据-->
+    <service id="desktop_debug_clean_data">
+        <class>sysuser_data_clean</class>
+    </service>
+</services>

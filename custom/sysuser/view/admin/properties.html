@@ -1,0 +1,59 @@
+<form id="propertiesForm" action="?app=sysuser&ctl=admin_properties&act=saveProperties"  method="POST" >
+  <input type="hidden" name="properties_id" value="<{$propertiesInfo.properties_id}>">
+  <div class="tableform">
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>子属性名：<{/t}></th>
+          <td><{input type="text" name="properties_name" style="width:120px" vtype="required" value=$propertiesInfo.properties_name}><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>属性选择：<{/t}></th>
+          <td>
+            <select name="source">
+              <option value="style" <{if $propertiesInfo.source == 'style'}> selected <{/if}>>风格</option>
+              <option value="grade" <{if $propertiesInfo.source == 'grade'}> selected <{/if}>>档次</option>
+              <option value="places" <{if $propertiesInfo.source == 'places'}> selected <{/if}>>产地</option>
+            </select>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+
+  <div class="table-action">
+    <{button type="submit" id='properties-form-submit' label="保存"|t:'sysuser'}>
+  </div>
+
+</form>
+
+<script>
+  (function(){
+    var _form = $('propertiesForm');
+    var btn =$('properties-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+  })();
+</script>

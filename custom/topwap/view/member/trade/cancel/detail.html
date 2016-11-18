@@ -1,0 +1,103 @@
+<!-- 
+<header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+	<a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+<section class="topHeight">
+	<section class="section-white">
+		<div class="canceled-time box-display content-vertical-padded">
+			<div class="box-item-flex1">
+				<p class="fontS font-gray-20">
+					申请时间：<span><{$data.created_time|cdate}></span>
+				</p>
+				<p class="fontS font-gray-20">
+					完成时间：<span><{if $data.process == 3}><{$data.modified_time|cdate}><{else}>进行中<{/if}></span>
+				</p>
+			</div>
+			<{if $data.refunds_status == 'WAIT_CHECK' }>
+            <mark>审核中</mark>
+            <{elseif $data.refunds_status == 'WAIT_REFUND'}>
+            <mark>退款处理</mark>
+            <{elseif $data.refunds_status == 'SUCCESS'}>
+            <{if $data.payed_fee && $data.payed_fee != '0.00'}>
+            <mark>已完成退款</mark>
+            <{else}>
+            <mark>取消成功</mark>
+            <{/if}>
+            <{else}>
+            <mark>取消失败</mark>
+            <{/if}>
+		</div>
+		<div class="content-padded" style="padding:0.75rem 0;">
+			<div class="timeline cancel-line ub" style="display:block; margin:0">
+				<div class="ub-f1">
+				<i class="bbc-icon bbc-icon-right on step-01"></i>
+				<span class="first"></span>
+				</div>
+				<{if $data.refunds_status == 'SHOP_CHECK_FAILS' && $data.process >= 3 }>
+				<div class="ub-f1"><i class="bbc-icon bbc-icon-right step-02b on"></i></div>
+				<{else}>
+				<div class="ub-f1"><i class="bbc-icon bbc-icon-right <{if $data.refunds_status >= 0}>on<{/if}> step-02"></i></div> 
+				<div class="ub-f1"><i class="bbc-icon bbc-icon-right step-03 <{if $data.process >= 2}>on <{/if}>"></i></div> 
+				<div class="ub-f1"><i class="bbc-icon bbc-icon-right step-04 <{if $data.process >= 3}>on <{/if}>"></i><span class="last"></span></div>
+				<{/if}>
+				
+			</div>
+		</div>
+		<div class="content-padded content-center fontS">亲爱的客户，
+		<{if $data.refunds_status == 'WAIT_CHECK' }>此订单已提交取消申请，正在审核
+        <{elseif $data.refunds_status == 'WAIT_REFUND'}>此订单正在进行退款处理
+        <{elseif $data.refunds_status == 'SUCCESS'}>
+          <{if $data.payed_fee && $data.payed_fee != '0.00'}>此订单已取消成功，并已完成退款
+          <{else}>此订单已取消成功
+          <{/if}>
+        <{else}>订单取消失败
+        <{/if}>。</div>
+	</section>
+	<section class="section-white">
+		<div class="section-title">
+			<div class="title-txt">订单信息</div>
+		</div>
+		<ul class="shopex-table-view fontS font-gray-0">
+			<li class="shopex-table-view-cell">
+				<div class="shopex-table">
+					<div class="shopex-table-cell shopex-col-xs-4">订单号：</div>
+					<div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$data.tid}></div>
+				</div>
+			</li>
+			<li class="shopex-table-view-cell">
+				<div class="shopex-table">
+					<div class="shopex-table-cell shopex-col-xs-4">支付总额：</div>
+					<div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$data.payed_fee|cur}></div>
+				</div>
+			</li>
+			<li class="shopex-table-view-cell">
+				<div class="shopex-table">
+					<div class="shopex-table-cell shopex-col-xs-4">取消原因：</div>
+					<div class="shopex-table-cell shopex-col-xs-4 shopex-text-right"><{$data.reason}></div>
+				</div>
+			</li>
+		</ul>
+	</section>
+</section>
+<!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+    <div class="shopex-popover-arrow"></div>
+    <div>
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+        </li>
+      </ul>
+    </div>
+</div>

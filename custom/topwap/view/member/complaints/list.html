@@ -1,0 +1,74 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>我的投诉<{/t}></div>
+</header> -->
+<section>
+    <{if $complaintsList.list}>
+    <div id="pullrefresh" class="shopex-scroll-wrapper bbc-pullrefresh-top">
+      <div class="shopex-scroll">
+        <div class="shopex-table-view complaints-list">
+          <{include file="topwap/member/complaints/list-main.html"}>
+        </div>
+      </div>
+    </div>
+    <{else}>
+    <{include file="topwap/empty/complaints.html"}>
+    <{/if}>
+</section>
+<script>
+  var count = 1;
+  var totalpage = "<{$totalPages}>";
+  var listwrapper = document.body.querySelector('.complaints-list');
+
+  shopex.init({
+        swipeBack: false,
+        pullRefresh: {
+            container: '#pullrefresh',
+            down: {
+                callback: pulldownRefresh
+            },
+            up: {
+                contentrefresh: '正在加载...',
+                callback: pullupRefresh
+            }
+        }
+    });
+    /**
+     * 下拉刷新具体业务实现
+     */
+    function pulldownRefresh() {
+        count = 1;
+        setTimeout(function() {
+          getList(count,function(rs){
+            $(listwrapper).html(rs);
+            shopex('#pullrefresh').pullRefresh().endPulldownToRefresh()
+            shopex('#pullrefresh').pullRefresh().enablePullupToRefresh(); //refresh completed
+          })
+        }, 1500);
+    }
+    /**
+     * 上拉加载具体业务实现
+     */
+    function pullupRefresh() {
+      setTimeout(function() {
+          shopex('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalpage)); //参数为true代表没有更多数据了。
+          if(!(count > totalpage)) {
+            getList(count,function(rs){
+              $(listwrapper).append(rs);
+            })
+          }
+      }, 1500);
+  }
+
+  function getList(count,callback){
+    $.ajax({
+      url: '<{url action=topwap_ctl_member_complaints@complaintsList}>',
+      type: 'get',
+      dataType: 'html',
+      data: {
+        'pages': count,
+      },
+      success: callback
+    });
+  };
+</script>

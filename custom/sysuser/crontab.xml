@@ -1,0 +1,7 @@
+<cronentries>
+  <cron id="sysuser_tasks_cleanhistory">
+    <description>足迹历史记录时长30天，自动清除</description>
+    <schedule>0 1 */1 * *</schedule>
+    <enabled>true</enabled>
+  </cron>
+</cronentries>

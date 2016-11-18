@@ -1,0 +1,35 @@
+<desktop>
+
+    <permissions>
+        <permission id="promotion" display='true' workground='syspromotion.workground.promotion'>营销管理</permission>
+        <permission id="activity" display='true' workground='syspromotion.workground.activity'>活动管理</permission>
+        <permission id="activity_edit" display='true' workground='syspromotion.workground.activity'>编辑活动</permission>
+        <permission id="activity_del" display='true' workground='syspromotion.workground.activity'>删除活动</permission>
+        <permission id="activity_review" display='true' workground='syspromotion.workground.activity'>审核活动</permission>
+        <permission id="register_review" display='true' workground='syspromotion.workground.activity'>新用户注册优惠券</permission>
+    </permissions>
+
+    <workground name="营销" id="syspromotion.workground.promotion" controller="admin_fullminus" action="index" order='50'>
+        <menugroup name='促销管理'>
+            <menu controller='admin_coupon' action='index' permission='promotion' display='true' order='10'>优惠券</menu>
+            <menu controller='admin_freepostage' action='index' permission='promotion' display='true' order='20'>免邮</menu>
+            <menu controller='admin_fulldiscount' action='index' permission='promotion' display='true' order='30'>满折</menu>
+            <menu controller='admin_fullminus' action='index' permission='promotion' display='true' order='40'>满减</menu>
+            <menu controller='admin_xydiscount' action='index' permission='promotion' display='true' order='50'>X件Y折</menu>
+            <menu controller='admin_package' action='index' permission='promotion' display='true' order='50'>组合促销</menu>
+            <menu controller='admin_registereddiscount' action='index' permission='promotion' display='true' order='50'>新用户注册优惠券</menu>
+        </menugroup>
+        <menugroup name='活动管理'>
+            <menu controller='admin_activity' action='index' permission='activity' display='true' order='10'>活动列表</menu>
+            <menu controller='admin_activity' action='setRemind' permission='activity_edit' display='false' order='10'>设置活动提醒</menu>
+            <menu controller='admin_activity' action='add' permission='activity_edit' display='false' order='10'>添加活动页面</menu>
+            <menu controller='admin_activity' action='editActivity' permission='activity_edit' display='false' order='10'>未开始报名时编辑活动</menu>
+            <menu controller='admin_activity' action='save' permission='activity_edit' display='false' order='10'>保存活动</menu>
+            <menu controller='admin_activity' action='doSetMainpush' permission='activity_edit' display='false' order='10'>设置主推活动</menu>
+            <menu controller='admin_activity' action='doDelete' permission='activity_del' display='false' order='10'>删除活动</menu>
+            <menu controller='admin_activity_register' action='index' permission='activity' display='true' order='20'>报名列表</menu>
+            <menu controller='admin_activity_register' action='approve' permission='activity_review' display='false' order='20'>审核活动报名</menu>
+            <menu controller='admin_activity_register' action='refuse' permission='activity_review' display='false' order='20'>拒绝报名页面</menu>
+    </workground>
+
+</desktop>

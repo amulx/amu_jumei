@@ -1,0 +1,299 @@
+<div id="offCanvasWrapper" class="shopex-off-canvas-wrap shopex-draggable shopex-slide-in">
+  <!--菜单部分-->
+  <aside id="offCanvasSide" class="shopex-off-canvas-right filters">
+    <{include file="topwap/item/list/filter.html"}>
+  </aside>
+  <div class="shopex-inner-wrap">
+    <div class="shopex-bar">
+      <header class="home-header">
+        <i class="icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+        <div class="main">
+          <form action="<{url action=topwap_ctl_item_list@index}>" method="post" id="goods_search">
+            <div class="shopex-input-row header-search-form">
+              <input type="search" name="search_keywords" class="header-search shopex-input-clear" value="<{$search_keywords}>" placeholder="<{t}>寻找感兴趣的商品<{/t}>">
+            </div>
+          </form>
+        </div>
+        <a id="offCanvasBtn" href="#offCanvasSide" class="txt-func"><{t}>筛选<{/t}></a>
+      </header>
+      <div class="section-white goods-filters">
+        <div class="goods-filters-item active" data-order=""><{t}>综合<{/t}></div>
+        <div class="goods-filters-item" data-order="sold_quantity"><{t}>销量<{/t}></div>
+        <div class="goods-filters-item" data-order="price"><{t}>价格<{/t}> <i class="goods-filters-order order-desc"></i></div>
+        <div class="goods-filters-item" data-order="modified_time"><{t}>最新<{/t}></div>
+        <div id="show_style" class="goods-show-style"><i class="bbc-icon bbc-icon-thumb"></i></div>
+      </div>
+    </div>
+    <section class="container">
+      <div id="offCanvasContentScroll" class="shopex-scroll-wrapper bbc-pullrefresh-top-b">
+      <{if $items}>
+        <div class="shopex-scroll">
+          <ul class="shopex-table-view pro-list-grid goods-list">
+            <{include file="topwap/item/list/item_list.html"}>
+          </ul>
+        </div>
+      <{else}>
+         <{include file="topwap/empty/item.html"}>
+      <{/if}>
+      </div>
+    </section>
+    <!-- off-canvas backdrop -->
+    <div class="shopex-off-canvas-backdrop"></div>
+  </div>
+</div>
+<script>
+  shopex.init({
+    swipeBack: false,
+  });
+  //侧滑容器父节点
+  var offCanvasWrapper = shopex('#offCanvasWrapper');
+  //主界面容器
+  var offCanvasInner = offCanvasWrapper[0].querySelector('.shopex-inner-wrap');
+  //菜单容器
+  var offCanvasSide = document.getElementById("offCanvasSide");
+  //Android暂不支持整体移动动画
+  // if (!shopex.os.android) {
+  //   document.getElementById("move-togger").classList.remove('shopex-hidden');
+  //   var spans = document.querySelectorAll('.android-only');
+  //   for (var i = 0, len = spans.length; i < len; i++) {
+  //     spans[i].style.display = "none";
+  //   }
+  // }
+  //移动效果是否为整体移动
+  var moveTogether = false;
+  //侧滑容器的class列表，增加.shopex-slide-in即可实现菜单移动、主界面不动的效果；
+  var classList = offCanvasWrapper[0].classList;
+  //变换侧滑动画移动效果；
+  shopex('.shopex-input-group').on('change', 'input', function() {
+    if (this.checked) {
+      offCanvasSide.classList.remove('shopex-transitioning');
+      offCanvasSide.setAttribute('style', '');
+      classList.remove('shopex-slide-in');
+      classList.remove('shopex-scalable');
+      switch (this.value) {
+          case 'main-move':
+              if (moveTogether) {
+                //仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+                offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+                moveTogether = false;
+              }
+              break;
+          case 'main-move-scalable':
+              if (moveTogether) {
+                //仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+                offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+              }
+              classList.add('shopex-scalable');
+              break;
+          case 'menu-move':
+              classList.add('shopex-slide-in');
+              break;
+          case 'all-move':
+              moveTogether = true;
+              //整体滑动时，侧滑菜单在inner-wrap内
+              offCanvasInner.insertBefore(offCanvasSide, offCanvasInner.firstElementChild);
+              break;
+      }
+      offCanvasWrapper.offCanvas().refresh();
+    }
+  });
+  // document.getElementById('offCanvasShow').addEventListener('tap', function() {
+  //   offCanvasWrapper.offCanvas('show');
+  // });
+  var hasnodata = false;
+   document.getElementById('offCanvasHide').addEventListener('tap', function() {
+     offCanvasWrapper.offCanvas('close');
+
+     count = 1;
+     var reqdata = activeFilter;
+     reqdata['pages'] = count;
+
+     $('.filters-options span').each(function(){
+       var checkedFiltersOptions = $(this).hasClass('checked');
+       var name = $(this).data('name');
+       if( checkedFiltersOptions ){
+         var value = $(this).data('value');
+         reqdata[name] = value;
+       }else {
+         delete reqdata[name];
+       }
+     });
+
+     getList(reqdata,function(rs){
+      hasnodata = $('#offCanvasContentScroll').find('.nodata-wrapper').length > 0 ? true : false;
+      if(rs.indexOf('nodata-wrapper') > 0) {
+        if(!hasnodata) {
+          listwrapper.html('');
+          $('#offCanvasContentScroll').append(rs);
+        }
+      } else {
+        if(hasnodata) {
+          $('.nodata-wrapper').remove();
+        }
+          listwrapper.html(rs);
+       }
+        shopex('#offCanvasContentScroll').pullRefresh().scrollTo(0,0);
+        shopex('#offCanvasContentScroll').pullRefresh().enablePullupToRefresh();
+     });
+   });
+
+   $('.reset-filters-options').on('tap',function(){
+     $('.filters-options span').removeClass('checked');
+   });
+
+  //主界面和侧滑菜单界面均支持区域滚动；
+  shopex('#offCanvasSideScroll').scroll();
+  //实现ios平台的侧滑关闭页面；
+  if (shopex.os.plus && shopex.os.ios) {
+    offCanvasWrapper[0].addEventListener('shown', function(e) { //菜单显示完成事件
+      plus.webview.currentWebview().setStyle({
+        'popGesture': 'none'
+      });
+    });
+    offCanvasWrapper[0].addEventListener('hidden', function(e) { //菜单关闭完成事件
+      plus.webview.currentWebview().setStyle({
+        'popGesture': 'close'
+      });
+    });
+  }
+
+  var flag = localStorage.getItem('list_type');
+  if(flag && flag == 'gallery'){
+    $('#show_style .bbc-icon').addClass('bbc-icon-thumb').removeClass('bbc-icon-gallery');
+    $('.goods-list').addClass('pro-list-grid').removeClass('pro-list-normal');
+  }else if(flag && flag == 'thumb'){
+    $('#show_style .bbc-icon').addClass('bbc-icon-gallery').removeClass('bbc-icon-thumb');
+    $('.goods-list').addClass('pro-list-normal').removeClass('pro-list-grid');
+  }
+
+  $('#show_style').on('tap',function(){
+    if($(this).find('.bbc-icon').hasClass('bbc-icon-gallery')){
+      $(this).find('.bbc-icon').removeClass('bbc-icon-gallery').addClass('bbc-icon-thumb');
+      $('.goods-list').addClass('pro-list-grid').removeClass('pro-list-normal');
+      shopex('#offCanvasContentScroll').pullRefresh().scrollTo(0,0);
+      localStorage.setItem('list_type','gallery');
+    }else if($(this).find('.bbc-icon').hasClass('bbc-icon-thumb')){
+      $(this).find('.bbc-icon').removeClass('bbc-icon-thumb').addClass('bbc-icon-gallery');
+      $('.goods-list').addClass('pro-list-normal').removeClass('pro-list-grid');
+      shopex('#offCanvasContentScroll').pullRefresh().scrollTo(0,0);
+      localStorage.setItem('list_type','thumb');
+    }
+  });
+
+  var count = 1;
+  var totalpage = "<{$pagers.total}>";
+  var listwrapper = $('.goods-list');
+  var order;
+
+  $('.goods-filters-item').on('tap',function(){
+    $(this).addClass('active').siblings().removeClass('active');
+    order = $(this).data('order');
+    var filterItem = $(this).find('.goods-filters-order')
+    if(filterItem && $(this).hasClass('active') && filterItem.hasClass('order-desc')){
+      filterItem.removeClass('order-desc').addClass('order-asc');
+      order = order? order+' '+'asc':'';
+    }else if(filterItem && $(this).hasClass('active') && filterItem.hasClass('order-asc')){
+      filterItem.removeClass('order-asc').addClass('order-desc');
+      order = order? order+' '+'desc':'';
+    }
+
+    count = 1;
+    var param = {
+      'pages': count,
+      'orderBy': order
+    }
+    var reqdata = $.extend(activeFilter,param);
+    getList(reqdata,function(rs){
+      listwrapper.html(rs);
+      shopex('#offCanvasContentScroll').pullRefresh().scrollTo(0,0);
+      shopex('#offCanvasContentScroll').pullRefresh().enablePullupToRefresh();
+    });
+  });
+
+  $('.filters-options ').on('tap','span',function(){
+    $(this).toggleClass('checked');
+  })
+
+  shopex.init({
+      swipeBack: false,
+      pullRefresh: {
+          container: '#offCanvasContentScroll',
+          down: {
+              callback: pulldownRefresh
+          },
+          up: {
+              contentrefresh: '正在加载...',
+              callback: pullupRefresh
+          }
+      }
+  });
+
+  var activeFilter = JSON.parse('<{$activeFilter|json_encode}>');
+  /**
+   * 下拉刷新具体业务实现
+   */
+  function pulldownRefresh() {
+
+      setTimeout(function() {
+          count = 1;
+          var param = {
+            'pages': count,
+            'orderBy': order
+          }
+          var reqdata = $.extend(activeFilter,param);
+          getList(reqdata,function(rs){
+            if(rs.indexOf('nodata-wrapper') > 0) {
+              if(!hasnodata) {
+                listwrapper.html('');
+                $('#offCanvasContentScroll').append(rs);
+              }
+            } else {
+              listwrapper.html(rs);
+            }
+             shopex('#offCanvasContentScroll').pullRefresh().endPulldownToRefresh()
+              shopex('#offCanvasContentScroll').pullRefresh().enablePullupToRefresh(); //refresh completed
+          });
+      }, 200);
+  }
+  /**
+   * 上拉加载具体业务实现
+   */
+  function pullupRefresh() {
+    setTimeout(function() {
+        shopex('#offCanvasContentScroll').pullRefresh().endPullupToRefresh((++count > totalpage)); //参数为true代表没有更多数据了。
+        var param = {
+          'pages': count,
+          'orderBy': order
+        }
+        var reqdata = $.extend(activeFilter,param);
+        getList(reqdata,function(rs){
+          if(rs.indexOf('nodata-wrapper') > 0) {
+              if(!hasnodata) {
+                console.log(11);
+                listwrapper.html('');
+                $('#offCanvasContentScroll').append(rs);
+              }
+            } else {
+              listwrapper.append(rs);
+            }
+        });
+    }, 200);
+  }
+
+  function getList(param,callback){
+    hasnodata = $('#offCanvasContentScroll').find('.nodata-wrapper').length > 0 ? true : false;
+    $.ajax({
+      url: '<{url action=topwap_ctl_item_thirdPartyList@ajaxGetItemList}>',
+      type: 'get',
+      dataType: 'html',
+      data: param,
+      success: callback
+    });
+  };
+
+  $('.shopex-table-view').on('tap','li',function(){
+    var link = $(this).data('link');
+    location.href = link;
+  })
+</script>
+

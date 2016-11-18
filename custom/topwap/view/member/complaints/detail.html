@@ -1,0 +1,235 @@
+<style>
+  .shopex-preview-image.shopex-fullscreen {
+    position: fixed;
+    z-index: 20;
+    background-color: #000;
+  }
+  .shopex-preview-header,
+  .shopex-preview-footer {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    z-index: 10;
+  }
+  .shopex-preview-header {
+    height: 44px;
+    top: 0;
+  }
+  .shopex-preview-footer {
+    height: 50px;
+    bottom: 0px;
+  }
+  .shopex-preview-header .shopex-preview-indicator {
+    display: block;
+    line-height: 25px;
+    color: #fff;
+    text-align: center;
+    margin: 15px auto 4px;
+    width: 70px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    font-size: 16px;
+  }
+  .shopex-preview-image {
+    display: none;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  .shopex-preview-image.shopex-preview-in {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+  }
+  .shopex-preview-image.shopex-preview-out {
+    background: none;
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+  }
+  .shopex-preview-image.shopex-preview-out .shopex-preview-header,
+  .shopex-preview-image.shopex-preview-out .shopex-preview-footer {
+    display: none;
+  }
+  .shopex-zoom-scroller {
+    position: absolute;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    -webkit-backface-visibility: hidden;
+  }
+  .shopex-zoom {
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+  .shopex-slider .shopex-slider-group .shopex-slider-item img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .shopex-android-4-1 .shopex-slider .shopex-slider-group .shopex-slider-item img {
+    width: 100%;
+  }
+  .shopex-android-4-1 .shopex-slider.shopex-preview-image .shopex-slider-group .shopex-slider-item {
+    display: inline-table;
+  }
+  .shopex-android-4-1 .shopex-slider.shopex-preview-image .shopex-zoom-scroller img {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .shopex-preview-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+  }
+  .shopex-preview-loading.shopex-active {
+    display: block;
+  }
+  .shopex-preview-loading .shopex-spinner-white {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    height: 50px;
+    width: 50px;
+  }
+  .shopex-preview-image img.shopex-transitioning {
+    -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+  @-webkit-keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @-webkit-keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  p img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>投诉详情<{/t}></div>
+</header> -->
+<section>
+  <section class="section-white">
+    <div class="section-title">
+      <div class="box-item-flex1"><{$complaints.complaints_type}></div>
+      <div class="box-item-flex1 content-right">
+        <div><mark><{$complaints.status}></mark></div>
+        <div class="fontS font-gray-40"><{$complaints.created_time|cdate}></div>
+      </div>
+    </div>
+    <div class="content-padded theme-border-top">
+      <a class="shopex-linkto" href="<{url action=topwap_ctl_item_detail@index item_id=$complaints.order.item_id}>">
+        <div class="box-display">
+          <div class="thumb"><img src="<{$complaints.order.pic_path|storager}>" alt=""></div>
+          <div class="box-item-flex1 fontS"><{$complaints.order.title}></div>
+        </div>
+      </a>
+    </div>
+  </section>
+  <section class="section-white">
+    <div class="section-title">
+      <div class="title-txt font-gray-20"><{t}>投诉内容<{/t}></div>
+      <{if $complaints.status_val == 'WAIT_SYS_AGREE'}>
+      <div class="box-item-flex1 content-right">
+        <a href="<{url action=topwap_ctl_member_complaints@complaintsCloseFormView complaints_id=$complaints.complaints_id}>" class="shopex-btn shopex-btn-warning bbc-btn-sm shopex-btn-outlined bbc-btn-outlined shopex-linkto"><{t}>撤销投诉<{/t}></a>
+      </div>
+      <{/if}>
+    </div>
+    <div class="content-padded theme-border-top">
+      <p class="content-bottom-padded"><{$complaints.content}></p>
+      <{if $complaints.image_url}>
+      <div class="rate-list">
+        <ul class="rate-photo">
+          <{foreach from=$complaints.image_url item=image}>
+          <li> <img src="<{$image|storager}>"  data-preview-src="<{$image|storager}>" data-preview-group="1" alt=""></li>
+          <{/foreach}>
+        </ul>
+      </div>
+      <{/if}>
+    </div>
+  </section>
+  <{if $complaints.memo}>
+  <section class="section-white">
+    <div class="section-title">
+      <div class="title-txt font-gray-20"><{t}>平台回复<{/t}></div>
+    </div>
+    <div class="content-padded theme-border-top">
+      <{$complaints.memo}>
+    </div>
+  </section>
+  <{/if}>
+  <{if $complaints.buyer_close_reasons}>
+  <section class="section-white">
+    <div class="section-title">
+      <div class="title-txt font-gray-20"><{t}>撤销原因<{/t}></div>
+    </div>
+    <div class="content-padded theme-border-top">
+      <{$complaints.buyer_close_reasons}>
+    </div>
+  </section>
+  <{/if}>
+  <section class="shopex-input-group fontS font-gray-20">
+    <!-- <div class="shopex-input-row">
+      <label><{t}>被投诉方<{/t}></label>
+      <div class="shopex-input-info content-right"><{$complaints.shop_id|shopname}></div>
+    </div> -->
+    <div class="shopex-input-row">
+      <label><{t}>订单号<{/t}></label>
+      <div class="shopex-input-info content-right"><{$complaints.tid}></div>
+    </div>
+    <div class="shopex-input-row">
+      <label><{t}>联系电话<{/t}></label>
+      <div class="shopex-input-info content-right"><{$complaints.tel}></div>
+    </div>
+  </section>
+</section>
+<script>
+  shopex.previewImage();
+</script>

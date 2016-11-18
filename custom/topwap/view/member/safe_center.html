@@ -1,0 +1,35 @@
+
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+</header> -->
+<section>
+	<section class="section-white">
+		<ul class="shopex-table-view">
+			<li class="shopex-table-view-cell"><a href="<{url action=topwap_ctl_member_safe@setUserPwd}>" 
+				class="shopex-navigate-right"> 修改登录密码<br>
+				<span class="fontS font-gray-40">请经常更换登录密码，加强账户安全</span>
+			</a></li>
+			<li class="shopex-table-view-cell"><a href="<{url action=topwap_ctl_member_deposit@depositPwd}>"
+				class="shopex-navigate-right"> 预存款支付密码<br>
+				<span class="fontS font-gray-40">使用预存款支付时使用的密码</span>
+			</a></li>
+		</ul>
+	</section>
+	<section class="section-white">
+		<ul class="shopex-table-view">
+			<{if $user.mobile}>
+			<li class="shopex-table-view-cell"><a href="<{url action=topwap_ctl_member_safe@viewUserMobile}>" 
+				class="shopex-navigate-right"> 修改手机号 <span
+					class="fonts font-gray-40"><{$user.mobile|substr_replace:'*****',3,5}></span><br>
+				<span class="fontS font-gray-40">绑定后可使用手机号登录和找回密码</span>
+			</a></li>
+			<{else}>
+			<li class="shopex-table-view-cell"><a href="<{url action=topwap_ctl_member_safe@setUserMobile}>" 
+				class="shopex-navigate-right"> 绑定手机号<br>
+				<span class="fontS font-gray-40">绑定后可使用手机号登录和找回密码</span>
+			</a></li>
+			<{/if}>
+		</ul>
+	</section>
+</section>

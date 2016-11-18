@@ -1,0 +1,178 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">
+    <{if $promotiontype=='fullminus'}><{$promotionInfo.fullminus_name}><{/if}>
+    <{if $promotiontype=='coupon'}><{$promotionInfo.coupon_name}><{/if}>
+    <{if $promotiontype=='fulldiscount'}><{$promotionInfo.fulldiscount_name}><{/if}>
+    <{if $promotiontype=='freepostage'}><{$promotionInfo.freepostage_name}><{/if}>
+    <{if $promotiontype=='xydiscount'}><{$promotionInfo.freepostage_name}><{/if}>
+  </div>
+</header> -->
+<section class="container no-fix">
+  <!--  满 <mark>100</mark> 元减 <mark>30</mark> 元 -->
+  <div id="pullrefresh" class="shopex-scroll-wrapper">
+    <div class="shopex-scroll">
+      <div class="content-bottom-padded">
+        <{if $promotiontype=='fullminus'}>
+        <div class="promotion-header">
+          <div class="promotion-name"><{$promotionInfo.fullminus_name}><{*$promotionInfo.fullminus_desc*}> </div>
+          <div class="promotion-exp"><{$promotionInfo.fullminus_desc}></div>
+          <div class="promotion-range">活动时间：<{$promotionInfo.start_time|cdate:'FDATE'}> 至 <{$promotionInfo.end_time|cdate:'FDATE'}></div>
+        </div>
+        <{/if}>
+
+        <{if $promotiontype=='coupon'}>
+        <div class="promotion-header">
+          <div class="promotion-name"> <{$promotionInfo.coupon_name}> <{*$promotionInfo.coupon_desc*}></div>
+          <div class="promotion-exp"><{$promotionInfo.coupon_desc}></div>
+          <div class="promotion-range">优惠卷生效时间：<{$promotionInfo.canuse_start_time|cdate:'FDATE'}> 至 <{$promotionInfo.canuse_end_time|cdate:'FDATE'}></div>
+        </div>
+        <{/if}>
+
+        <{if $promotiontype=='fulldiscount'}>
+        <div class="promotion-header">
+          <div class="promotion-name"> <{$promotionInfo.fulldiscount_name}> <{*$promotionInfo.fulldiscount_desc*}></div>
+          <div class="promotion-exp"><{$promotionInfo.fulldiscount_desc}></div>
+          <div class="promotion-range">活动时间：<{$promotionInfo.start_time|cdate:'FDATE'}> 至 <{$promotionInfo.end_time|cdate:'FDATE'}></div>
+        </div>
+        <{/if}>
+
+        <{if $promotiontype=='freepostage'}>
+        <div class="promotion-header">
+          <div class="promotion-name"><{$promotionInfo.freepostage_name}> <{*$promotionInfo.freepostage_desc*}></div>
+          <div class="promotion-exp"><{$promotionInfo.fulldiscount_desc}></div>
+          <div class="promotion-range">活动时间：<{$promotionInfo.start_time|cdate:'FDATE'}> 至 <{$promotionInfo.end_time|cdate:'FDATE'}></div>
+        </div>
+        <{/if}>
+
+        <{if $promotiontype=='xydiscount'}>
+        <div class="promotion-header">
+          <div class="promotion-name"> <{$promotionInfo.xydiscount_name}> <{*$promotionInfo.xydiscount_desc*}></div>
+          <div class="promotion-exp"><{$promotionInfo.xydiscount_desc}></div>
+          <div class="promotion-range">活动时间：<{$promotionInfo.start_time|cdate:'FDATE'}> 至 <{$promotionInfo.end_time|cdate:'FDATE'}></div>
+        </div>
+        <{/if}>
+      </div>
+      
+      <div class="section-white goods-filters">
+        <div class="goods-filters-item active" data-order="">综合</div>
+        <div class="goods-filters-item" data-order="price">价格 <i class="goods-filters-order order-desc"></i></div>
+        <div id="show_style" class="goods-show-style"><i class="bbc-icon bbc-icon-thumb"></i></div>
+      </div>
+  
+      <ul class="shopex-table-view pro-list-grid goods-list">
+        <{include file="topwap/promotion/itemlist.html"}>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<script>
+
+  var flag = localStorage.getItem('list_type');
+  if(flag && flag == 'gallery'){
+    $('#show_style .bbc-icon').addClass('bbc-icon-thumb').removeClass('bbc-icon-gallery');
+    $('.goods-list').addClass('pro-list-grid').removeClass('pro-list-normal');
+  }else if(flag && flag == 'thumb'){
+    $('#show_style .bbc-icon').addClass('bbc-icon-gallery').removeClass('bbc-icon-thumb');
+    $('.goods-list').addClass('pro-list-normal').removeClass('pro-list-grid');
+  }
+
+  var promotion_id = "<{$filter.promotion_id}>";
+
+  $('#show_style').on('tap',function(){
+    if($(this).find('.bbc-icon').hasClass('bbc-icon-gallery')){
+      $(this).find('.bbc-icon').removeClass('bbc-icon-gallery').addClass('bbc-icon-thumb');
+      $('.goods-list').addClass('pro-list-grid').removeClass('pro-list-normal');
+      shopex('#pullrefresh').pullRefresh().scrollTo(0,0);
+      localStorage.setItem('list_type','gallery');
+    }else if($(this).find('.bbc-icon').hasClass('bbc-icon-thumb')){
+      $(this).find('.bbc-icon').removeClass('bbc-icon-thumb').addClass('bbc-icon-gallery');
+      $('.goods-list').addClass('pro-list-normal').removeClass('pro-list-grid');
+      shopex('#pullrefresh').pullRefresh().scrollTo(0,0);
+      localStorage.setItem('list_type','thumb');
+    }
+
+  });
+
+  var count = 1;
+  var totalpage = "<{$pagers.total}>";
+  var listwrapper = document.body.querySelector('.goods-list');
+  var order;
+
+  $('.goods-filters-item').on('tap',function(){
+    $(this).addClass('active').siblings().removeClass('active');
+    order = $(this).data('order');
+    var filterItem = $(this).find('.goods-filters-order')
+    if(filterItem && $(this).hasClass('active') && filterItem.hasClass('order-desc')){
+      filterItem.removeClass('order-desc').addClass('order-asc');
+      order = order? order+' '+'asc':'';
+    }else if(filterItem && $(this).hasClass('active') && filterItem.hasClass('order-asc')){
+      filterItem.removeClass('order-asc').addClass('order-desc');
+      order = order? order+' '+'desc':'';
+    }
+    getList(1,order,function(rs){
+      $(listwrapper).html(rs);
+      shopex('#pullrefresh').pullRefresh().scrollTo(0,0);
+      shopex('#pullrefresh').pullRefresh().enablePullupToRefresh(); 
+    });
+  });
+
+  shopex.init({
+      swipeBack: false,
+      pullRefresh: {
+          container: '#pullrefresh',
+          down: {
+              callback: pulldownRefresh
+          },
+          up: {
+              contentrefresh: '正在加载...',
+              callback: pullupRefresh
+          }
+      }
+  });
+  /**
+   * 下拉刷新具体业务实现
+   */
+  function pulldownRefresh() {
+    count = 1;
+    setTimeout(function() {
+      getList(count,order,function(rs){
+        $(listwrapper).html(rs);
+        shopex('#pullrefresh').pullRefresh().endPulldownToRefresh()
+        shopex('#pullrefresh').pullRefresh().enablePullupToRefresh(); //refresh completed
+      })
+    }, 1500);
+  }
+  /**
+   * 上拉加载具体业务实现
+   */
+  function pullupRefresh() {
+    setTimeout(function() {
+      shopex('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalpage)); 
+      if(!(count > totalpage)) {
+        //参数为true代表没有更多数据了。
+        getList(count,order,function(rs){
+          $(listwrapper).append(rs);
+        })
+      }
+    }, 1500);
+  }
+
+function getList(num,order,callback){
+  $.ajax({
+    url: '<{url action=topwap_ctl_promotion@ajaxGetPromotionItem type=$promotiontype}>',
+    type: 'get',
+    dataType: 'html',
+    data: {
+      'promotion_id':promotion_id,
+      'coupon_id':'<{$promotionInfo.coupon_id}>',
+      'pages': num,
+      'order_by': order
+    },
+    success: callback
+  });
+};
+</script>
+

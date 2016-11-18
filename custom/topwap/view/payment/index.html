@@ -1,0 +1,87 @@
+<!-- <header class="page-header">
+  <a href="<{url action=topwap_ctl_default@index}>"><i class="header-left icon-func bbc-icon bbc-icon-back"></i></a>
+  <div class="header-title">
+    <{$title}>
+  </div>
+</header> -->
+<section class="topHeight">
+  <form class="form-container no-header-padded" action="<{url action=topwap_ctl_paycenter@dopayment}>" method="post" id="dopay_form" data-async="false" target="_blank">
+    <input type="hidden" name="payment[payment_id]" value="<{$trades.payment_id}>">
+    <input type="hidden" name="openid" value="<{$openid}>">
+    <input type="hidden" name="payment[money]" value="<{$trades.cur_money}>">
+    <input type="hidden" name="payment[tids]" value="<{$tids}>">
+    <{if $newtrade}>
+      <section class="section-white section-container pay-order-info">
+        <i class="bbc-icon bbc-icon-right bbc-icon-full-cricle"></i>
+        <div class="pay-order-info">
+          <div class="order-status">订单提交成功，请您尽快付款</div>
+          <p>请您在提交订单后尽快完成支付,</p>
+          <p>以免被取消订单</p>
+        </div>
+      </section>
+      <{/if}>
+        <section class="section-white section-container">
+          <div class="section-init">应付金额</div>
+          <div class="section-init pay-num">
+            <{$trades.cur_money|cur}>
+          </div>
+        </section>
+        <section class="section-white pay-style">
+          <div class="section-title order-goods-header">
+            <div class="title-txt">请选择支付方式</div>
+          </div>
+          <{if $payments}>
+          <div class="shopex-input-group">
+            <{foreach from=$payments item=item name="payments" }>
+              <div class="shopex-input-row shopex-radio bbc-radio payment-name">
+                <label><i class="bbc-icon <{$payment_icon[$item.app_id]}>"></i>
+                  <{$item.app_display_name}>
+                </label>
+                <input data-password="<{$hasDepositPassword.result}>" type="radio" name="payment[pay_app_id]" value="<{$item.app_id}>">
+              </div>
+            <{/foreach}>
+          <{else}>
+          <div class="content-padded font-gray-60 content-center theme-border-top">暂无可用支付方式</div>
+          <{/if}>
+        </section>
+        <section class="shopex-content-padded form-op-section">
+          <button id="payment_btn" type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">去支付</button>
+        </section>
+  </form>
+</section>
+<script>
+$('input[name="payment[pay_app_id]"]').on('tap',function(){
+	if($(this).val() == "deposit"){
+		if($(this).attr('data-password') != '1') {
+      shopex.confirm('您还未设置预存款支付密码。', '', ['更换支付方式', '去设置'], function(e) {
+        if (e.index == 1) {
+             location.href = '<{url action=topwap_ctl_member_deposit@depositPwd}>';
+        }
+      });
+    }
+	}
+});
+
+$('#payment_btn').on('tap',function(){
+  var paymentType = $('input[name="payment[pay_app_id]"]:checked').val();
+  if($('input[name="payment[pay_app_id]"]:checked').length>0){
+    if(paymentType == 'deposit') {
+      if($('input[name="payment[pay_app_id]"]').attr('data-password') != '1')
+      {
+        shopex.confirm('您还未设置预存款支付密码。', '', ['更换支付方式', '去设置'], function(e) {
+          if (e.index == 1) {
+            location.href = '<{url action=topwap_ctl_member_deposit@depositPwd}>';
+          }
+        });
+        return ;
+      }
+      location.href = '<{url action=topwap_ctl_paycenter@depositPay}>?payment_id=' + $('input[name="payment[payment_id]"]').val();
+    } else {
+      $('#dopay_form').submit();
+    }
+  }else{
+    shopex.alert('请选择支付方式！');
+  }
+});
+
+</script>

@@ -1,0 +1,19 @@
+<{foreach from=$group_item item=item}>
+<li>
+  <div class="thumbnail">
+    <div class="thumb-img">
+      <a href="<{url action=topwap_ctl_activity@itemdetail a=$item.activity_id g=$item.item_id}>"><img src="<{$item.item_default_image|default:$defaultImageId.T.default_image|storager}>" alt=""></a>
+    </div>
+    <div class="caption">
+      <h1 class="goods-title"><{$item.title}></h1>
+      <div class="price">
+        <div class="original-price fonts font-gray-40"><{$item.price|cur}></div>
+        <div class="box-display">
+          <div class="amount"><{$item.activity_price|cur}></div>
+          <div class="purchased">已有<{$item.sales_count}>人购买</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+<{/foreach}>

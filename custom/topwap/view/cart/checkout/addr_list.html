@@ -1,0 +1,80 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>收货地址<{/t}></div>
+  
+</header> -->
+<section>
+<{if $userAddrList}>
+  <ul class="section-white shopex-table-view receiver-add-list carAddress">
+    <{foreach from=$userAddrList item=addr}>
+    <li class="shopex-table-view-cell" data-id="<{$addr.addr_id}>">
+      <i class="arrowAd"></i>
+      <div class="shopex-slider-right shopex-disabled">
+        <a class="shopex-btn shopex-btn-grey" href="<{url action=topwap_ctl_member_address@setDefault}>" data-action='确认设为默认吗？'><{t}>设为默认<{/t}></a>
+        <a class="shopex-btn shopex-btn-yellow" href="<{url action=topwap_ctl_member_address@updateAddr}>" data-action="edit"><{t}>编辑<{/t}></a>
+        <a class="shopex-btn shopex-btn-red" href="<{url action=topwap_ctl_member_address@removeAddr}>" data-action='确认删除该地址吗？'><{t}>删除<{/t}></a>
+      </div>
+      <a href="<{url action=topwap_ctl_cart_checkout@index}>" class="shopex-slider-handle">
+        <div class="receiver-info <{if $addr.def_addr}>default-active<{/if}>">
+          <div class="receiver-info-item">
+            <div class="receiver-user">
+              <div class="receiver-name"><{t}><{$addr.name}><{/t}></div>
+              <div class="receiver-phone"><{$addr.mobile}></div>
+            </div>
+            <div class="add-detail"><{t}><{$addr.area}> <{$addr.addr}><{/t}></div>
+          </div>
+          <div class="default-sign"><{t}>默认<{/t}></div>
+        </div>
+      </a>
+    </li>
+    <{/foreach}>
+  </ul>
+  <{else}>
+  <{include file='topwap/empty/address.html'}>
+  <{/if}>
+</section>
+<section class="bottomBtn"><a class="header-right txt-func" href="<{url action=topwap_ctl_member_address@newAddress}>"><{t}>添加<{/t}></a></section>
+<script>
+  var REFERRER = "<{url action=topwap_ctl_cart_checkout@addrList}>";
+
+  $('.receiver-add-list a').on('tap',function(e){
+    e.detail.gesture.preventDefault();
+    var url = $(this).attr('href');
+    var _tid = $(this).parents('li').data('id');
+    var act = $(this).data('action');
+    var ajax = $(this).data('ajax');
+    var mode = '<{$mode}>';
+    if(act){
+      if(act === 'edit') {
+        location.href = url + '?addr_id=' + _tid+'&mode=' + mode;
+      }
+      else {
+        shopex.confirm(act,function(e){
+          if(e.index === 1) {
+            formAction(url, {'mode': mode,'addr_id': _tid, 'next_page': REFERRER});
+          }
+        });
+      }
+    }
+    else {
+      location.href = url + '?mode=' + mode + '&addr_id=' + _tid;
+    }
+  });
+
+  function formAction(url, data){
+    $.ajax({
+      url: url,
+      type: 'post',
+      dataType: 'json',
+      data: data,
+      success: function(rs){
+        if(rs.success){
+          location.href = rs.redirect;
+        }
+        if(rs.error){
+          shopex.alert(rs.message);
+        }
+      }
+    })
+  }
+</script>

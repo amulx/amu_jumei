@@ -1,0 +1,23 @@
+<app>
+    <name>联通oms</name>
+    <type>service</type>
+    <description>联通oms</description>
+
+    <author>
+        <name>开发团队</name>
+        <email>min.zhou@yorisun.com</email>
+        <url>http://www.yorisun.com</url>
+    </author>
+
+    <version>0.1</version>
+    <license>yorisun license</license>
+
+    <depends>
+        <app>syscategory</app>
+        <app>syslogistics</app>
+        <app>sysshop</app>
+        <app>sysitem</app>
+        <app>sysuser</app>
+        <app>systrade</app>
+    </depends>
+</app>

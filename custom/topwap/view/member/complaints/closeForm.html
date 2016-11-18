@@ -1,0 +1,45 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>撤销投诉<{/t}></div>
+</header> -->
+<section>
+  <form action="<{url action=topwap_ctl_member_complaints@closeComplaints}>" type="POST" class="form-container">
+    <input type="hidden" name="complaints_id" value="<{$complaints_id}>">
+    <section class="section-white">
+      <div class="section-title">
+        <div class="title-txt font-gray-20"><{t}>撤销原因<{/t}></div>
+      </div>
+      <div class="content-horizontal-padded content-bottom-padded"><textarea name="buyer_close_reasons" class="bbc-texteara" id="" rows="6" placeholder="<{t}>请输入撤销原因<{/t}>"></textarea></div>
+    </section>
+    <section class="shopex-content-padded form-op-section">
+      <button type="button" class="shopex-btn btn-close shopex-btn-block shopex-btn-warning bbc-btn-warning" onclick="return false;"><{t}>撤销投诉<{/t}></button>
+    </section>
+  </form>
+</section>
+<script>
+  $('.btn-close').on('click', function() {
+    var complaints_id = $('input[name="complaints_id"]').val();
+    var buyer_close_reasons = $('textarea[name="buyer_close_reasons"]').val();
+    $.post('<{url action=topwap_ctl_member_complaints@closeComplaints}>',
+      {'complaints_id': complaints_id,'buyer_close_reasons': buyer_close_reasons},
+      function(rs) {
+      if(rs.success) {
+        shopex.toast(rs.message, function() {
+          if( rs.redirect ){
+            location.href = rs.redirect;
+          }else{
+            history.back();
+          }
+        });
+      }
+
+      if(rs.error) {
+        shopex.alert(rs.message,'',function(){
+          if(rs.redirect){
+            location.href=rs.redirect;
+          }
+        });
+      }
+    });
+  });
+</script>

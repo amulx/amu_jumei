@@ -1,0 +1,122 @@
+<!-- <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title">
+        <{$title}>
+    </div>
+    <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+<section>
+    <section class="user-header integral-header">
+        <div class="box-display content-vertical-padded">
+            <i class="bbc-icon bbc-icon-integral"></i>
+            <div class="box-item-flex1">
+                <div>
+                    <{t}>可用积分<{/t}>：<span><{if $userpoint.point_count}> <{$userpoint.point_count}><{else}>0 <{/if}></span>
+                </div>
+                <div class="overdue-integral">
+                    <{$userpoint.expired_time|cdate}><{t}>将过期<{/t}>
+                        <mark class="font-yellow">
+                            <{if $userpoint.expired_point}>
+                                <{$userpoint.expired_point}>
+                                    <{else}>0
+                                        <{/if}>
+                        </mark>
+                        <{t}>积分<{/t}>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-white" style="margin:0;">
+        <div class="section-title user-title">
+            <div class="title-txt"><{t}>积分明细<{/t}></div>
+        </div>
+        <div id="pullrefresh" class="section-white shopex-scroll-wrapper" style="top: 12.8rem">
+           <{if $pointdata}>
+                <div class="shopex-scroll">
+                    <ul class="shopex-table-view integral-details fontS">
+                        <{include file="topwap/member/point/list.html" }>        
+                    </ul>
+                </div>
+            <{else}>
+            <{include file="topwap/empty/point_list.html" }>
+            <{/if}>
+        </div>
+    </section>
+</section>
+<!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+    <div class="shopex-popover-arrow"></div>
+    <div>
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+        </li>
+      </ul>
+    </div>
+</div>
+<script>
+var count = 1;
+var totalpage = "<{$pagers.total}>";
+shopex.init({
+    swipeBack: false,
+    pullRefresh: {
+        container: '#pullrefresh',
+        down: {
+            callback: pulldownRefresh
+        },
+        up: {
+            contentrefresh: '正在加载...',
+            callback: pullupRefresh
+        }
+    }
+});
+/**
+ * 下拉刷新具体业务实现
+ */
+function pulldownRefresh() {
+    count = 1;
+    setTimeout(function() {
+        $.ajax({
+            url: '<{url action=topwap_ctl_member_point@ajaxPonint}>',
+            type: 'get',
+            dataType: 'json',
+            data: {
+                'pages': count
+            },
+            success: function(rs) {
+                $('.integral-details').html(rs.html);
+                shopex('#pullrefresh').pullRefresh().endPulldownToRefresh();
+                shopex('#pullrefresh').pullRefresh().enablePullupToRefresh(); //refresh completed
+            }
+        });
+    }, 1500);
+}
+/**
+ * 上拉加载具体业务实现
+ */
+function pullupRefresh() {
+    setTimeout(function() {
+        shopex('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalpage)); //参数为true代表没有更多数据了。
+        $.ajax({
+            url: '<{url action=topwap_ctl_member_point@ajaxPonint}>',
+            type: 'get',
+            dataType: 'json',
+            data: {
+                'pages': count
+            },
+            success: function(rs) {
+                $('.integral-details').append(rs.html);
+            }
+        });
+    }, 1500);
+}
+</script>

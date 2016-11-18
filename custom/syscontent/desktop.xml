@@ -1,0 +1,32 @@
+<desktop>
+
+     <permissions>
+        <permission id="page" display='true' workground='site.wrokground.theme'>文章管理</permission>
+        <permission id="page_edit" display='true' workground='site.wrokground.theme'>文章、节点编辑</permission>
+        <permission id="page_del" display='true' workground='site.wrokground.theme'>删除文章、文章节点</permission>
+        <permission id="partnershipe" display='true' workground='site.wrokground.theme'>留言管理</permission>
+    </permissions>
+
+    <workground name="站点" id="site.wrokground.theme" controller="admin_module" action="index">
+        <menugroup name="页面管理"> 
+            <menu controller='admin_node' action='index' permission='page' display='true' order="60">文章栏目</menu>
+            <menu controller='admin_article' action='index' permission='page' display='true' order="70">文章列表</menu>
+
+            <menu controller='admin_article' action='add' permission='page_edit' display='false' order="70">添加文章</menu>
+            <menu controller='admin_article' action='update' permission='page_edit' display='false' order="70">更新文章</menu>
+            <menu controller='admin_article' action='save' permission='page_edit' display='false' order="70">保存文章</menu>
+            <menu controller='admin_article' action='index' params="action:dodelete" permission='page_del' display='false' order="70">删除文章</menu>
+
+            <menu controller='admin_node' action='edit' permission='page_edit' display='false' order="60">编辑文章节点</menu>
+            <menu controller='admin_node' action='add' permission='page_edit' display='false' order="60">添加文章节点</menu>
+            <menu controller='admin_node' action='save' permission='page_edit' display='false' order="60">保存文章节点</menu>
+            <menu controller='admin_node' action='update' permission='page_edit' display='false' order="60">更新文章节点排序</menu>
+            <menu controller='admin_node' action='remove' permission='page_del' display='false' order="60">删除文章节点</menu>
+        </menugroup>
+
+        <menugroup name="留言管理">
+            <menu controller='admin_partnershipe' action='index' permission='partnershipe' display='true' order="60">留言列表</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

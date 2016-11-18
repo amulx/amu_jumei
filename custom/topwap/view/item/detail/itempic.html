@@ -1,0 +1,94 @@
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+</header> -->
+<section class="topHeight goods-detail">
+    <div id="slider" class="shopex-slider goods-detail-info">
+      <div id="sliderSegmentedControl" class="shopex-slider-indicator shopex-segmented-control shopex-segmented-control-inverted">
+      <a class="shopex-control-item active" href="#item1mobile"><{t}>图文详情<{/t}></a>
+        <!-- <a class="shopex-control-item shopex-col-xs-4" href="#item2mobile"></a> -->
+        <a class="shopex-control-item" href="#item3mobile"><{t}>备注信息<{/t}></a>
+      </div>
+      <!-- <div id="sliderProgressBar" class="shopex-slider-progress-bar shopex-col-xs-6"></div> -->
+      <div class="shopex-slider-group">
+        <div id="item1mobile" class="shopex-slider-item shopex-control-content shopex-active">
+          <div id="scroll1" class="shopex-scroll-wrapper">
+            <div class="shopex-scroll">
+              <div class="shopex-content-padded goods-graphic">
+              <{$itemPic.wap_desc|stripslashes}>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div id="item2mobile" class="shopex-slider-item shopex-control-content">
+          <div id="scroll2" class="shopex-scroll-wrapper">
+            <div class="shopex-scroll">
+              <div class="shopex-loading">
+                <div class="shopex-spinner">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div id="item3mobile" class="shopex-slider-item shopex-control-content">
+          <div id="scroll3" class="shopex-scroll-wrapper">
+            <div class="shopex-scroll">
+              <div class="shopex-loading">
+                <div class="shopex-spinner">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+  $(window).scroll(function(){
+		var winwidth = $(window).width();
+		var img = $('.goods-graphic img');
+		img.each(function(){$(this).width()});
+		if($(img).width() > winwidth){
+			$(img).width(winwidth);
+		}
+	});
+$(function(){
+  var windowHeight = $(window).height();
+  var headerHeight = $('header').height();
+  var navHeight = $('#sliderSegmentedControl').height() + $('#sliderProgressBar').height();
+  var contentHeight = windowHeight-(headerHeight+navHeight);
+  $('.shopex-control-content').height(contentHeight);
+});
+(function($) {
+  $('.shopex-scroll-wrapper').scroll({
+    indicators: true //是否显示滚动条
+  });
+  // var html2='<{$itemParamshtml}>';
+  var html3='<{$itemremarkhtml}>';
+  // var item2 = document.getElementById('item2mobile');
+  var item3 = document.getElementById('item3mobile');
+  document.getElementById('slider').addEventListener('slide', function(e) {
+    // if (e.detail.slideNumber === 1) {
+    //   if (item2.querySelector('.shopex-loading')) {
+    //     setTimeout(function() {
+    //       item2.querySelector('.shopex-scroll').innerHTML = html2;
+    //     }, 500);
+    //   }
+    // } else if (e.detail.slideNumber === 2) {
+    if (e.detail.slideNumber === 1) {
+      if (item3.querySelector('.shopex-loading')) {
+        setTimeout(function() {
+          item3.querySelector('.shopex-scroll').innerHTML = html3;
+        }, 500);
+      }
+    } 
+  });
+})(shopex);
+// $('.shopex-segmented-control .shopex-control-item').click(function(){
+//   alert(1)
+//   $(this).addClass('active').siblings().removeClass('active');
+// });
+$('.shopex-segmented-control ').on('tap','.shopex-control-item',function() {
+  $(this).addClass('active').siblings().removeClass('active');
+});
+</script>

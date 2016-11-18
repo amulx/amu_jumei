@@ -1,0 +1,35 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">忘记密码</div>
+</header> -->
+<section id="view_make">
+  <form class="form-container" action="<{url action=topwap_ctl_passport@verifyUsername}>" method="post" id="form_forget">
+    <input type="hidden" name="verifycodekey" value="topwap_forgot">
+    <section class="shopex-input-group">
+      <div class="shopex-input-row phoneYanZheng">
+        <label>帐号：</label>
+        <input type="text" name="username" class="shopex-input-clear" placeholder="请输入您的手机号/用户名">
+      </div>
+      <div class="shopex-input-row">
+        <div class="form-inline">
+          <div class="shopex-input-row form-inline-adaptive phoneYanZheng">
+            <label>验证码：</label>
+            <input type="text" name="verifycode" class="shopex-input-clear" placeholder="请输入验证码">
+          </div>
+          <div class="form-inline-unadaptive">
+            <img align="absmiddle" class="auto-change-verify-handle verify-img" id="membervocde" src="<{url action=toputil_ctl_vcode@gen_vcode key=topwap_forgot}>" alt="验证码" width="100" height="30">
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="shopex-content-padded form-op-section">
+      <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" >下一步</button>
+    </section>
+  </form>
+</section>
+
+<script>
+  $('#form_forget').find('button[type=submit]').data('ajaxConfig', {
+    "update": "#view_make",
+  });
+</script>

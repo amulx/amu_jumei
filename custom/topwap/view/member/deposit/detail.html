@@ -1,0 +1,95 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{$title}></div>
+  <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+<section class="container">
+  <section id="pullrefresh" class="section-white shopex-scroll-wrapper">
+  <{if $deposit.list}>
+    <div class="shopex-scroll">
+      <ul class="shopex-table-view deposit-details fontS">
+      <{include file="topwap/member/deposit/list.html"}>
+      </ul>
+    </div>
+    <{else}>
+    <{include file="topwap/empty/deposit_list.html"}>
+    <{/if}>
+  </section>
+</section>
+<!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+<div class="shopex-popover-arrow"></div>
+<div>
+  <ul class="shopex-table-view">
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+    </li>
+  </ul>
+</div>
+</div>
+<script>
+var count = 1;
+var totalpage = "<{$pagers.total}>";
+shopex.init({
+    swipeBack: false,
+    pullRefresh: {
+        container: '#pullrefresh',
+        down: {
+            callback: pulldownRefresh
+        },
+        up: {
+            contentrefresh: '正在加载...',
+            callback: pullupRefresh
+        }
+    }
+});
+/**
+ * 下拉刷新具体业务实现
+ */
+function pulldownRefresh() {
+    count = 1;
+    setTimeout(function() {
+        $.ajax({
+            url: '<{url action=topwap_ctl_member_deposit@ajaxDepositLog}>',
+            type: 'get',
+            dataType: 'json',
+            data: {
+              'pages': count
+            },
+            success: function(rs) {
+                $('.deposit-details').html(rs.html);
+                shopex('#pullrefresh').pullRefresh().endPulldownToRefresh();
+                shopex('#pullrefresh').pullRefresh().enablePullupToRefresh(); //refresh completed
+            }
+        });
+    }, 1500);
+}
+/**
+ * 上拉加载具体业务实现
+ */
+function pullupRefresh() {
+    setTimeout(function() {
+        shopex('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalpage)); //参数为true代表没有更多数据了。
+        $.ajax({
+            url: '<{url action=topwap_ctl_member_deposit@ajaxDepositLog}>',
+            type: 'get',
+            dataType: 'json',
+            data: {
+              'pages': count
+            },
+            success: function(rs) {
+                $('.deposit-details').append(rs.html);
+            }
+        });
+    }, 1500);
+}
+</script>

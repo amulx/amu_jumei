@@ -1,0 +1,42 @@
+<meta charset="utf-8" />
+<!--↑↑模板中请务必使用HTML5的标准head结构↑↑-->
+<meta name="generator" content="b2b2c" />
+<meta name="author" content="shopex UED Team" />
+<{if $seo.title}><title><{$seo.title}></title><{/if}>
+<{if $seo.keywords}><meta name="keywords" content="<{$seo.keywords}>" /><{/if}>
+<{if $seo.description}><meta name="description" content="<{$seo.description}>" /><{/if}>
+<{if $seo.nofollow}><meta name="nofollow" content="nofollow" /><{/if}>
+<{if $seo.noindex}><meta name="noindex" content="noindex" /><{/if}>
+<{if $seo.noarchive}><meta name="noarchive" content="noarchive" /><{/if}>
+
+<!-- <{script src="area_select.js" app="topc"}> -->
+<{if config::get('app.debug', false)}>
+
+<{script src="lib/lab.js" app="site"}>
+<{script src="lib/jquery.js" app="site"}>
+<{script src="lib/jquery.cookie.js" app="site"}>
+<{script src="tools.js" app="site"}>
+<{script src="switchable.js" app="site"}>
+<{script src="dialog.js" app="site"}>
+<{script src="uploader.js" app="site"}>
+<{script src="jquery.lazyload.js" app="site"}>
+
+<{script src="tips.js" app="topc"}>
+<{script src="formplus.js" app="topc"}>
+<{script src="validate.js" app="topc"}>
+<{script src="area_select.js" app="topc"}>
+<{script src="localstorage.js" app="topc"}>
+<{script src="main.js" app="topc"}>
+<{script src="zoom_silder.js" app="topc"}>
+<{script src="datepicker.js" app="topc"}>
+
+<{else}>
+
+<{script src="lib/lab.min.js" app="site"}>
+<{script src="lib/jquery.min.js" app="site"}>
+<{script src="ui.min.js" app="site"}>
+<{script src="jquery.lazyload.min.js" app="site"}>
+<{css src="basic.min.css" app="topc"}>
+<{script src="shop.min.js" app="topc"}>
+
+<{/if}>

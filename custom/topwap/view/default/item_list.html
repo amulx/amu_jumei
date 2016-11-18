@@ -1,0 +1,16 @@
+<{foreach from=$items item=item}> 
+      <li data-link="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+        <div class="thumbnail">
+          <div class="thumb-img">
+            <a href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>"><img src="<{$item.image_default_id}>" alt="<{$item.title}>"></a>
+          </div>
+          <div class="caption">
+            <h1 class="goods-title"><{$item.title}></h1>
+            <div class="price">
+              <div class="amount"><{$item.price|cur}></div>
+              <div class="purchased">已销售<{$item.sold_quantity}></div>
+            </div>
+          </div>
+        </div>
+      </li>
+<{/foreach}>

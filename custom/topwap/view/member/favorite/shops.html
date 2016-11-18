@@ -1,0 +1,19 @@
+
+<{foreach from=$shops.favshop item=fav}>
+<li class="shopex-table-view-cell thumbnail">
+	<div class="shopex-slider-right shopex-disabled">
+		<a data-id="<{$fav.shop_id}>" href="<{url action=topwap_ctl_member_favorite@ajaxDelShopCollect}>" class="action-del shopex-btn shopex-btn-red"><i
+			class="bbc-icon bbc-icon-remove"></i></a>
+	</div>
+	<div class="shopex-slider-handle">
+		<a class="shopex-navigate-right shopex-linkto" href="<{url action=topwap_ctl_shop@index shop_id=$fav.shop_id}>">
+			<div class="shop-list-item shopex-content-padded">
+				<div class="shop-brand thumb-img">
+					<img src="<{$fav.shop_logo|default:$defaultImageId.S.default_image|storager}>">
+				</div>
+				<div class="shop-name"><{$fav.shop_name}></div>
+			</div>
+		</a>
+	</div>
+</li>
+<{/foreach}>

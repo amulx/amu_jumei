@@ -1,0 +1,108 @@
+<section class="section-white order-goods">
+<!-- 		<div class="section-title order-goods-header">
+			<div class="title-txt">
+				<a href="<{url action=topwap_ctl_shop@index shop_id=$trade.shop_id}>"><{$trade.shop_id|shopname}> <i
+					class="shopex-icon shopex-icon-arrowright"></i></a>
+			</div>
+		</div> -->
+		<ul class="order-goods-list">
+		<{foreach from=$trade.orders item=item key=key}>
+			<li>
+				<div class="thumbnail">
+					<div class="thumb-img">
+						<a href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+              <img src="<{$item.pic_path|default:$defaultImageId.T.default_image|storager}>" alt="">
+						</a>
+					</div>
+					<div class="box-item-flex1">
+						<div class="caption">
+							<div class="order-goods-info">
+								<a class="order-goods-title" href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+
+									<{$item.title}>
+
+								</a>
+								<div class="order-goods-sku"><{$item.spec_nature_info}></div>
+								<div class="order-goods-price">
+									<mark><{$item.price|cur}></mark>
+								</div>
+							</div>
+							<div class="order-goods-num content-right">x <{$item.num}></div>
+						</div>
+						<div class="content-right">
+
+						<{if $trade.status == "WAIT_SELLER_SEND_GOODS" && $trade.pay_type == "online"}>
+
+				          <{if $item.aftersales_status == "WAIT_SELLER_AGREE"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">售后处理中</a>
+				          <{elseif $item.aftersales_status == "SUCCESS"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">退款完成</a>
+				          <{elseif $item.aftersales_status == "SELLER_REFUSE_BUYER"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">卖家拒绝退款</a>
+				          <{elseif $item.aftersales_status == "CLOSED"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">退款关闭</a>
+				          <{elseif $item.aftersales_status == "REFUNDING"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">退款中</a>
+				          <{/if}>
+				          <{elseif $trade.status == "TRADE_FINISHED" || $trade.status == "WAIT_BUYER_CONFIRM_GOODS" }>
+
+				          <{if $item.aftersales_status == "WAIT_SELLER_AGREE"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">售后处理中</a>
+				          <{elseif $item.aftersales_status == "WAIT_BUYER_RETURN_GOODS"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">已同意,请退货</a>
+				          <{elseif $item.aftersales_status == "WAIT_SELLER_CONFIRM_GOODS"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">待卖家确认收货</a>
+				          <{elseif $item.aftersales_status == "SUCCESS"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">退款完成</a>
+				          <{elseif $item.aftersales_status == "SELLER_REFUSE_BUYER"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">售后驳回</a>
+				          <{elseif $item.aftersales_status == "SELLER_SEND_GOODS"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">换货完成</a>
+				          <{elseif $item.aftersales_status == "CLOSED"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">退款关闭</a>
+				          <{elseif $item.aftersales_status == "REFUNDING"}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@goAftersalesDetail id=$item.oid}>">退款中</a>
+				          <{else}>
+				          <{if $trade.status == 'TRADE_FINISHED' }>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_aftersales@aftersalesApply tid=$trade.tid oid=$item.oid status=$trade.status}>">申请退换货</a>
+				          <{/if}>
+				          <{/if}>
+				          <{/if}>
+
+				          <{if $item.complaints_status == 'NOT_COMPLAINTS'}>
+				          <{if $item.aftersales_status == 'SELLER_REFUSE_BUYER' }>
+                  <a  class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_complaints@complaintsShopFormView oid=$item.oid tid=$trade.tid}>">投诉商家</a>
+				          <{/if}>
+				          <{elseif $item.complaints_status == 'WAIT_SYS_AGREE'}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_complaints@complaintsView oid=$item.oid}>">投诉处理中</a>
+				          <{elseif $item.complaints_status == 'FINISHED'}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_complaints@complaintsView oid=$item.oid}>">投诉已成功</a>
+				          <{elseif $item.complaints_status == 'BUYER_CLOSED'}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_complaints@complaintsView oid=$item.oid}>">投诉已撤销</a>
+				          <{elseif $item.complaints_status == 'CLOSED'}>
+				          <a class="shopex-btn shopex-btn-warning shopex-btn-outlined bbc-btn-outlined bbc-btn-sm" href="<{url action=topwap_ctl_member_complaints@complaintsView oid=$item.oid}>">投诉已关闭</a>
+				          <{/if}>
+						</div>
+					</div>
+				</div>
+			</li>
+			<{/foreach}>
+		</ul>
+		<div class="order-goods-footer content-padded">
+			<div class="shopex-table">
+				<div class="shopex-table-cell shopex-col-xs-6"></div>
+				<div class="shopex-table-cell shopex-col-xs-6">
+					<dl class="checkout-fee">
+						<dt>合计：</dt>
+						<dd class="total"><{$trade.payment|cur}></dd>
+						<dt>减免：</dt>
+						<dd>－<{$trade.discount_fee|cur}></dd>
+						<dt>积分抵扣：</dt>
+						<dd>－<{$trade.points_fee|cur}></dd>
+						<dt>运费：</dt>
+						<dd><{$trade.post_fee|cur}></dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+	</section>

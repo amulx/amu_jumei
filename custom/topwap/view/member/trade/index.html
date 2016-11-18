@@ -1,0 +1,360 @@
+<style>
+html,
+body {
+  background-color: #efeff4;
+}
+
+.shopex-bar~.shopex-content .shopex-fullscreen {
+  top: 44px;
+  height: auto;
+}
+
+.shopex-pull-top-tips {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  margin-left: -25px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  z-index: 1;
+}
+
+.shopex-bar~.shopex-pull-top-tips {
+  top: 24px;
+}
+
+.shopex-pull-top-wrapper {
+  width: 42px;
+  height: 42px;
+  display: block;
+  text-align: center;
+  background-color: #efeff4;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  background-clip: padding-box;
+  box-shadow: 0 4px 10px #bbb;
+  overflow: hidden;
+}
+
+.shopex-pull-top-tips.shopex-transitioning {
+  -webkit-transition-duration: 200ms;
+  transition-duration: 200ms;
+}
+
+.shopex-pull-top-tips .shopex-pull-loading {
+  /*-webkit-backface-visibility: hidden;
+      -webkit-transition-duration: 400ms;
+      transition-duration: 400ms;*/
+  margin: 0;
+}
+
+.shopex-pull-top-wrapper .shopex-icon,
+.shopex-pull-top-wrapper .shopex-spinner {
+  margin-top: 7px;
+}
+
+.shopex-pull-top-wrapper .shopex-icon.shopex-reverse {
+  /*-webkit-transform: rotate(180deg) translateZ(0);*/
+}
+
+.shopex-pull-bottom-tips {
+  text-align: center;
+  background-color: #efeff4;
+  font-size: 15px;
+  line-height: 40px;
+  color: #777;
+}
+
+.shopex-pull-top-canvas {
+  overflow: hidden;
+  background-color: #fafafa;
+  border-radius: 40px;
+  box-shadow: 0 4px 10px #bbb;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+}
+
+.shopex-pull-top-canvas canvas {
+  width: 40px;
+}
+
+.shopex-slider-indicator.shopex-segmented-control {
+  background-color: #efeff4;
+}
+
+.shopex-scroll > .shopex-table-view > .shopex-table-view-cell {
+  padding: 0;
+  background: #fff;
+  margin-bottom: 10px;
+}
+</style>
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>我的订单<{/t}></div>
+  <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+<section>
+  <div id="slider" class="shopex-slider shopex-fullscreen">
+    <div id="sliderSegmentedControl" class="shopex-scroll-wrapper shopex-slider-indicator shopex-segmented-control shopex-segmented-control-inverted">
+      <div class="shopex-scroll">
+        <a class="shopex-control-item <{if $status==0}>shopex-active<{/if}>" data-status="0" href="#item1mobile"><{t}>全部<{/t}></a>
+        <a class="shopex-control-item <{if $status==1}>shopex-active<{/if}>" data-status="1" href="#item2mobile"><{t}>待付款<{/t}></a>
+        <a class="shopex-control-item <{if $status==2}>shopex-active<{/if}>" data-status="2" href="#item3mobile"><{t}>待发货<{/t}></a>
+        <a class="shopex-control-item <{if $status==3}>shopex-active<{/if}>" data-status="3" href="#item4mobile"><{t}>待收货<{/t}></a>
+        <a class="shopex-control-item <{if $status==4}>shopex-active<{/if}>" data-status="4" href="#item5mobile"><{t}>待评价<{/t}></a>
+      </div>
+    </div>
+    <div class="shopex-slider-group">
+      <div id="item1mobile" class="shopex-slider-item shopex-control-content shopex-active">
+        <div id="scroll1" class="shopex-scroll-wrapper">
+          <div class="shopex-scroll" data-count="1">
+            <ul class="shopex-table-view">
+              <div class="shopex-loading">
+                <div class="shopex-spinner"></div>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="item2mobile" class="shopex-slider-item shopex-control-content">
+        <div class="shopex-scroll-wrapper">
+          <div class="shopex-scroll" data-count="1">
+            <ul class="shopex-table-view">
+              <div class="shopex-loading">
+                <div class="shopex-spinner"></div>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="item3mobile" class="shopex-slider-item shopex-control-content">
+        <div class="shopex-scroll-wrapper">
+          <div class="shopex-scroll" data-count="1">
+            <ul class="shopex-table-view">
+              <div class="shopex-loading">
+                <div class="shopex-spinner"></div>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="item4mobile" class="shopex-slider-item shopex-control-content">
+        <div class="shopex-scroll-wrapper">
+          <div class="shopex-scroll" data-count="1">
+            <ul class="shopex-table-view">
+              <div class="shopex-loading">
+                <div class="shopex-spinner"></div>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="item5mobile" class="shopex-slider-item shopex-control-content">
+        <div id="scroll5" class="shopex-scroll-wrapper">
+          <div class="shopex-scroll" data-count="1">
+            <ul class="shopex-table-view">
+              <div class="shopex-loading">
+                <div class="shopex-spinner"></div>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+  <div class="shopex-popover-arrow"></div>
+  <div>
+    <ul class="shopex-table-view">
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<{script src="shopex.pullToRefresh.js" app=topwap}>
+  <{script src="shopex.pullToRefresh.material.js" app=topwap}>
+    <script>
+    shopex.init();
+    (function() {
+      var totalpage;
+      //阻尼系数
+      var deceleration = shopex.os.ios ? 0.003 : 0.0009;
+      shopex('.shopex-scroll-wrapper').scroll({
+        bounce: false,
+        indicators: true, //是否显示滚动条
+        deceleration: deceleration
+      });
+      shopex.ready(function() {
+        shopex('.shopex-scroll-wrapper').scroll({
+          indicators: true //是否显示滚动条
+        });
+        var active = document.getElementById('sliderSegmentedControl').querySelector('.shopex-active');
+        var activeId = document.getElementById('item' + active.dataset.status + 'mobile');
+        var item1 = document.getElementById('item1mobile');
+        var item2 = document.getElementById('item2mobile');
+        var item3 = document.getElementById('item3mobile');
+        var item4 = document.getElementById('item4mobile');
+        var item5 = document.getElementById('item5mobile');
+        if (active.dataset.status != 0) {
+          shopex('#slider').slider().gotoItem(active.dataset.status, 1);
+        } else {
+          setTimeout(function() {
+            var el = item1.querySelector('.shopex-table-view');
+            getList(0, 1, el, item1, false);
+          }, 500);
+        }
+
+        document.getElementById('slider').addEventListener('slide', function(e) {
+          if (e.detail.slideNumber === 0) {
+            if (item1.querySelector('.shopex-loading')) {
+              setTimeout(function() {
+                count = 1;
+                var el = item1.querySelector('.shopex-table-view');
+                getList(e.detail.slideNumber, 1, el, item1, false);
+              }, 500);
+            }
+          }
+          if (e.detail.slideNumber === 1) {
+            if (item2.querySelector('.shopex-loading')) {
+              setTimeout(function() {
+                count = 1;
+                var el = item2.querySelector('.shopex-table-view');
+                getList(e.detail.slideNumber, 1, el, item2, false);
+              }, 500);
+            }
+          } else if (e.detail.slideNumber === 2) {
+            if (item3.querySelector('.shopex-loading')) {
+              setTimeout(function() {
+                count = 1;
+                var el = item3.querySelector('.shopex-table-view');
+                getList(e.detail.slideNumber, 1, el, item3, false);
+              }, 500);
+            }
+          } else if (e.detail.slideNumber === 3) {
+            if (item4.querySelector('.shopex-loading')) {
+              setTimeout(function() {
+                count = 1;
+                var el = item4.querySelector('.shopex-table-view');
+                getList(e.detail.slideNumber, 1, el, item4, false);
+              }, 500);
+            }
+          } else if (e.detail.slideNumber === 4) {
+            if (item5.querySelector('.shopex-loading')) {
+              setTimeout(function() {
+                count = 1;
+                var el = item5.querySelector('.shopex-table-view');
+                getList(e.detail.slideNumber, 1, el, item5, false);
+              }, 500);
+            }
+          }
+        });
+
+        var count = 1;
+        //循环初始化所有下拉刷新，上拉加载。
+        shopex.each(document.querySelectorAll('.shopex-slider-group .shopex-scroll'), function(index, pullRefreshEl) {
+          shopex(pullRefreshEl).pullToRefresh({
+            down: {
+              callback: function() {
+                count = 1;
+                var self = this;
+                setTimeout(function() {
+                  var ul = self.element.querySelector('.shopex-table-view');
+                  getList(index, count, ul, null, false);
+                  self.endPullDownToRefresh();
+                  self.refresh(self.element);
+                }, 1000);
+              }
+            },
+            up: {
+              callback: function() {
+                var self = this;
+                setTimeout(function() {
+                  count = self.element.dataset.count;
+                  shopex(self.element).pullToRefresh().endPullUpToRefresh(++count > totalpage);
+                  var ul = self.element.querySelector('.shopex-table-view');
+                  if(!(count > totalpage)){
+                    getList(index, count, ul, null, true);
+                  }
+                }, 1000);
+              }
+            }
+          });
+        });
+
+        var getList = function(status, num, el, emptyel, isPullup) {
+          $.ajax({
+            url: '<{url action=topwap_ctl_member_trade@ajaxTradeList}>',
+            type: 'get',
+            dataType: 'json',
+            data: {
+              's': status,
+              'pages': num
+            },
+            success: function(rs) {
+              totalpage = rs.pages.total;
+              $(el).parent().attr('data-count', count);
+              if (isPullup == false) {
+                if(rs.html.indexOf('nodata-wrapper') > 0){
+                  $(emptyel).html(rs.html);
+                } else {
+                  $(el).html(rs.html);
+                }
+              } else {
+                $(el).append(rs.html);
+              }
+            }
+          });
+        };
+      });
+
+      $('body').on('tap', '.trade-pay', function(e) {
+        var tid = $(this).data('tid');
+        var url = $(this).data('href')
+        $.post(url, {
+          tid: tid,
+          merge: false
+        }, function(rs) {
+          if (rs.error) {
+            shopex.alert(rs.error);
+          }
+          if (rs.redirect) {
+            location.href = rs.redirect;
+          }
+        })
+      })
+      .on('tap', '.trade-confirm', function(e) {
+        var tid = $(this).data('tid');
+        var url = $(this).attr('href');
+        shopex.confirm('<{t}>是否确认已收到货？<{/t}>', function(e) {
+          if (e.index != 1) {
+            return
+          } else {
+            $.post(url, {
+                tid: tid
+            }, function(rs) {
+                if (rs.error) {
+                  shopex.alert(rs.mesage);
+                }
+                if (rs.redirect) {
+                  location.href = rs.redirect;
+                }
+            });
+          }
+        });
+      });
+    })();
+    </script>

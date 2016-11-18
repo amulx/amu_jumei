@@ -1,0 +1,39 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">使用优惠券</div>
+</header> -->
+<section class="section-white topten shopex-fullscreen">
+  <div class="shopex-input-group">
+  <div class="shopex-input-row shopex-radio bbc-radio">
+      <label>
+        <p>不使用优惠券</p>
+        <p></p>
+        <p class="coupon-range fontS font-gray-20"></p>
+      </label>
+      <input name="coupon[<{$shop_id}>][coupon_code]" value="-1" type="radio">
+    </div>
+
+    <{if $couponlist}>
+    <{foreach from=$cartData.couponlist item=coupon}>
+    <div class="shopex-input-row shopex-radio bbc-radio">
+      <label>
+        <p><span class="tag">优惠券</span><{$coupon.coupon_name}></p>
+        <p><{$coupon.shop_id|shopname}></p>
+        <p class="coupon-range fontS font-gray-20">优惠券：<{$coupon.start_time|cdate:''}> - <{$coupon.end_time|cdate:''}></p>
+      </label>
+      <input name="coupon[<{$coupon.shop_id}>][coupon_code]" type="radio" value="<{$coupon.coupon_code}>">
+      <input name="coupon[<{$shop_id}>][coupon_name]" value="<{$coupon.coupon_name}>" type="hidden">
+    </div>
+    <{/foreach}>
+    <{else}>
+    <input name="coupon[<{$shop_id}>][coupon_name]" value="不使用优惠券" type="hidden">
+    <{/if}>
+
+  </div>
+</section>
+
+<script>
+shopex.init({
+  swipeBack: false,
+});
+</script>

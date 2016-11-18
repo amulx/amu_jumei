@@ -1,0 +1,185 @@
+<form id="activity_form" name="activity_form" action="?app=syspromotion&ctl=admin_registereddiscount&act=save"  method="POST" >
+<input type="hidden" name="ruledata[regdis_id]" value="<{$ruleInfo.regdis_id}>">
+<div class="tableform">
+<div class="division">
+<!-- table begin-->
+<!-- 
+  `coupon_name`  '优惠券名称',
+  `coupon_desc`  '优惠券描述',
+  `used_platform`  '使用平台',
+  `condition_value` 
+  `use_bound`  '使用范围',
+  `canuse_start_time`  '优惠券生效时间',
+  `created_time`  '建券时间',
+  `coupon_status`  '促销状态',
+   -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>优惠券名称：<{/t}></th>
+    <td><{input type="text" name="ruledata[coupon_name]" style="width:120px" required="true" rows="50" maxlength="20" vtype='required' value=$ruleInfo.coupon_name}></td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>优惠券描述：<{/t}></th>
+    <td>
+      <{input type="text" name="ruledata[coupon_desc]" vtype='required' rows="18" maxlength="50" value=$ruleInfo.coupon_desc}>
+      <span class="notice"  style="margin:10px"><{t}>如“团购”，“限时抢购”<{/t}></span>
+    </td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>打折优惠：<{/t}></th>
+    <td>
+      <{input type="number" vtype="required&&number" name="ruledata[condition_value]" rows="8" maxlength="2" value=$ruleInfo.condition_value}>%
+      <span class="notice"  style="margin:10px"><{t}>如“80”,不能等于或者大于100<{/t}></span>
+    </td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>优惠卷类型：<{/t}></th>
+    <td>
+      <{input type="select" name="ruledata[regdis_status]" options=$status value=$ruleInfo.regdis_status vtype='required'}>
+    </td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>发布时间：<{/t}></th>
+    <td>
+      <{input type="time" name="ruledata[canuse_start_time]" value=$ruleInfo.canuse_start_time vtype="required"}>
+      <span class="notice"  style="margin:10px"><{t}>优惠券生效时间<{/t}></span>
+    </td>
+  </tr>
+
+
+</table>
+
+<!-- table end  -->
+</div>
+</div>
+
+<{capture name='footbar'}>
+<table cellspacing="0" cellpadding="0" class="table-action">
+  <tbody><tr valign="middle">
+      <td>
+        <{if $status != '4'}>
+        <{assign var="___a"  value="关  闭"}>
+        <{assign var="___c"  value=$___b2c='确定退出?'|t:'b2c'}>
+        <{button label=$___b2c="发布并关闭窗口"|t:'b2c' class="btn-primary" type="button" id="submitForm" onclick="submitForm(event,2)"}>
+        <{button label=$___content=$___a|t:'content' class="btn-secondary" type="button" onclick="if(confirm('{$___c}'))window.close()"}>
+        <{else}>
+        <button class="btn-primary" type="button">此活动不可编辑</button>
+        <{/if}>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<{/capture}>
+
+</form>
+
+<script>
+  $$('.act-autoclose').addEvent('click', function(e){
+    if(this.value == 'true') {
+      this.getNext('input[type=text]').show();
+    }
+    else if(this.value == 'false') {
+      this.getNext('input[type=text]').hide();
+    }
+  });
+
+  function isChecked(dom) {
+    var dom = $$('input[name=ruledata[remind_enabled]]:checked');
+    if(dom.get('value')==1){
+      $$('.remind').show();
+    }else{
+      $$('.remind').hide();
+    }
+  }
+
+  window.addEvent('domready',function(){
+    isChecked();
+  })
+
+  $$('input[name=ruledata[remind_enabled]]').addEvent('click',function(){
+    isChecked(this);
+  });
+
+
+  var submitForm = function (event,sign){
+    var _form=$('activity_form');
+
+    switch (sign){
+        case 1:
+            var target={
+              onComplete:function(){
+                location.reload();
+              }};
+              break;
+          case 2:
+              var target={
+                onComplete:function(rs){
+                  if(rs&&!!JSON.decode(rs).success){
+                    try{
+                      window.opener.finderGroup['<{$env.get.finder_id}>'].refresh();
+                      window.close();
+                    }catch(e){}
+                  }
+                }};
+                break;
+    }
+    _form.store('target',target);
+    _form.fireEvent('submit',new Event(event));
+  };
+
+  //全选
+  $('ruledata[shoptype]_all').addEvent('click', function() {
+    $$('input[name="ruledata[shoptype][]"]').each(function(item) {
+      if($('ruledata[shoptype]_all').checked) {
+        item.checked = 'checked';
+      } else {
+        item.checked = '';
+      }
+    });
+  });
+  $$('input[name="ruledata[shoptype][]"]').each(function(item) {
+    item.addEvent('click', function() {
+      if(item.checked) {
+        var i = 0;
+        $$('input[name="ruledata[shoptype][]"]').each(function(chk) {
+          if(chk.checked == '') {
+            i += 1;
+          }
+        });
+        if(i == 0) {
+          $('ruledata[shoptype]_all').checked = 'checked';
+        }
+      } else {
+        $('ruledata[shoptype]_all').checked = '';
+      }
+    });
+  });
+
+  $('ruledata[limit_cat]_all').addEvent('click', function() {
+    $$('input[name="ruledata[limit_cat][]"]').each(function(item) {
+      if($('ruledata[limit_cat]_all').checked) {
+        item.checked = 'checked';
+      } else {
+        item.checked = '';
+      }
+    });
+  });
+  $$('input[name="ruledata[limit_cat][]"]').each(function(item) {
+    item.addEvent('click', function() {
+      if(item.checked) {
+        var i = 0;
+        $$('input[name="ruledata[limit_cat][]"]').each(function(chk) {
+          if(chk.checked == '') {
+            i += 1;
+          }
+        });
+        if(i == 0) {
+          $('ruledata[limit_cat]_all').checked = 'checked';
+        }
+      } else {
+        $('ruledata[limit_cat]_all').checked = '';
+      }
+    });
+  });
+</script>
+

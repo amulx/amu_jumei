@@ -1,0 +1,98 @@
+<table class="table table-primary table-hover table-goods">
+  <thead>
+    <tr>
+      <td>货号</td>
+      <td class="col-name">商品名称</td>
+      <td>单价</td>
+      <td>数量</td>
+      <td>原价</td>
+      <td>状态</td>
+      <td>售后</td>
+      <td>来源</td>
+    </tr>
+  </thead>
+  <tbody>
+    <{foreach from=$trade.orders item=item}>
+    <tr>
+      <td><{$item.bn}></td>
+      <td>
+        <div class="goods">
+          <!-- <a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>"> -->
+            <{if $item.pic_path}>
+            <img src="<{$item.pic_path}>" alt="<{$item.title}>">
+            <{else}>
+            <img src="<{$defaultImageId.T.default_image}>" alt="<{$item.title}>">
+            <{/if}>
+            <{$item.title}>
+            <{if $item.spec_nature_info}>(<{$item.spec_nature_info}>)<{/if}>
+          <!-- </a> -->
+        </div>
+      </td>
+      <td>
+        <{$item.price|cur}>
+      </td>
+      <td>
+        <{$item.num}>
+      </td>
+      <td>
+        <span class="text-orange"><{$item.total_fee|cur}></span>
+      </td>
+      <td>
+        <span class="text-orange">
+          <{if $item.status == "WAIT_BUYER_PAY"}>等待买家付款
+          <{elseif $item.status == "WAIT_SELLER_SEND_GOODS"}>
+            <{if $trade.pay_type == "offline"}>未付款(货到付款)，待发货
+              <{elseif $trade.pay_type == "online"}>买家已付款,请发货
+            <{/if}>
+          <{elseif $item.status == "WAIT_BUYER_CONFIRM_GOODS"}>已发货，等待买家确认收货
+          <{elseif $item.status == "TRADE_FINISHED"}> 交易完成<{if $item.aftersales_status == "SUCCESS"}> 发生售后退款：<{$item.refund_fee|cur}><{/if}>
+          <{elseif $item.status == "TRADE_CLOSED_AFTER_PAY"}>退款并交易关闭
+          <{elseif $item.status == "TRADE_CLOSED_BEFORE_PAY"}>交易关闭
+          <{/if}>
+        </span>
+      </td>
+      <td>
+        <{if $item.aftersales_status}>
+        <a href="<{url action=topshop_ctl_aftersales@index}>">
+          <{if $item.aftersales_status == 'WAIT_SELLER_AGREE' }>
+         等待审核
+          <{elseif $item.aftersales_status == 'WAIT_BUYER_RETURN_GOODS' }>
+          等待买家退货
+          <{elseif $item.aftersales_status == 'WAIT_SELLER_CONFIRM_GOODS' }>
+          买家已退货，待确认
+          <{elseif $item.aftersales_status == 'SUCCESS' }>
+          退款完成
+          <{elseif $item.aftersales_status == 'SELLER_REFUSE_BUYER' }>
+          拒绝退款
+          <{elseif $item.aftersales_status == 'SELLER_SEND_GOODS' }>
+          换货完成
+          <{elseif $item.aftersales_status == 'CLOSED' }>
+          退款关闭
+          <{elseif $item.aftersales_status == 'REFUNDING' }>
+         等待平台退款
+          <{/if}>
+        </a>
+        <{else}>
+        未申请售后
+        <{/if}>
+      </td>
+      <td>
+        <a href="<{$item.source_link}>" target=_blank>
+          <{if $item.source eq 1}>
+            淘宝
+          <{else}>
+            天猫
+          <{/if}>
+        </a>
+      </td>
+
+    </tr>
+    <{/foreach}>
+  </tbody>
+</table>
+<div class="text-right">
+  <div>
+    配送费用：<span class="text-orange"><{$trade.post_fee|cur}></span><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    商品总额：<span class="text-orange"><{$trade.total_fee|cur}> </span>
+  </div>
+</div>

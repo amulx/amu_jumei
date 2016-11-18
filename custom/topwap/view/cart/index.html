@@ -1,0 +1,73 @@
+<!-- <header class="page-header">
+  <div class="header-title">进货车</div>
+  <div id="cart_edit" class="header-right txt-func" style=""><{if $aCart}> 编辑 <{/if}></div>
+</header> -->
+<{if $aCart}>
+<form action="<{url action=topwap_ctl_cart_checkout@index}>" method="post" id="cart_submit" class="cart-submit-form" data-async="false">
+  <div class="cart-main checkout-action">
+    <{include file=topwap/cart/cart_main.html}>
+  </div>
+
+  <div id="promotion" class="shopex-popover shopex-popover-action shopex-popover-bottom promotion-modal">
+  </div>
+</form>
+<{else}>
+  <{include file='topwap/empty/cart.html'}>
+<{/if}>
+
+<script>
+  var flag = false;
+  var isPromotionSelect = true;
+  $('#cart_edit').on('tap',function(){
+    if($(this).hasClass('editing')){
+      $(this).removeClass('editing').text('编辑');
+      $('#edit_on').hide();
+      $('#edit_off').show();
+      $('.shoex-numbox-txt').hide();
+      $('.shopex-numbox').show();
+      $('.order-goods-header .more-link').show();
+      $('.cart-main').addClass('checkout-action').removeClass('del-action');
+      $('.invalid').find('input[type="hidden"]').attr('disabled', 'disabled');
+      $('.invalid').find('input[type="checkbox"]').attr('disabled', 'disabled');
+      $('.promotion-select').attr('href', '#promotion');
+      flag = true;
+      isPromotionSelect = true;
+      updateItem();
+    }else{
+      getChooseChk();
+      $(this).addClass('editing').text('完成');
+      $('#edit_on').show();
+      $('#edit_off').hide();
+      $('.shoex-numbox-txt').show();
+      $('.shopex-numbox').hide();
+      $('.order-goods-header .more-link').hide();
+      $('.cart-main').addClass('del-action').removeClass('checkout-action');
+      $('.invalid').find('input[type="hidden"]').removeAttr('disabled');
+      $('.invalid').find('input[type="checkbox"]').removeAttr('disabled');
+      $('input[type="checkbox"]').prop('checked',false);
+      $('.promotion-select').attr('href', 'javascript:void(0);');
+      isPromotionSelect = false;
+    }
+  });
+  var chooseChk = [];
+  function getChooseChk() {
+    chooseChk = [];
+    $('input[type="checkbox"]:checked').each(function(){
+      chooseChk.push($(this).attr('data-name'));
+    });
+  }
+  function setChooseChk() {
+    $('input[type="checkbox"]').prop('checked',false);
+    $('.order-goods-list input[type="hidden"]').val(0);
+    $(chooseChk).each(function(i) {
+      $('input[type="checkbox"]').each(function() {
+        if($(this).attr('data-name') == chooseChk[i] ) {
+          $(this).prop('checked', true);
+          $(this).parent().find('input[type="hidden"]').val(1);
+          return true;
+        }
+      });
+    });
+  }
+</script>
+

@@ -1,0 +1,40 @@
+<!-- <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title">选择支付方式</div>
+  </header> -->
+  <section>
+    <form class="form-container no-header-padded" action="<{url action=topwap_ctl_member_deposit@doRecharge}>" method="post" id="dopay_form" data-async="false" target="_blank">
+    <input type='hidden' name='amount' value="<{$amount}>">
+    <input type="hidden" name="openid" value="<{$openid}>">
+      <section class="section-white section-container">
+        <div class="section-init">充值金额</div>
+        <div class="section-init pay-num"><{$amount|cur}></div>
+      </section>
+      <section class="section-white pay-style">
+        <div class="section-title order-goods-header">
+          <div class="title-txt">请选择支付方式</div>
+        </div>
+        <div class="shopex-input-group">
+        <{foreach from=$payments item=payment}>
+          <div class="shopex-input-row shopex-radio bbc-radio">
+            <label><i class="bbc-icon <{$paymentIcon[$payment.app_id]}>"></i> <{$payment.app_display_name}></label>
+            <input name="pay_app_id" type="radio" value="<{$payment.app_id}>">
+          </div>
+          <{/foreach}>
+        </div>
+      </section>
+      <section class="shopex-content-padded form-op-section">
+        <button id="payment_btn" type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" >确认支付</button>
+      </section>
+    </form>
+  </section>
+  <script>
+    $('#payment_btn').on('tap',function(){
+
+    	  if($('input[name="pay_app_id"]:checked').length>0){
+    	      $('#dopay_form').submit();
+    	  }else{
+    	    shopex.alert('请选择支付方式！');
+    	  }
+    	});
+  </script>

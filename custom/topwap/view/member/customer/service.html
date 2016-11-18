@@ -1,0 +1,71 @@
+<div class="customer">
+	<div class="customer_tab">
+		<h2 class="tit">自助服务</h2>
+		<ul class="category clearfix">
+			<li>
+				<a href="<{url action=topwap_ctl_member_aftersales@aftersalesList}>" class="go_login_logistics">
+					<!-- <img class="icons" src="//s.juancdn.com/jpwebapp_v1/images_v1/user/ic_02.png?ts=81373e5f831330a6_1471915823"> -->
+					<i class="icons tuiHuo"></i>
+					<p>退货售后</p>
+				</a>
+			</li>				
+			<li>
+				<a href="<{url action=topwap_ctl_member_trade@tradeList s=3}>" class="go_login_logistics">
+					<i class="icons wuLiu"></i>
+					<p>查看物流</p>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="customer_tab">
+		<h2 class="tit">人工客服</h2>
+		<ul class="customer-list" id="manual-customer">
+			<li class="kf">
+				<a><i class="left"></i>在线客服<span>每天9:00 — 21:00</span><i class="right"></i></a>
+			</li>
+			<li class="phone">
+				<a href="tel:<{$phone = app::get('site')->getConf('system.site_phone')}>" phone="tel:<{$phone = app::get('site')->getConf('system.site_phone')}>"><i  class="left"></i>电话客服<span><{$phone = app::get('site')->getConf('system.site_phone')}></span><i class="right"></i></a>
+			</li>
+		</ul>
+	</div>
+	<div class="customer_tab">
+		<h2 class="tit">问题查询</h2>
+		<ul class="customer_tabtit" id="tabtit">
+			<li class="clearfix">
+				<a href="<{url action=topwap_ctl_member@orderAfter}>" class="left_kind_btn fl">
+					<i class="icons caleafter"></i>
+					<p>订单售后</p>
+				</a>
+				<div class="list_right fr">
+
+					<{foreach from=$orderAfter item=value key=keyz}>
+						<a href="<{url action=topwap_ctl_member@orderAfter}>" class="push_btn_act"><{$value.node_name}><i></i></a>
+					<{/foreach}>
+					
+				</div>
+			</li>		
+			<li class="clearfix">
+				<a href="<{url action=topwap_ctl_member@chooseBuy}>" class="left_kind_btn fl">
+					<i class="icons fuKuan"></i>
+					<p>选购支付</p>
+				</a>
+				<div class="list_right fr">
+					<{foreach from=$chooseBuy item=value key=keyo}>
+						<a href="<{url action=topwap_ctl_member@chooseBuy}>" class="push_btn_act"><{$value.node_name}><i></i></a>
+					<{/foreach}>
+				</div>
+			</li>		
+			<li class="clearfix">
+				<a href="<{url action=topwap_ctl_member@otherProblems}>" class="left_kind_btn fl">
+					<i class="icons qiTa"></i>
+					<p>其他问题</p>
+				</a>
+				<div class="list_right fr">
+					<{foreach from=$otherProblems item=value key=keyt}>
+						<a href="<{url action=topwap_ctl_member@otherProblems}>" class="push_btn_act"><{$value.node_name}><i></i></a>
+					<{/foreach}>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>

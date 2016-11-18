@@ -1,0 +1,228 @@
+<style>
+	body{ background: #fdfdfd; padding: 0!important;}
+	.go-app-new {
+		margin: 0;
+	}
+	.go-app-new img {
+		width: 100%;
+	}
+	.erweimaList {
+		padding:0px 0 0 5px;
+	}
+	.erweimaList li {
+		width: 50%;
+		float: left;
+		padding-right: 5px;
+		padding-bottom: 5px;
+	}
+    .spreadCon img,.erweimaShow img { width: 100%;}
+    .newUser { margin-top: 5px; background: #864cd0; padding: 8px 5px; }
+    .fixedTanchuang { position: fixed; display: none; width: 100%; height: 100%; left: 0; top: 0; z-index: 9999; }
+    .fixedTanchuang em {position: fixed; width: 100%; height: 100%; background: #000; left: 0; top: 0; opacity: 0.6; display: block;}
+    .erweimaShow a { width: 100%; height: 100%;  display: table-cell;  vertical-align: middle; position: relative;}
+    .closeEwm { position: fixed; width: 20px; height: 20px; line-height: 20px; text-align: center; right: 8px; top: 8px;  font-size: 20px;   color: #fff; display: block; font-family: "宋体";}
+    .erweimaShow a img { display: block;  max-width: 100%;  max-height: 100%;  margin: auto;  vertical-align: middle;}
+    .form-container { height: 210px; left: 0; bottom: 0; right: 0; top: 0; margin: auto; position: absolute; width: 90%; background: #EFEFF5;} 
+    .form-container .closeEwm { position: absolute; border: 1px solid #ddd; border: none; right: -7px; top: -7px; width: 25px; height: 25px; line-height: 25px; background: #fff; font-family: Muiicons; border-radius: 50%;  -webkit-box-shadow: 0 -1px 3px rgba(0,0,0,0.3) inset; box-shadow: 0 -1px 3px rgba(0,0,0,0.3) inset;}
+     .form-container .closeEwm:before {
+     	content: "\e460";
+     	color: #666;
+     	font-size: 1.6rem;
+     }
+    .shopex-input-group .shopex-input-row:after { left: 0;}
+    .shopex-input-row label { width: 85px;}
+    .content-vertical-padded { padding: 5px 0 15px 0;}
+    .form-op-section { padding: 35px 25px 0; }
+    .loseOr{ padding-top:30px; display: none; }
+    .loseOr span { width: 100%; display: block; text-align: center;}
+    .loseOr .draw { color:#fe474c; margin-top: -11px;}
+    /*.loseOr span.lose { width: 150px; }*/
+/*    .lose em { font-size: 0.7rem;}
+    .lose .left { font-size: 0.8rem;}*/
+</style>
+<section class="spreadPage">
+<header class="spread-top ub">
+	<h1 class="logo"><a href="javascript:;"></a></h1>
+	<div class="ub-f1">爆款批发，工厂拿货</div>
+</header>
+<section class="spreadCon">
+	<p>这里有各地最新爆款，最新流行女装，按需自动配款，直接工厂拿货，价格低到笑，一件也可批发，您还等什么赶紧来吧。</p>
+<!-- 	<div class="erWeiMa">
+		<img src="<{$env.base_full_url}>/themes/jmmobilemall/images/spread.gif" alt="">
+	</div> -->
+	<div class="erweimaList">
+		<ul class="clearfix">
+			<li><img dataSrc="<{$env.base_full_url}>/themes/jmmobilemall/images/spread.gif" src="<{$env.base_full_url}>/themes/jmmobilemall/images/temai.jpg" alt=""></li>
+			<li><img dataSrc="<{$env.base_full_url}>/themes/jmmobilemall/images/spread1.gif" src="<{$env.base_full_url}>/themes/jmmobilemall/images/temai1.jpg" alt=""></li>
+			<li><img dataSrc="<{$env.base_full_url}>/themes/jmmobilemall/images/spread2.gif" src="<{$env.base_full_url}>/themes/jmmobilemall/images/temai2.jpg" alt=""></li>
+			<li><img dataSrc="<{$env.base_full_url}>/themes/jmmobilemall/images/spread3.gif" src="<{$env.base_full_url}>/themes/jmmobilemall/images/temai3.jpg" alt=""></li>
+		</ul>
+	</div>
+	<div class="newUser">
+		<img src="<{$env.base_full_url}>/themes/jmmobilemall/images/wuzhe.jpg" alt="">
+	</div>
+</section>
+</section>
+<section class="erweimaShow fixedTanchuang">
+	<em class="opacity"></em>
+	<a>
+		<img src="<{$env.base_full_url}>/themes/jmmobilemall/images/spread.gif">
+	</a>
+	<i class="closeEwm">×</i> 
+</section>
+<section class="action-link fixedTanchuang">
+	<em class="opacity"></em>
+<form class="form-container" action="<{url action=topwap_ctl_spread@doWRegisterSpread}>" method="post" id="form_register">
+    <input type="hidden" name="key" value="topwap_signup">
+    <input type="hidden" name="regdis_id" value="<{$regdis.regdis_id}>">
+    <input type="hidden" name="type" value="coupon">
+    <input type="hidden" name="openid" value="<{$openid}>">
+    <section class="shopex-input-group">
+      <div class="shopex-input-row">
+        <label>手机号：</label>
+        <input type="text" name="uname" class="shopex-input-clear action-account-check valphoneInput" placeholder="请输入您的手机号" required="" data-caution="请输入您的手机号" autofocus data-validate="mobile" data-remote="<{url action=topwap_ctl_passport@checkLoginAccount}>"><span class="shopex-icon shopex-icon-clear shopex-hidden"></span>
+      </div>
+    <div class="form-inline">
+      <div class="shopex-input-row form-inline-adaptive phoneYanZheng">
+        <label>验证码：</label>
+        <input type="text" name="vcode" class="shopex-input-clear valInput" placeholder="请输入验证码" required="" data-caution="请输入验证码" data-input-clear="2"><span class="shopex-icon shopex-icon-clear shopex-hidden"></span>
+      </div>
+      <div class="form-inline-unadaptive">
+        <button type="button" disabled="true" id="send_vcode" class="shopex-btn shopex-btn-warning shopex-btn-block btn-action">短信获取</button>
+      </div>
+    </div>
+    </section>
+    <div class="loseOr">
+	    <span class="lose">领取优惠券失败~！</span>
+	    <span class="overPhone">此手机号已注册，请更换号码</span>
+	    <span class="draw">已成功领取优惠券,下单后</br>可直接使用</span>
+    </div>
+
+<!--     <section class="content-vertical-padded box-display">
+      <div class="shopex-checkbox bbc-checkbox shop-checkbox">
+        <label></label>
+        <input name="license" value="1" type="checkbox" checked="">
+      </div>
+      <div class="box-item-flex1 fontS font-gray-20">我已阅读并同意<a class="font-orange" href="http://localhost/jumei/public/index.php/wap/passport-register-license.html">《会员注册协议》</a></div>
+    </section> -->
+    <section class="shopex-content-padded form-op-section">
+      <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">领取优惠券</button>
+    </section>
+    <i class="closeEwm shopex-icon "></i>
+  </form>
+	 
+</section>
+<section class="go-app-new">
+	<a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.yinahuo.mapp">
+		<img src="<{$env.base_full_url}>/themes/jmmobilemall/images/loadImg.png">
+	</a>
+	<i class="closed"></i> 
+</section>
+<script>
+	// $('.shareBtn').click(function(){
+	// 	$('.fixedFanXiang').css('display','block');
+	// 	$('.fenxiangBg').css('display','block');
+	// });
+	// $('.fixedFanXiang').click(function(){
+	// 	$(this).css('display','none');
+	// 	$('.fenxiangBg').css('display','none');
+	// });
+	// 下载底部js
+	// window.onload=function(){
+	// var appHeight = $('.go-app-new').height();
+    // $('.spreadPage').css('padding-bottom',''+appHeight+'px');
+    $('.go-app-new').on('tap','.closed',function(){
+	    $('.go-app-new').hide();
+	    // $('.spreadPage').css('padding-bottom','5px');
+    });
+	//二维码弹窗
+	$('.erweimaList').on('tap','.erweimaList ul li img',function(){
+		$('.erweimaShow a img').attr('src',''+$(this).attr('dataSrc')+'');
+		$('.erweimaShow').show();
+		$('.erweimaShow a').css('height',''+$('.erweimaShow').height()+'px');
+	});
+	
+	$('.fixedTanchuang').on('tap','.closeEwm,.erweimaShow a,.action-link em',function(){
+		$('.fixedTanchuang').hide();
+	});		
+
+	$('.newUser').on('tap','img',function(){
+		$('.action-link').show();
+		$('.form-op-section').show();
+	});
+	$('.loseOr span').hide();
+	// $('.form-op-section').on('tap','.shopex-btn',function(){
+	// 	$(this).hide();
+	// 	$('.loseOr').show();
+	// 	$('.loseOr .draw').show();
+	// });	
+	$('.action-link').on('tap','.closeEwm,.action-link em',function(){
+		$('.valphoneInput,.valInput').val('');
+		$('.fixedTanchuang').hide();
+		$('.loseOr').hide();
+	});	
+	var form = $('#form_register');
+	form.find('button[type=submit]').data('ajaxConfig', {
+		callback: function(rs){
+			console.log(rs);
+			$('.form-op-section').hide();
+			$('.loseOr').show();
+			$('.loseOr span').hide();
+			$('.loseOr .draw').show();
+			if(rs.error) {
+				$('.loseOr span').hide();
+				$('.loseOr .lose').show();
+		    }
+		    if(rs.success){
+				$('.loseOr span').hide();
+				$('.loseOr .draw').show();
+		    }
+		}
+	});
+
+	$('#send_vcode').on('click', function(e) {
+	    var type = form.find('input[name=type]').val();
+	    var uname = form.find('input[name=uname]').val();
+	    if($(this).hasClass('disabled')) return false;
+	    sendVerify(this, 'uname='+uname+'&type=' +type);
+	})
+
+  function sendVerify(el, data) {
+    var url = "<{url action=topwap_ctl_passport@sendVcode}>";
+    var textCont = $(el);
+    $(el).addClass('disabled');
+    textCont.html('<i>0</i>');
+    var cd = new countdown(textCont.find('i'), {
+      start: 120,
+      secondOnly: true,
+      callback: function(e) {
+        $(el).removeClass('disabled');
+        textCont.html('重发验证码');
+      }
+    });
+    $.post(url, data, function(rs) {
+      if(rs.error) {
+        cd.stop();
+        alert(rs.message);
+        $(el).removeClass('disabled');
+        textCont.html('重发验证码');
+      }
+    });
+  }
+	var account = form.find('.action-account-check');
+	account.data('remoteCallback', function(rs) {
+		if(rs.error) {
+			$('.form-op-section').hide();
+			$('.loseOr').show();
+			$('.loseOr span').hide();
+			$('.loseOr .overPhone').show();
+			$('#send_vcode').attr('disabled',true);
+		}else{
+			$('.loseOr').hide();
+			$('.form-op-section').show();
+			$('#send_vcode').removeAttr("disabled"); 
+		}
+	});
+	// $('body,html').css('padding-bottom','-26px');
+// }
+</script>

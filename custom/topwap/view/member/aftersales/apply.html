@@ -1,0 +1,106 @@
+<!-- 
+<header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+</header>
+ -->
+ <section>
+      <section class="section-white">
+        <div class="section-title">
+          <div class="title-txt fontS font-gray-20">订单号：<{$tid}></div>
+        </div>
+        <ul class="order-goods-list">
+          <li>
+            <div class="thumbnail">
+              <div class="thumb-img"><a href="#"><img src="<{$orderInfo.pic_path|default:$defaultImageId.T.default_image|storager}>" alt=""></a></div>
+              <div class="caption">
+                <div class="order-goods-info">
+                  <div class="order-goods-title"><{$orderInfo.title}></div>
+                  <div class="order-goods-sku"><{$orderInfo.spec_nature_info}></div>
+                  <div class="order-goods-price"><mark><{$orderInfo.price|cur}></mark></div>
+                </div>
+                <div class="order-goods-num content-right">x <{$orderInfo.num}></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="section-white">
+        <div class="section-title">
+          <div class="title-txt">请选择售后类型</div>
+        </div>
+        <ul class="shopex-table-view shopex-table-view-radio bbc-radio apply-type">
+
+        <input type="hidden" name="tid" value="<{$tid}>">
+        <input type="hidden" name="oid" value="<{$oid}>">
+          <{if $status == 'WAIT_BUYER_CONFIRM_GOODS' || $status == 'TRADE_FINISHED'}>
+      		<{if $status == 'WAIT_BUYER_CONFIRM_GOODS' }>
+      		<li class="shopex-table-view-cell">
+            <a class="shopex-navigate-right" data-type="ONLY_REFUND">
+              仅退款
+            </a>
+          </li>
+          <{/if}>
+            <li class="shopex-table-view-cell">
+            <a class="shopex-navigate-right" data-type="REFUND_GOODS">
+              退货退款
+            </a>
+          </li>
+            <li class="shopex-table-view-cell">
+            <a class="shopex-navigate-right" data-type="EXCHANGING_GOODS">
+             换货
+            </a>
+          </li>
+          <{/if}>
+        </ul>
+      </section>
+      <section class="section-white">
+        <div class="section-title">
+          <div class="title-txt">请选择售后原因</div>
+        </div>
+        <ul class="shopex-table-view shopex-table-view-radio bbc-radio apply-reason">
+        <{foreach from=$reason item=text}>
+
+          <li class="shopex-table-view-cell">
+            <a class="shopex-navigate-right">
+              <{$text}>
+            </a>
+          </li>
+          <{/foreach}>
+
+        </ul>
+      </section>
+      <section class="section-white content-padded">
+        <textarea class="bbc-textarea" name="apply_description" id="" placeholder="问题描述"></textarea>
+      </section>
+      <section class="shopex-content-padded form-op-section">
+        <button type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning btn-apply">确认申请</button>
+      </section>
+  </section>
+  <script>
+  $('.btn-apply').on('click', function() {
+    var tid = $('input[name="tid"]').val();
+    var oid = $('input[name="oid"]').val();
+    var aftersalesType = $('.apply-type').find('.shopex-selected').find('a').attr('data-type');
+    var reason = $.trim($('.apply-reason').find('.shopex-selected').find('a').text());
+    var description = $('textarea[name="apply_description"]').val();
+    $.post('<{url action=topwap_ctl_member_aftersales@commitAftersalesApply}>',
+            {'tid': tid,'oid': oid, 'aftersales_type':aftersalesType, 'reason': reason, 'description': description},
+            function(rs) {
+              if(rs.success) {
+                shopex.toast(rs.message,function(){
+                  if(rs.redirect){
+                    location.href = rs.redirect;
+                  }
+                })
+              }
+              if(rs.error) {
+                shopex.alert(rs.message,'',function(){
+                    if(rs.redirect){
+                    	location.href=rs.redirect;
+                    }
+                });
+              }
+    });
+  });
+  </script>

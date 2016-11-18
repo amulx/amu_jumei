@@ -1,0 +1,54 @@
+<{foreach from=$rate item=row}>
+<li>
+  <p class="rate-type rate-type-<{if $row.result=='neutral'}>nomarl<{else}><{$row.result}><{/if}>"><i class="bbc-icon bbc-icon-rate"></i> <{if $row.result == 'good'}><{t}>好评<{/t}><{elseif $row.result=='bad'}><{t}>差评<{/t}><{else}><{t}>中评<{/t}><{/if}></p>
+  <p class="rate-comment"><{$row.content}></p>
+  <{if $row.rate_pic}>
+  <ul class="rate-photo">
+    <{foreach from=$row.rate_pic item=pic}>
+    <li> <img src="<{$pic|storager}>" data-preview-src="<{$pic|storager}>" data-preview-group="<{$rate_type_group}>" alt=""></li>
+    <{/foreach}>
+  </ul>
+  <{/if}>
+  <p class="rate-date">
+
+    <{if $row.anony}>
+      <{$userName[$row.user_id]|hidden_show}>
+    <{else}>
+      <{if $row.user_name}>
+        <{$row.user_name}>
+      <{else}>
+        <{$userName[$row.user_id]}>
+      <{/if}>
+    <{/if}>
+
+    &nbsp;&nbsp;&nbsp;
+    <{$row.created_time|cdate}>
+  </p>
+  <{if $row.reply_content}>
+  <div class="rate-reply content-padded">
+    <p class="rate-comment"><{t}>商家回复<{/t}>：<{$row.reply_content}></p>
+    <p class="rate-date"><{$row.reply_time|cdate}></p>
+  </div>
+  <{/if}>
+  <{if $row.append}>
+  <div class="rate-added">
+    <p class="rate-type font-red"><{t}>追加评论<{/t}>：</p>
+    <p class="rate-comment"><{$row.append.append_content}></p>
+    <{if $row.append.append_rate_pic}>
+    <ul class="rate-photo">
+      <{foreach from=$row.append.append_rate_pic item=append_pic}>
+      <li> <img src="<{$append_pic|storager}>"  data-preview-src="<{$pic|storager}>" data-preview-group="<{$rate_type_group}>" alt=""></li>
+      <{/foreach}>
+    </ul>
+    <{/if}>
+    <p class="rate-date"><{$row.append.created_time|cdate}></p>
+  </div>
+  <{if $row.append.append_reply_content}>
+  <div class="rate-reply content-padded">
+    <p class="rate-comment"><{t}>商家回复<{/t}>：<{$row.append.append_reply_content}></p>
+    <p class="rate-date"><{$row.append.reply_time|cdate}></p>
+  </div>
+  <{/if}>
+  <{/if}>
+</li>
+<{/foreach}>

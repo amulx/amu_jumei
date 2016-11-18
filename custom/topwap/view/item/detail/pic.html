@@ -1,0 +1,37 @@
+
+<div id="slider" class="shopex-slider bbc-slider-b theme-border-bottom">
+	<div class="shopex-slider-group shopex-slider-loop">
+		<!-- 第一张 -->
+		<{if !$item.list_image}>
+			<div class="shopex-slider-item">
+				<a href="#"> <img src="<{$image_default_id.L.default_image|storager}>">
+				</a>
+			</div>
+		<{else}>
+			<div class="shopex-slider-item shopex-slider-item-duplicate">
+				<a href="#"> <img src="<{$item.list_image_last|storager}>">
+				</a>
+			</div>
+			<{foreach from=$item.list_image item=image_id}>
+			<div class="shopex-slider-item">
+				<a href="#">
+					<img src="<{$image_id|storager}>">
+				</a>
+			</div>
+			<{/foreach}>
+			<div class="shopex-slider-item shopex-slider-item-duplicate">
+				<a href="#"> <img src="<{$item.list_image_first|storager}>">
+				</a>
+			</div>
+		<{/if}>
+	</div>
+	<div class="shopex-slider-indicator">
+	<{if !$item.list_image}>
+	<div class="shopex-indicator shopex-active"></div>
+	<{else}>
+		<{foreach from=$item.list_image item=image_id name=itempic}>
+			<div class="shopex-indicator <{if $env.foreach.itempic.first}>shopex-active<{/if}>"></div>
+		<{/foreach}>
+	<{/if}>
+	</div>
+</div>

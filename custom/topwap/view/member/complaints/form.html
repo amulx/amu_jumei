@@ -1,0 +1,80 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>发起投诉<{/t}></div>
+</header> -->
+<section>
+  <form class="form-container" action="">
+    <input type="hidden" name="oid" value="<{$oid}>">
+    <input type="hidden" name="tid" value="<{$tid}>">
+    <section class="shopex-input-group">
+      <a href="#" class="shopex-navigate-right">
+        <div id="showUserPicker" class="shopex-input-row">
+          <label><{t}>投诉类型<{/t}>：</label>
+          <input type="text" name="complaints_type"  id="userResult" placeholder="<{t}>请选择投诉类型<{/t}>">
+        </div>
+      </a>
+    </section>
+    <section class="shopex-input-group">
+      <div class="shopex-input-row">
+        <label><{t}>联系方式<{/t}>：</label>
+        <input type="text" name="tel" class="shopex-input-clear" placeholder="<{t}>请输入您的手机号<{/t}>">
+      </div>
+      <div class="shopex-input-row">
+        <label><{t}>问题描述<{/t}>：</label>
+        <textarea name="content" id="" rows="3"></textarea>
+      </div>
+    </section>
+    <section class="content-horizontal-padded form-op-section">
+      <button type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning btn-apply" onclick="return false;"><{t}>提交投诉<{/t}></button>
+    </section>
+  </form>
+</section>
+<script>
+  (function($, doc) {
+    $.init();
+    $.ready(function() {
+      //普通示例
+      var userPicker = new $.PopPicker();
+      var complaintsType = <{$complaintsType}>;
+      userPicker.setData(complaintsType);
+      var showUserPickerButton = doc.getElementById('showUserPicker');
+      var userResult = doc.getElementById('userResult');
+      showUserPickerButton.addEventListener('tap', function(event) {
+        userPicker.show(function(items) {
+          userResult.value = items[0].text;
+          //返回 false 可以阻止选择框的关闭
+          //return false;
+        });
+      }, false);
+    });
+  })(shopex, document);
+
+  $('.btn-apply').on('click', function() {
+    var oid = $('input[name="oid"]').val();
+    var tid = $('input[name="tid"]').val();
+    var tel = $('input[name="tel"]').val();
+    var complaintsType = $('input[name="complaints_type"]').val();
+    var content = $('textarea[name="content"]').val();
+    $.post('<{url action=topwap_ctl_member_complaints@complaintsPostData}>',
+      {'tid': tid,'oid': oid, 'complaints_type':complaintsType, 'content': content, 'tel': tel},
+      function(rs) {
+      if(rs.success) {
+        shopex.toast(rs.message, function() {
+          if( rs.redirect ){
+            location.href = rs.redirect;
+          }else{
+            history.back();
+          }
+        });
+      }
+
+      if(rs.error) {
+        shopex.alert(rs.message,'',function(){
+          if(rs.redirect){
+            location.href=rs.redirect;
+          }
+        });
+      }
+    });
+  });
+</script>

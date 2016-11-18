@@ -1,0 +1,87 @@
+
+<{foreach from=$trades item=tradeitem}>
+<li class="shopex-table-view-cell">
+	<ul class="shopex-table-view">
+		<li class="shopex-table-view-cell">
+			<div class="shopex-table">
+				<div class="shopex-table-cell shopex-col-xs-6">
+					<a class="shopex-linkto inline-overflow" href="javascript:;">订单状态</a>
+                    <!-- <i class="bbc-icon bbc-icon-forward font-gray-40"></i> -->
+				</div>
+				<div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+                <!-- <{if $tradeitem.cancel_status == 'WAIT_PROCESS'}>
+                正在审核<br>
+                <{elseif $tradeitem.cancel_status == 'REFUND_PROCESS' }>
+                退款处理<br>
+                <{elseif $tradeitem.cancel_status == 'SUCCESS' }>
+                取消成功<br>
+                <{/if}>
+ -->
+                <{if $tradeitem.status == "WAIT_BUYER_PAY"}>
+                <mark><{t}>待付款<{/t}></mark>
+                <{elseif $tradeitem.status == "WAIT_SELLER_SEND_GOODS" && $tradeitem.pay_type == "online"}>
+                <mark><{t}>待发货<{/t}></mark>
+                <{elseif $tradeitem.status == "WAIT_SELLER_SEND_GOODS" && $tradeitem.pay_type == "offline"}>
+                <mark><{t}>待发货<br>(货到付款)<{/t}></mark>
+                <{elseif $tradeitem.status == "WAIT_BUYER_CONFIRM_GOODS" && $tradeitem.pay_type == "online"}>
+                <mark><{t}>已发货<{/t}></mark>
+                <{elseif $tradeitem.status == "WAIT_BUYER_CONFIRM_GOODS" && $tradeitem.pay_type == "offline"}>
+                <mark><{t}>已发货<br>(货到付款)<{/t}></mark>
+                <{elseif $tradeitem.status == "TRADE_FINISHED"}>
+                <mark><{t}>已完成<{/t}></mark>
+                <{elseif $tradeitem.status == "TRADE_CLOSED_BY_SYSTEM" || $tradeitem.status == "TRADE_CLOSED"}>
+                <mark><{t}>已关闭<{/t}></mark>
+                <{/if}>
+				</div>
+			</div>
+		</li>
+		<{foreach from=$tradeitem.order item=orderitem name=orderlist}>
+		<li class="shopex-table-view-cell function-list">
+			<a class="shopex-linkto" href="<{url action=topwap_ctl_member_trade@detail tid=$tradeitem.tid}>"
+			class="shopex-navigate-right">
+				<div class="shopex-table">
+					<div class="shopex-table-cell shopex-col-xs-8 checkout-goods-list">
+						<div class="checkout-goods-warp">
+						<{foreach from=$orderitem item=item name=itemlist}>
+							<div class="thumbnail">
+								<div class="thumb-img">
+                                  <img src="<{$item.pic_path|default:$defaultImageId.T.default_image|storager}>" alt="">
+                                </div>
+							</div>
+							<{/foreach}>
+						</div>
+					</div>
+					<div class="shopex-table-cell shopex-col-xs-2 shopex-text-right"><{t}>共<{$tradeitem.itemnum}>件<{/t}></div>
+				</div>
+			</a>
+		</li>
+		<li class="shopex-table-view-cell">
+			<div class="box-display">
+				<div class="box-item-flex1">
+					<{t}>实付金额：<{/t}>
+					<mark><{$tradeitem.payment|cur}></mark>
+				</div>
+				<div class="box-item-flex1 shopex-text-right">
+                <{if $tradeitem.status == "WAIT_BUYER_PAY"}>
+                <a class="shopex-btn shopex-btn-warning bbc-btn-warning bbc-btn-sm trade-pay" href="javascript:void(0);" data-href="<{url action=topwap_ctl_paycenter@createPay}>" data-tid="<{$tradeitem.tid}>"><{t}>去付款<{/t}></a>
+                <{if $tradeitem.cancel_status == "NO_APPLY_CANCEL"}>
+                <a class="shopex-btn shopex-btn-outlined bbc-btn-outlined bbc-btn-sm shopex-linkto" href="<{url action=topwap_ctl_member_trade@cancel tid=$tradeitem.tid}>"><{t}>取消订单<{/t}></a>
+                <{/if}>
+                <{elseif $tradeitem.status == "WAIT_SELLER_SEND_GOODS" && $tradeitem.cancel_status == "NO_APPLY_CANCEL"}>
+                <a class="shopex-btn shopex-btn-outlined bbc-btn-outlined bbc-btn-sm shopex-linkto" href="<{url action=topwap_ctl_member_trade@cancel tid=$tradeitem.tid}>"><{t}>取消订单<{/t}></a>
+                <{elseif $tradeitem.status == "WAIT_BUYER_CONFIRM_GOODS"}>
+                <{if $tradeitem.cancel_status == 'NO_APPLY_CANCEL' && $tradeitem.pay_type == "online"}>
+                <a class="shopex-btn shopex-btn-warning bbc-btn-warning bbc-btn-sm trade-confirm" href="<{url action=topwap_ctl_member_trade@confirmReceipt}>"  data-tid="<{$tradeitem.tid}>"><{t}>确认收货<{/t}> </a>
+                <{/if}>
+                <a class="shopex-btn shopex-btn-outlined bbc-btn-outlined bbc-btn-sm shopex-linkto" href="<{url action=topwap_ctl_member_trade@logistics tid=$tradeitem.tid}>"><{t}>查看物流<{/t}></a>
+                <{/if}>
+                <{if $tradeitem.is_buyer_rate }>
+                <a class="shopex-btn shopex-btn-warning bbc-btn-warning bbc-btn-sm shopex-linkto" href="<{url action=topwap_ctl_member_rate@createRate tid=$tradeitem.tid}>"><{t}>去评价<{/t}></a>
+                <{/if}>
+				</div>
+			</div>
+		</li>
+		<{/foreach}>
+	</ul>
+</li>
+<{/foreach}>

@@ -1,0 +1,41 @@
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+</header> -->
+<section>
+	<form action="<{url action=topwap_ctl_member_trade@cancelBuyer}>" method="post" class="form-container">
+	<input type="hidden" name="tid" value="<{$tid}>">
+	<input type="hidden" id="cancel_reason" name="cancel_reason" value="">
+		<section class="section-white content-padded">
+			订单号：
+			<mark><{$tid}></mark>
+		</section>
+		<div class="section-white section-title">
+			<div class="title-txt">请选择取消订单原因</div>
+		</div>
+		<ul id="reason" class="section-white shopex-table-view shopex-table-view-radio bbc-radio">
+			<{foreach from=$reason.user item=userreason key=key name=reason}>
+			<li class="shopex-table-view-cell" data-type="<{$key}>">
+				<a class="shopex-navigate-right" ><{$userreason}> </a>
+			</li>
+			<{/foreach}>
+		</ul>
+		<section id="other" class="section-white content-padded" style="display: none;">
+        <textarea class="bbc-textarea" name="other_reason" id="" cols="30" rows="5"></textarea>
+      </section>
+      <section class="shopex-content-padded form-op-section">
+        <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">确认取消</button>
+      </section>
+	</form>
+</section>
+<script>
+  $('#reason').on('tap','li',function(){
+    var reason = $(this).data('type');
+    $('#cancel_reason').val(reason);
+    if(reason && reason=='other'){
+      $('#other').show();
+    }else{
+      $('#other').hide();
+    }
+  })
+</script>

@@ -1,0 +1,61 @@
+<{foreach from=$list item=row}>
+  <section class="section-white">
+    <ul class="shopex-table-view">
+      <li class="shopex-table-view-cell">
+        <div class="shopex-table">
+          <div class="shopex-table-cell shopex-col-xs-6">
+            <a href="<{url action=topwap_ctl_shop@index shop_id=$row.shop_id}>" class="shopex-linkto inline-overflow">
+              订单状态
+              <!-- <i class="bbc-icon bbc-icon-forward font-gray-40"></i> -->
+              </a>
+          </div>
+          <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+            <mark>
+              <{if $row.refunds_status=='WAIT_CHECK' }>
+                等待审核
+                <{elseif $row.refunds_status=='WAIT_REFUND' }>
+                  等待退款
+                  <{elseif $row.refunds_status=='SHOP_CHECK_FAILS' }>
+                    取消失败
+                    <{elseif $row.refunds_status=='SUCCESS' }>
+                      取消成功
+                      <{/if}>
+            </mark>
+          </div>
+        </div>
+      </li>
+      <li class="shopex-table-view-cell function-list">
+        <a href="<{url action=topwap_ctl_member_trade@detail tid=$row.tid}>" class="shopex-navigate-right shopex-linkto">
+          <div class="shopex-table">
+            <div class="shopex-table-cell shopex-col-xs-8 checkout-goods-list">
+              <div class="checkout-goods-warp">
+                <{foreach from=$row.order item=orderitem name=orderlist}>
+                  <div class="thumbnail">
+                    <div class="thumb-img">
+                      <img src="<{$orderitem.pic_path|default:$defaultImageId.T.default_image|storager}>" alt="">
+                    </div>
+                  </div>
+                  <{/foreach}>
+              </div>
+            </div>
+            <div class="shopex-table-cell shopex-col-xs-2 shopex-text-right">共
+              <{$row.order|array_column: 'num'|array_sum}>件</div>
+          </div>
+        </a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <div class="shopex-table">
+          <div class="shopex-table-cell shopex-col-xs-4">
+            实付金额：
+            <mark>
+              <{$row.payed_fee|cur}>
+            </mark>
+          </div>
+          <div class="shopex-table-cell shopex-col-xs-4 shopex-text-right">
+            <a href="<{url action=topwap_ctl_member_trade@canceledTradeDetail cancel_id=$row.cancel_id}>" class="font-blue shopex-linkto">查看取消详情</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+ <{/foreach}>

@@ -1,0 +1,33 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">商品清单</div>
+</header> -->
+<section class="section-white container">
+  <ul class="order-goods-list">
+    <{foreach from=$cart.object item=itemdata}>
+      <li>
+        <div class="thumbnail">
+          <div class="thumb-img">
+            <a href="<{url action=topwap_ctl_item_detail@index item_id=$itemdata.item_id}>">
+              <{if $itemdata.image_default_id}>
+              <img src="<{$itemdata.image_default_id|storager}>" alt="">
+              <{else}>
+              <img src="<{$defaultImageId.T.default_image|storager}>" alt="">
+              <{/if}>
+            </a>
+          </div>
+          <div class="caption">
+            <div class="order-goods-info">
+              <div class="order-goods-title"><{$itemdata.title}></div>
+              <div class="order-goods-sku"><{$itemdata.spec_info}></div>
+              <div class="order-goods-price">
+                <mark><{$itemdata.price.price|cur}></mark>
+              </div>
+            </div>
+            <div class="order-goods-num content-right">x <{$itemdata.quantity}></div>
+          </div>
+        </div>
+      </li>
+      <{/foreach}>
+  </ul>
+</section>

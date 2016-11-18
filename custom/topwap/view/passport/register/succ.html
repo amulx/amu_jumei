@@ -1,0 +1,133 @@
+<section class="container no-header">
+  <section class="user-header">
+    <div class="user-register-success">
+      <div class="user-register-logo"><img src="<{$env.base_full_url}>/themes/jmmobilemall/images/logo.png" alt="<{$site_name}>"></div>
+    <!--   <h1>恭喜您注册成为<{$site_name}></h1>
+      <h2>您已成为商城会员，享受会员特权</h2> -->
+      <h1>恭喜您 您已成为易拿货会员 </h1>
+      <h2>为了更好的给您订制服务 请填下以下资料</h2>
+      <a href="javascript:;" class="removeCon">未选择<i class="adI">10</i>秒后返回首页</a>
+    </div>
+  </section>
+  <section>
+    <ul class="love-type"> 
+      <{foreach from=$protype item=type key=key }>
+        <li class="lei">
+        <span><{$type}></span>
+        <ul class="clearfix">
+        <{foreach from=$properties item=item}>
+          <{if $key eq $item.source}>
+            <li data-pid="<{$item.properties_id}>" data-pname="<{$item.properties_name}>" data-pindex="<{$type}>"><{$item.properties_name}></li>
+          <{/if}>
+        <{/foreach}>
+        </ul>
+        </li>
+      <{/foreach}>
+      <!--
+      <li class="more-select">
+          <span>风格：</span>
+          <ul class="clearfix mselect">
+            <li>甜美甜美甜美甜美甜美甜美</li>
+            <li>欧美</li>
+            <li>淑女</li>            
+            <li>淑女</li>            
+            <li>淑女</li>
+            <li>淑女</li>
+            <li>淑女</li>
+          </ul>
+      </li>      
+      <li>
+          <span>档次：</span>
+          <ul class="clearfix">
+            <li>平价</li>
+            <li>中档</li>
+            <li>高档</li>            
+          </ul>
+      </li>      
+      <li>
+          <span>所在地：</span>
+          <ul class="clearfix">
+            <li>甜美甜美甜美甜美甜美甜美</li>
+            <li>欧美</li>
+            <li>淑女</li>            
+            <li>淑女</li>            
+            <li>淑女</li>
+          </ul>
+      </li>-->
+    </ul>
+  </section>
+  <section class="shopex-content-padded form-op-section go-shopping" style="display:none">
+    <!-- <a class="shopex-btn shopex-btn-warning shopex-btn-block bbc-btn-warning" >继续进货</a> -->
+    <a class="shopex-btn shopex-btn-warning shopex-btn-block bbc-btn-warning" onclick="addProperties()">保存确定</a>
+
+    <!-- href="<{url action=topwap_ctl_default@index}>" -->
+  </section>
+</section>
+<!-- <section class="lovefixed">
+    <a class="close-love" href="javascript:;">×</a>
+</section> -->
+
+ <script>
+  var timer01 = null;
+  var adI;
+    timer01 = setInterval(function(){
+      adI = $('.adI').html();
+      adI--;
+      if(adI == 0){
+        location.href = '<{url action=topwap_ctl_default@index}>';
+        clearInterval(timer01);
+        timer01 = null;
+      }
+      $('.adI').html(adI);
+    },1000);
+
+  $('.love-type li').eq(0).addClass('more-select');
+  $('.love-type .more-select ul').addClass('mselect');
+  $('.love-type ul li').click(function(){
+    clearInterval(timer01);
+    $('.removeCon').html('');
+    $('.go-shopping').css('display','block');
+    if($(this).parents('ul').parents('li').hasClass('more-select')){
+        $(this).toggleClass('select-type');
+        if($(this).parents('.mselect').find('li.select-type').length>5){
+          $(this).removeClass('select-type');
+          alert('最多选五个');
+        }
+    }else{
+      $(this).addClass('select-type').siblings('li').removeClass('select-type');
+    }
+  });
+
+
+function addProperties(){
+    var data = '';
+    var pname = '';
+    var p_index = '';
+    $(".love-type .select-type").each(function() { 
+      data += $(this).attr('data-pid')+",";
+      pname += $(this).attr('data-pname')+",";
+      p_index += $(this).attr('data-pindex')+",";
+    });
+    var url = '<{url action=topwap_ctl_passport@addpps}>';
+    $.post(url,{pid:data,pname:pname,p_index:p_index},function(rs){
+      if(rs.error){
+        shopex.alert(rs.message);
+      }
+      if(rs.success) {
+        setInterval(function(){location.href = rs.redirect;},1000);
+      }
+    })
+}
+for(var i=0; i<$('.love-type>li').length; i++){
+  var ltLi= $('.love-type>li').eq(i).children('ul').children('li').length;
+  for(var j=0; j<ltLi; j++){
+    var liTwo = j%3;
+    switch(liTwo){
+      case 2: 
+      $('.love-type>li').eq(i).children('ul').children('li').eq(j).addClass('noMargin');
+      break;
+    }
+  }
+}
+$('.love-type>li').eq(2).removeClass('lei');
+ </script>

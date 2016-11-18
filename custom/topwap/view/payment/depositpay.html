@@ -1,0 +1,33 @@
+<!-- <header class="page-header">
+	<a href="<{url action=topwap_ctl_default@index}>"><i class="header-left icon-func bbc-icon"></i></a>
+	<div class="header-title">预存款支付</div>
+</header> -->
+<section>
+	<form class="form-container" action="<{url action=topwap_ctl_paycenter@dopayment}>" method="post" data-async="false" target="_self" >
+	<input type="hidden" name="payment[payment_id]" value="<{$trades.payment_id}>">
+      <input type="hidden" name="payment[money]" value="<{$trades.cur_money}>">
+      <input type="hidden" name="payment[tids]" value="<{$tids}>">
+      <input type="hidden" name="payment[pay_app_id]" value="deposit">
+		<section class="section-white section-container">
+			<div class="section-init">支付金额</div>
+			<div class="section-init pay-num"><{$trades.cur_money|cur}></div>
+		</section>
+		<section class="shopex-input-group">
+			<div class="shopex-input-row">
+				<label>支付密码：</label> <input type="password"
+					class="shopex-input-clear" placeholder="请输入您的支付密码" name="deposit_password" required data-caution="请输入支付密码">
+			</div>
+		</section>
+		<section class="shopex-content-padded form-op-section">
+			<button type="submit"
+				class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning"
+				>确认支付</button>
+		</section>
+		<section class="content-horizontal-padded content-right">
+			<a class="fontS font-orange" href="<{url action=topwap_ctl_member_deposit@forgetPassword}>">忘记支付密码</a>
+		</section>
+	</form>
+</section>
+<script>
+
+</script>

@@ -1,0 +1,13 @@
+<{foreach from=$bsdata item=bs}>
+  <div class="oneRate clearfix">
+      <div class="customShow"><span class="nowrap"><{$bs.user_name}></span></div>
+      <div class="jiBie clearfix">
+        <div class="clearfix">
+          <span class="fl rateType"><em>评价:</em><em class="bbc-icon good-rate bbc-icon-rate">好评</em></span>
+          <span class="fl nowrap">采购量：<{$bs.item_sell}></span>
+        </div>
+        <span class="rateMiaoshu"><{$bs.content}></span>
+      </div>
+      <div class="cospro"><{if $bs.rate_pic}><a href="<{url action=topwap_ctl_item_detail@index item_id=$bs.item_id}>"><img src="<{$env.base_full_url}><{$bs.rate_pic}>"></a><{/if}></div>
+   </div>
+<{/foreach}>

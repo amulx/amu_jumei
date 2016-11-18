@@ -1,0 +1,71 @@
+<form id="buyersaidForm" action="?app=sysrate&ctl=buyersaid&act=saveBuyerSaid"  method="POST" >
+  <input type="hidden" name="said_id" value="<{$buyerInfo.said_id}>">
+  <div class="tableform">
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>会员名称：<{/t}></th>
+          <td><{input type="text" name="user_name" style="width:120px" vtype="required" value=$buyerInfo.user_name}><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>是否匿名：<{/t}></th>
+          <td>
+            <input type="radio" name="anony" value="1" <{if $buyerInfo.anony eq '1'}>checked="checked"<{/if}>>是
+            <input type="radio" name="anony" value="0" <{if $buyerInfo.anony eq '0'}>checked="checked"<{/if}>>否
+          </td>
+        </tr>
+        <tr>
+          <th><{t}>评价内容：<{/t}></th>
+          <td><{input type="textarea" name="content" style="width:500px;height:100px" vtype="required" value=$buyerInfo.content}><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>晒单图片：<{/t}></th>
+          <td><{input type="image" name="rate_pic" vtype="required" value=$buyerInfo.rate_pic}><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>评论的商品ID：<{/t}></th>
+          <td><{input type="text" name="item_id" style="width:120px" vtype="required" value=$buyerInfo.item_id}><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>商品出售数：<{/t}></th>
+          <td><{input type="text" name="item_sell" style="width:120px" vtype="required" value=$buyerInfo.item_sell}><em><font color='red'>*</font></em></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="table-action">
+    <{button type="submit" id='buyersaid-form-submit' label="保存"|t:'sysuser'}>
+  </div>
+
+</form>
+
+<script>
+  (function(){
+    var _form = $('buyersaidForm');
+    var btn =$('buyersaid-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+  })();
+</script>

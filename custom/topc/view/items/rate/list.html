@@ -1,0 +1,92 @@
+<div id="all">
+  <table class="item-table table-evaluation">
+    <colgroup>
+      <col class="table-col-1" width="75%">
+      <col class="table-col-2" width="25%">
+    </colgroup>
+    <tbody>
+      <{if $rate}>
+      <{foreach from=$rate item=rateInfo}>
+      <tr>
+        <td>
+          <div class="level"><i class="icon icon-flower <{$rateInfo.result}>"></i>
+            <br><{if $rateInfo.result == 'good'}>好评<{elseif $rateInfo.result=='bad'}>差评<{else}>中评<{/if}></div>
+          <{if $rateInfo.anony}>
+          <div class="user-name"><{$userName[$rateInfo.user_id]|hidden_show}></div>
+          <{else}>
+          <div class="user-name"><{$userName[$rateInfo.user_id]}></div>
+          <{/if}>
+          <div class="detail">
+            <div><{if $rateInfo.content}><span class="col999">[初次评论]</span>&nbsp;<{$rateInfo.content}><{else}>默认评价<{/if}></div>
+            <{if $rateInfo.rate_pic}>
+            <div class="show-pics">
+              <ul>
+                <{foreach from=$rateInfo.rate_pic item=pic}>
+                <a href="<{$pic|storager}>" target="_blank"><img src="<{$pic}>"><i class="icon icon-search-a"></i></a>
+                <{/foreach}>
+              </ul>
+            </div>
+            <{/if}>
+            <div class="creat-date"><{$rateInfo.created_time|cdate}></div>
+            <{if $rateInfo.is_reply}>
+            <div class="feedback">
+              <div class="feedback-tit">卖家回复</div>
+              <div class="feedback-txt">
+                <p><{$rateInfo.reply_content}></p>
+                <span><{$rateInfo.reply_time|cdate}></span>
+              </div>
+            </div>
+            <{/if}>
+          </div>
+
+          <{if $rateInfo.is_append && $rateInfo.append}>
+          <!-- 追加评论区域开始 -->
+          <div class="add-comment">
+            <div><span class="col999">[追加评论]</span>&nbsp;<{$rateInfo.append.append_content}></div>
+            <{if $rateInfo.append.append_rate_pic}>
+            <div class="show-pics">
+              <ul>
+                <{foreach from=$rateInfo.append.append_rate_pic item=pic}>
+                <a href="<{$pic|storager}>" target="_blank"><img src="<{$pic}>"><i class="icon icon-search-a"></i></a>
+                <{/foreach}>
+              </ul>
+            </div>
+            <{/if}>
+            <div class="creat-date">收货后<{if ($rateInfo.append.created_time - $rateInfo.append.trade_end_time)/86400 <= 1}>当<{else}><{($rateInfo.append.created_time - $rateInfo.append.trade_end_time)/86400|round}><{/if}>天追加</div>
+            <{if $rateInfo.append.is_reply}>
+            <div class="feedback">
+              <div class="feedback-tit">卖家回复</div>
+              <div class="feedback-txt">
+                <p><{$rateInfo.append.append_reply_content}></p>
+                <span><{$rateInfo.append.reply_time|cdate}></span>
+              </div>
+            </div>
+            <{/if}>
+          </div>
+          <!-- 追加评论区域结束 -->
+          <{/if}>
+        </td>
+        <td>
+          <{if $rateInfo.spec_nature_info}>
+          <{$rateInfo.spec_nature_info}>
+          <{/if}>
+        </td>
+      </tr>
+      <{/foreach}>
+      <{else}>
+      <tr>
+        <td>
+        <div class="no-content" >
+          <span class="txt">暂无<{if $result == 'all'}>评价<{elseif $result=='bad'}>差评<{elseif $result=="neutral"}>中评<{else}>好评<{/if}></span>
+        </div>
+        </td>
+      </tr>
+      <{/if}>
+    </tbody>
+  </table>
+  <{pagers data=$pagers ajax='true' load_id=$result }>
+</div>
+<div id="good" style="display: none;"></div>
+<div id="neutral" style="display: none;"></div>
+<div id="bad" style="display: none;"></div>
+<div id="dialog" style="display:none"></div>

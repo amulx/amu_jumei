@@ -1,0 +1,113 @@
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+</header> -->
+<section style="padding-top:1.5rem;">
+<form action="<{url action=topwap_ctl_member_rate@doCreateRate}>" method="post">
+ <input type='hidden' name="tid" value=<{$tradeInfo.tid}> >
+    <!-- <section class="section-white content-padded">
+      <div class="shop-goods-brand">
+        <div class="shop-goods-brand-logo"><img src="<{$tradeInfo.shop_id|shoplogo|storager}>" alt=""></div>
+        <div class="shop-goods-brand-name"><{$tradeInfo.shop_id|shopname}></div>
+      </div>
+      <div class="rating">
+        <div class="box-display rating-item">
+          <div class="rating-issue">描述相符</div>
+          <div class="rating-stars box-item-flex1">-->
+          <input id="goods" type="hidden" name="tally_score" value="">
+            <!--<i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+          </div>
+        </div>
+        <div class="box-display rating-item">
+          <div class="rating-issue">服务态度</div>
+          <div class="rating-stars box-item-flex1">-->
+           <input id="server" type="hidden" name="attitude_score" value="">
+            <!--<i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+          </div>
+        </div>
+        <div class="box-display rating-item">
+          <div class="rating-issue">发货速度</div>
+          <div class="rating-stars box-item-flex1">-->
+          <input id="send" type="hidden" name="delivery_speed_score" value="">
+            <!--<i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+            <i class="bbc-icon bbc-icon-faverite"></i>
+          </div>
+        </div>
+      </div>
+    </section> -->
+    <{foreach from=$tradeInfo.orders item=orderitem}>
+        <{if $orderitem.buyer_rate != '0' }><{continue}><{/if}>
+        <input type="hidden" name="rate_data[<{$orderitem.oid}>][oid]" value="<{$orderitem.oid}>" >
+    <section class="section-white">
+      <div class="section section-title">
+        <div class="thumb"><img src="<{$orderitem.pic_path|default:$defaultImageId.T.default_image|storager}>" alt=""></div>
+        <div class="box-item-flex1 fontS"><{$orderitem.title}></div>
+      </div>
+      <div>
+        <div id="comment-choose" class="bbc-keyword-group">
+        <input type="hidden" name="rate_data[<{$orderitem.oid}>][result]" value="good">
+          <span class="rate-good active" data-value="good"><i class="bbc-icon bbc-icon-rate"></i> 好评</span>
+          <span class="rate-normal" data-value="neutral"><i class="bbc-icon bbc-icon-rate"></i> 中评</span>
+          <span class="rate-bad" data-value="bad"><i class="bbc-icon bbc-icon-rate"></i> 差评</span>
+        </div>
+        <div class="content-padded"><textarea class="bbc-texteara" name="rate_data[<{$orderitem.oid}>][content]" id=""></textarea></div>
+      </div>
+    </section>
+    <{/foreach}>
+    <footer class="navigation">
+      <div class="action-bar-mini">
+        <div class="action-bar-mini-item shopex-col-xs-8">
+          <div class="shopex-checkbox bbc-checkbox shopex-left">
+            <label>匿名发布</label>
+
+            <input type="checkbox" name="anony" <{if $tradeInfo.anony == '1'}>checked<{/if}> value="true">
+          </div>
+        </div>
+        <div class="action-bar-op-item">
+          <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">发布评论</button>
+        </div>
+      </div>
+    </footer>
+    </form>
+  </section>
+  <script>
+  setStars('#goods', 5);
+  setStars('#server', 5);
+  setStars('#send', 5);
+
+  //店铺评星级
+  function setStars(starDom, defaultVal){
+    var stars = $(starDom).parent().find('i');
+    $(starDom).val(defaultVal);
+
+    $(stars).on('tap' ,function(){
+      var n = $(this).index();
+      $(starDom).val(n);
+      defaultVal = $(this).index();
+      for (var i = 0; i < stars.length; i++) {
+        if(i >= defaultVal){
+          $(stars[i]).removeClass('icon-star active').addClass('icon-collect');
+        }else{
+          $(stars[i]).removeClass('icon-collect').addClass('icon-star active');
+        }
+      }
+    });
+    $('#comment-choose').on('tap','span',function(){
+      var data = $(this).attr('data-value');
+      $(this).addClass('active').siblings().removeClass('active');
+      $(this).parent().find('input').val(data);
+    });
+  };
+</script>
+

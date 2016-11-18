@@ -1,0 +1,19 @@
+<{if $item.spec_desc}>
+<div id="skuScroll" class="goods-sku-list shopex-off-canvas-wrap">
+<!-- id="skuScroll" -->
+  <div  class="shopex-scroll">
+    <ul>
+      <{foreach from=$item.spec_desc item=spec key=spec_id}>
+      <li>
+        <div class="goods-sku-name"><{$item.spec.specName.$spec_id}></div>
+        <div class="goods-sku-options">
+          <{foreach from=$spec item=spec_value key=spec_value_id }>
+          <span data-spec-value-id="<{$spec_value_id}>"><{$spec_value.spec_value}></span>
+          <{/foreach}>
+        </div>
+      </li>
+      <{/foreach}>
+    </ul>
+  </div>
+</div>
+<{/if}>

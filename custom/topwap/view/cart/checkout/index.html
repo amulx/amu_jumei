@@ -1,0 +1,867 @@
+<style>
+.shopex-bar {
+  border-bottom: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  box-shadow: none;
+  height: 3rem;
+  padding: 0;
+}
+
+.shopex-views,
+.shopex-view,
+.shopex-pages,
+.shopex-page,
+.shopex-page-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  /*min-height: 100%;*/
+  /*background-color: #fff;*/
+}
+.shopex-page-content .shopex-input-group:before {
+  height: 0;
+}
+.shopex-pages {
+  top: 3rem;
+  min-height: auto;
+}
+.shopex-page,
+.shopex-pages .shopex-page-content .shopex-page {
+  display: none;
+}
+.shopex-pages .shopex-page {
+  background-color: #efeff4;
+  display: block;
+}
+.shopex-page.shopex-transitioning {
+  -webkit-transition: -webkit-transform 300ms ease;
+  transition: transform 300ms ease;
+}
+.shopex-page-left {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.shopex-ios .shopex-page-left {
+  -webkit-transform: translate3d(-20%, 0, 0);
+  transform: translate3d(-20%, 0, 0);
+}
+.shopex-navbar {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  height: 3rem;
+  background-color: #fff;
+}
+.shopex-navbar .shopex-bar {
+  position: absolute;
+  background: transparent;
+  text-align: center;
+}
+.shopex-android .shopex-navbar-inner.shopex-navbar-left,
+.shopex-ios .shopex-navbar-left .shopex-left,
+.shopex-ios .shopex-navbar-left .shopex-center,
+.shopex-ios .shopex-navbar-left .shopex-right {
+  opacity: 0;
+}
+.shopex-navbar .shopex-btn-nav {
+  -webkit-transition: none;
+  transition: none;
+  -webkit-transition-duration: .0s;
+  transition-duration: .0s;
+}
+.shopex-navbar .shopex-bar .shopex-title {
+  display: inline-block;
+  width: auto;
+}
+.shopex-page-shadow {
+  position: absolute;
+  right: 100%;
+  top: 0;
+  width: 16px;
+  height: 100%;
+  z-index: -1;
+  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+}
+.shopex-navbar-inner.shopex-transitioning,
+.shopex-navbar-inner .shopex-transitioning {
+  -webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+/*.shopex-fullscreen {
+  position: fixed;
+  z-index: 20;
+  background-color: #000;
+}
+.shopex-ios .shopex-navbar .shopex-bar .shopex-title {
+  position: static;
+}*/
+.shopex-scroll-wrapper.has-btn {
+  bottom: 3rem;
+}
+.body-padding-mini .action-bar-mini {
+  position: absolute;
+}
+</style>
+<!--页面主结构开始-->
+<div id="app" class="shopex-views">
+  <div class="shopex-view">
+    <div class="shopex-navbar" style="display: none">
+    </div>
+    <div class="shopex-pages topten">
+    </div>
+  </div>
+</div>
+<!--页面主结构结束-->
+<!--单页面开始-->
+<div id="settle" class="shopex-page">
+  <!--页面标题栏开始-->
+  <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header bbc-bar">
+	  <a href="<{$nextPage}>"><i class="header-left icon-func bbc-icon bbc-icon-back shopex-left"></i></a>
+    <div class="shopex-center shopex-title header-title">结算订单</div>
+  </header>
+  <!--页面标题栏结束-->
+  <!--页面主内容区开始-->
+  <div class="shopex-page-content">
+    <form action="<{url action=topwap_ctl_trade@create}>" method="post" id="form_settle">
+      <input type="hidden" name="checkout" value="1">
+      <input type="hidden" name="mode" value="<{$mode}>">
+      <input type="hidden" name="md5_cart_info" value="<{$md5_cart_info}>">
+      <div class="shopex-scroll-wrapper has-btn">
+        <div class="shopex-scroll">
+          <section class="section-white">
+            <ul>
+              <li class="shopex-table-view-cell">
+                <input type="hidden" name="addr_id" class="op-address" value="<{$def_addr.addr_id}>">
+                <a href="<{url action=topwap_ctl_cart_checkout@addrList mode=$mode}>" class="shopex-navigate-right">
+                  <div class="receiver-info">
+                    <i class="bbc-icon bbc-icon-location-gap"></i>
+                    <{if $def_addr}>
+                    <div class="receiver-info-item has-arrow">
+                      <div class="receiver-user">
+                        <div class="receiver-name"><{$def_addr.name}></div>
+                        <div class="receiver-phone"><{$def_addr.mobile}></div>
+                      </div>
+                      <div class="add-detail">
+                        <{$def_addr.area|region}>&nbsp;
+                          <{$def_addr.addr}>
+                      </div>
+                    </div>
+                    <{else}>
+                    <div class="receiver-info-item">
+                      请设置您的地址
+                    </div>
+                    <{/if}>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </section>
+          <section class="shopex-input-group payment" id="op_payment">
+            <section class="section-white">
+              <ul class="function-list">
+                <li class="shopex-table-view-cell">
+                  <a href="#payment" class="shopex-navigate-right">
+                    <div class="shopex-table">
+                      <input type="hidden" name="payment_type" class="op-pay-type" value="<{$payType.pay_type}>">
+                      <div class="shopex-table-cell shopex-col-xs-3 fontS">支付方式：</div>
+                      <div class="shopex-table-cell shopex-col-xs-9 shopex-text-right op-pay-name"><{$payType.name}></div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </section>
+          <section class="section-white order-goods checkout">
+            <{assign var=cartData value=$cartInfo.resultCartData}>
+            <{include file="topwap/cart/checkout/shop_cart.html"}>
+          </section>
+          <section class="shopex-input-group integral-use">
+            <section class="section-white">
+              <ul class="function-list">
+                <li class="shopex-table-view-cell">
+                  <a href="#invoice" class="shopex-navigate-right act-invoice-detail">
+                    <div class="shopex-table">
+                      <div class="shopex-table-cell shopex-col-xs-3">发票信息：</div>
+                      <input type="hidden" name="invoice[need_invoice]" id="op_need_invoice" value="0">
+                      <input type="hidden" name="" id="op_invoice_type" value="notuse">
+                      <div class="shopex-table-cell shopex-col-xs-9 shopex-text-right" id="op_invoice_name">不需要发票</div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </section>
+          <{if $if_open_point_deduction}>
+          <section class="shopex-input-group">
+            <div class="shopex-input-row shopex-checkbox bbc-checkbox">
+              <label for="for_point">积分抵扣：<span class="canuser-point">可用积分：<em id="op_left_point">0</em>, 抵扣 <em id="op_deduct_point"><{0|cur}></em></span></label>
+              <input name="use_points" id="for_point" value="" type="checkbox">
+            </div>
+          </section>
+          <{/if}>
+        </div>
+      </div>
+      <section class="action-bar-mini">
+        <div class="action-bar-op-item">
+          <div class="action-bar-op-info cart-list-total">
+            <div>合计:
+              <mark id="op_all_payment"><{$cartInfo.totalCart.totalAfterDiscount|cur}></mark>
+            </div>
+          </div>
+          <button type="submit" class="action-bar-op-btn">结算</button>
+        </div>
+      </section>
+    </form>
+
+  </div>
+</div>
+<!--单页面结束-->
+
+<div id="payment" class="shopex-page">
+  <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back shopex-left shopex-btn-nav"></i>
+    <div class="shopex-center shopex-title header-title">支付方式</div>
+  </header>
+  <div class="shopex-page-content">
+    <form action="<{url action=topwap_ctl_cart_checkout@index}>" method="post" id="form_delivery">
+      <div class="shopex-input-group">
+        <div class="shopex-input-row shopex-radio bbc-radio <{if $payType.pay_type == 'online'}>active<{/if}>">
+          <label for="for_payment_online">
+            <{$payType.name}>
+          </label>
+          <input type="radio" name="pay_type" id="for_payment_online" class="op-choose-payment" value="online" <{if $payType.pay_type == 'online'}>checked<{/if}>>
+        </div>
+        <div class="shopex-input-row shopex-radio bbc-radio <{if $payType.pay_type == 'offline'}>active<{/if}>">
+          <{if $isSelfShop && $ifOpenOffline}>
+          <label for="for_payment_offline">
+            货到付款
+          </label>
+          <input type="radio" name="pay_type" id="for_payment_offline" class="op-choose-payment" value="offline" <{if $payType.pay_type == 'offline'}>checked<{/if}>>
+          <{/if}>
+        </div>
+      </div>
+      <footer class="action-bar-mini">
+        <button type="button" class="action-bar-op-btn shopex-left shopex-action-back act-ok">确定</button>
+      </footer>
+    </form>
+  </div>
+</div>
+
+<div id="goods" class="shopex-page lazyload">
+  <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back shopex-left shopex-btn-nav act-back-clean"></i>
+    <div class="shopex-center shopex-title header-title">商品清单</div>
+  </header>
+  <div class="shopex-page-content" id="goods_content">
+  </div>
+</div>
+
+<div id="shipping" class="shopex-page lazyload">
+  <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back shopex-left shopex-btn-nav act-back-clean"></i>
+    <div class="shopex-center shopex-title header-title">配送方式</div>
+  </header>
+  <div class="shopex-page-content" id="shipping_content">
+  </div>
+</div>
+
+<div id="pick" class="shopex-page">
+  <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back shopex-left shopex-btn-nav act-back"></i>
+    <div class="shopex-center shopex-title header-title">选择自提点</div>
+  </header>
+  <div class="shopex-page-content" id="pick_content">
+  </div>
+</div>
+
+<div id="coupon" class="shopex-page">
+  <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back shopex-left shopex-btn-nav act-back-clean"></i>
+    <div class="shopex-center shopex-title header-title">使用优惠券</div>
+  </header>
+  <div class="shopex-page-content" id="coupons_content">
+  </div>
+</div>
+
+<div id="invoice" class="shopex-page">
+  <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back shopex-left shopex-btn-nav act-back"></i>
+    <div class="shopex-center shopex-title header-title">发票信息</div>
+  </header>
+  <div class="shopex-page-content" id="invoice_content">
+  </div>
+</div>
+
+<script type="text/html" id="goods_template">
+<div class="shopex-scroll-wrapper">
+  <div class="shopex-scroll">
+    <section class="section-white">
+      <ul class="order-goods-list">
+      <% for(var i in object) { %>
+        <li>
+          <div class="thumbnail">
+            <div class="thumb-img"><img src="<%= object[i].image_default_id %>" alt="<%= object[i].title %>"></div>
+            <div class="caption">
+              <div class="order-goods-info">
+                <div class="order-goods-title"><%= object[i].title %></div>
+                <div class="order-goods-sku"><%= object[i].spec_info %></div>
+                <div class="order-goods-price"><mark><%= object[i].price.price %></mark></div>
+              </div>
+              <div class="order-goods-num content-right">x <%= object[i].quantity %></div>
+            </div>
+          </div>
+        </li>
+      <% } %>
+      </ul>
+    </section>
+  </div>
+</div>
+</script>
+
+<script type="text/html" id="shipping_template">
+  <form action="<{url action=topwap_ctl_cart_checkout@index}>" method="post" id="form_shipping" data-async="false">
+    <div class="shopex-input-group">
+      <% dtyList.forEach(function(dty){ %>
+      <div class="shopex-input-row shopex-radio bbc-radio <% if(dty.isDefault){ %>active<% } %>">
+        <label for="for_<%= dty.shipping_type %>">
+          <%= dty.name %>
+        </label>
+        <input type="radio" id="for_<%= dty.shipping_type %>" name="shipping[<%= shop_id %>][shipping_type]" class="op-shipping-type" value="<%= dty.shipping_type %>" <% if(dty.isDefault){ %>checked<% } %>>
+      </div>
+      <% }) %>
+    </div>
+    <div id="ziti" class="section-white" style="display: none;">
+      <ul class="function-list">
+        <li class="shopex-table-view-cell">
+          <a href="#pick" class="shopex-navigate-right act-pick-detail">
+            <div class="shopex-table">
+              <input type="hidden" name="ziti[<%= shop_id %>][ziti_addr]" value="<%= ziti_addr %>" id="op_pick_addr">
+              <input type="hidden" name="ziti[<%= shop_id %>][ziti_name]" id="op_pick_name">
+              <div class="shopex-table-cell">自提地点</div>
+              <div class="shopex-table-cell shopex-text-right" id="op_choosen_pick">
+              <%= ziti_addr ? ziti_name : '请选择自提点' %>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <footer class="action-bar-mini">
+      <button type="button" class="action-bar-op-btn shopex-action-back shopex-left act-ok">确定</button>
+    </footer>
+  </form>
+</script>
+
+<script type="text/html" id="pick_template">
+<div class="shopex-scroll-wrapper has-btn">
+  <div class="shopex-scroll">
+    <section class="section-white">
+      <div class="shopex-input-group">
+        <% zitiDataList.forEach(function(ziti) { %>
+        <div class="shopex-input-row shopex-radio bbc-radio op-pick-handle <% if(ziti.isDefault == ziti.id) { %>active<% } %>" data-id="<%= ziti.id %>" data-addr="<%= ziti.name %>">
+          <label for="for_ziti<%= ziti.id %>">
+            <p><%= ziti.name %></p>
+            <p class="ziti-ads fontS font-gray-20">
+              <{t}>地址：<%= ziti.area %> <%= ziti.addr %><{/t}>
+            </p>
+          </label>
+          <input type="radio" name="ziti" id="for_ziti<%= ziti.id %>" value="<%= ziti.id %>" <% if(ziti.isDefault == ziti.id) { %>checked<% } %>>
+        </div>
+        <% }) %>
+      </div>
+    </section>
+  </div>
+</div>
+<footer class="action-bar-mini">
+  <button type="button" class="action-bar-op-btn shopex-action-back shopex-left act-ok">确定</button>
+</footer>
+</script>
+
+<script type="text/html" id="coupons_template">
+<div class="shopex-scroll-wrapper has-btn">
+  <div class="shopex-scroll">
+    <section class="op-coupon-list" data-shop-id="<%= shop_id %>">
+      <div class="shopex-input-group">
+        <div class="shopex-input-row shopex-radio bbc-radio">
+          <label for="for_nocoupon">
+            <p>不使用优惠券</p>
+          </label>
+          <input type="radio" name="coupon[<%= shop_id %>][coupon_code]" id="for_nocoupon" value="-1">
+          <input type="hidden" name="coupon[<%= shop_id %>][coupon_name]" value="不使用">
+        </div>
+        <% couponlist.forEach(function(coupon, index) { %>
+        <div class="shopex-input-row shopex-radio bbc-radio">
+          <label for="for_coupon_<%= index %>">
+            <p><span class="tag">优惠券</span><%= coupon.coupon_name %></p>
+            <% if(coupon.price) {%>
+              <p class="coupon-range fontS font-gray-20">优惠券：<%= coupon.start_time %> - <%= coupon.end_time %></p>
+            <% }else{%>
+              <p class="coupon-range fontS font-gray-20">优惠券：<%= coupon.start_time %> - 永久</p>
+            <% } %>
+          </label>
+          <input type="radio" name="coupon[<%= shop_id %>][coupon_code]" id="for_coupon_<%= index %>" value="<%= coupon.coupon_code %>">
+          <input type="hidden" name="coupon[<%= shop_id %>][coupon_name]" value="<%= coupon.coupon_name %>">
+        </div>
+        <% }) %>
+      </div>
+    </section>
+  </div>
+</div>
+<footer class="action-bar-mini">
+  <button type="button" class="action-bar-op-btn shopex-action-back shopex-left act-ok">确定</button>
+</footer>
+</script>
+
+<script type="text/html" id="invoice_template">
+<div class="shopex-scroll-wrapper has-btn">
+  <div class="shopex-scroll">
+    <section class="section-white">
+      <div class="section-title">
+        <div class="title-txt"><i class="bbc-icon bbc-icon-invoice fontm"></i> 发票类型</div>
+      </div>
+      <div id="invoiceType" class="invoice-tab-group content-bottom-padded">
+        <label <% if(invoice_type == 'normal') {%>class="active"<% } %>><input type="radio" name="invoice[invoice_type]" value="normal" class="shopex-hidden op-choose-invoice" <% if(invoice_type == 'normal') {%>checked<% } %>>普通发票</label>
+        <label <% if(invoice_type == 'vat') {%>class="active"<% } %>><input type="radio" name="invoice[invoice_type]" value="vat" class="shopex-hidden op-choose-invoice" <% if(invoice_type == 'vat') {%>checked<% } %>>增值税发票</label>
+        <label <% if(invoice_type == 'notuse') {%>class="active"<% } %>><input type="radio" name="invoice[invoice_type]" value="notuse" class="shopex-hidden op-choose-invoice" <% if(invoice_type == 'notuse') {%>checked<% } %>>不需要发票</label>
+      </div>
+    </section>
+    <section class="invoice-content">
+      <div class="section-white invoice-content-item" style="display:none;">
+        <div class="section-title">
+          <div class="title-txt"><i class="bbc-icon bbc-icon-invoice fontm"></i> 发票抬头</div>
+        </div>
+        <div id="titleType" class="invoice-tab-group content-bottom-padded">
+          <label <% if(invoice_title == 'individual') {%>class="active"<% } %>>
+            <input type="radio" name="invoice[invoice_title]" value="individual" class="shopex-hidden" <% if(invoice_title == 'individual') {%>checked<% } %>>个人
+          </label>
+          <label <% if(invoice_title == 'unit') {%>class="active"<% } %>>
+            <input type="radio" name="invoice[invoice_title]" value="unit" class="shopex-hidden" <% if(invoice_title == 'unit') {%>checked<% } %>>企业
+          </label>
+        </div>
+        <div class="content-bottom-padded">
+          <!-- <div class="section-title">
+            <div class="title-txt">发票抬头</div>
+          </div> -->
+          <p class="content-horizontal-padded">
+            <input type="text" name="invoice[invoice_content]" value="<%= invoice_content %>" placeholder="请输入抬头">
+          </p>
+          <p class="content-horizontal-padded fontS font-gray-20">订单中的商品由入驻商家销售，发票内容由商家决定，由商家开具寄出。</p>
+        </div>
+      </div>
+      <div class="section-white invoice-content-item" style="display: none;">
+        <div class="shopex-input-group">
+          <div class="shopex-input-row">
+            <label>公司名称</label>
+            <input type="text" name="invoice[invoice_vat][company_name]" class="shopex-input-clear" placeholder="请输入公司名称" value="<%= invoice_vat.company_name %>">
+          </div>
+          <div class="shopex-input-row">
+            <label>纳税人识别号</label>
+            <input type="text" name="invoice[invoice_vat][registration_number]" class="shopex-input-clear" placeholder="请输入纳税人识别号" value="<%= invoice_vat.registration_number %>">
+          </div>
+          <div class="shopex-input-row">
+            <label>公司地址</label>
+            <input type="text" name="invoice[invoice_vat][company_address]" class="shopex-input-clear" placeholder="请输入公司地址" value="<%= invoice_vat.company_address %>">
+          </div>
+          <div class="shopex-input-row">
+            <label>开户银行</label>
+            <input type="text" name="invoice[invoice_vat][bankname]" class="shopex-input-clear" placeholder="请输入开户银行" value="<%= invoice_vat.bankname %>">
+          </div>
+          <div class="shopex-input-row">
+            <label>银行帐户</label>
+            <input type="text" name="invoice[invoice_vat][bankaccount]" class="shopex-input-clear" placeholder="请输入开户银行帐号" value="<%= invoice_vat.bankaccount %>">
+          </div>
+          <div class="shopex-input-row">
+            <label>公司电话</label>
+            <input type="text" name="invoice[invoice_vat][company_phone]" class="shopex-input-clear" placeholder="请输入公司电话" value="<%= invoice_vat.company_phone %>">
+          </div>
+        </div>
+        <div class="content-padded fontS font-gray-20">订单中的商品由入驻商家销售，发票内容由商家决定，由商家开具寄出。</div>
+      </div>
+      <div class="invoice-content-item" style="display: none;"></div>
+    </section>
+  </div>
+</div>
+<footer class="action-bar-mini">
+  <button type="button" class="action-bar-op-btn shopex-action-back shopex-left act-ok">确定</button>
+</footer>
+</script>
+
+<{script src="template.js" app="topwap"}>
+<script>
+var mode = $('input[name=mode]').val();
+var default_image = "<{$defaultImageId.T.default_image|storager}>";
+
+var addr_list = <{$userAddrList|json_encode}>;
+var checkout_info = <{$cartInfo.resultCartData|json_encode}>;
+
+$.each(checkout_info, function(k, info) {
+  $.each(info.object, function(k, v) {
+    v.image_default_id = v.image_default_id || default_image;
+    v.price.price = Currency.format(v.price.price);
+  });
+
+  info.couponlist && info.couponlist.forEach(function(coupon) {
+    coupon.start_time = Date.format(coupon.start_time * 1000);
+    coupon.end_time = Date.format(coupon.end_time * 1000);
+  });
+});
+
+var invoice = <{$invoice|json_encode}> || {};
+
+totalPrice();
+
+//adjustScroller('#invoice');
+
+(function($) {
+  $.init({
+    swipeBack: true //启用右滑关闭功能
+  });
+
+  var viewList = $('#app').view({
+    defaultPage: '#settle'
+  });
+  //初始化单页的区域滚动
+  $('.shopex-scroll-wrapper').scroll();
+
+  var view = viewList.view;
+
+  //处理view的后退与webview后退
+  var oldBack = $.back;
+  $.back = function() {
+    if (viewList.canBack()) { //如果view可以后退，则执行view的后退
+      viewList.back();
+    } else { //执行webview后退
+      oldBack();
+    }
+  };
+})(shopex);
+
+$('#settle .act-goods-detail').on('tap', function(e) {
+  var shop = this.rel;
+  var html = template('goods_template', checkout_info[shop]);
+  $('#goods_content').html(html);
+  shopex('#goods_content .shopex-scroll-wrapper').scroll();
+});
+
+$('#settle .act-shipping-detail').on('tap', function(e) {
+  var shop = this.rel;
+  var addr = $('.op-address').val();
+
+  if(!addr) {
+    shopex.toast('请先填写收货地址');
+    e.stopPropagation();
+    return;
+  }
+
+  $('#shipping_content').html('<div class="shopex-text-center shopex-content-padded"><span class="shopex-spinner"></span></div>');
+  $.post('<{url action=topwap_ctl_cart_checkout@deliveryList}>', {
+    shop_id: shop,
+    shop_type: checkout_info[shop].shop_type,
+    addr_id: addr,
+    ziti_id: null,
+  }, function(rs) {
+    if(rs.error) {
+      shopex.toast(rs.message, function() {
+        location.href = rs.redirect;
+      });
+      return;
+    }
+    var shipping = rs;
+    shipping.shop_id = shop;
+    var html = template('shipping_template', shipping);
+    $('#shipping_content').html(html);
+    shopex('#shipping_content .shopex-scroll-wrapper').scroll();
+
+    var shopContent = $('#op_shop_' + shop);
+
+    $('#shipping').find('.act-ok').on('tap', function(e) {
+      var radio = $('.op-shipping-type:checked');
+      if(radio.val() == 'ziti' && $('#op_pick_addr').val() == '') {
+        shopex.alert('请选择自提点！');
+        return false;
+      }
+
+      shopContent.find('.op-shipping-id').val(radio.val());
+      shopContent.find('.op-shipping-name').text(radio.val() == 'ziti' ? '自提:' + $('#op_pick_name').val() : radio.prev('label').text());
+      shopContent.find('.op-ziti-addr').val($('#op_pick_addr').val());
+      shopContent.find('.op-ziti-name').val($('#op_pick_name').val());
+
+      storeCheckoutInfo();
+      totalPrice();
+    });
+
+    $('#shipping').find('.act-pick-detail').on('tap', function(e) {
+
+      var html = template('pick_template', shipping);
+      $('#pick_content').html(html)
+
+        .find('input[type=radio]').change(function(e) {
+          $(this).parents('.op-pick-handle').addClass('active').siblings('.active').removeClass('active');
+        })
+        .filter('[value="' + $('#op_pick_addr').val() + '"]').prop('checked', true);
+
+        shopex('#pick_content .shopex-scroll-wrapper').scroll();
+
+      $('#pick .act-ok').on('tap', function(e) {
+        var radio = $('#pick input[type=radio]:checked');
+        var parent = radio.parents('.op-pick-handle');
+
+        $('#op_pick_addr').val(radio.val());
+        $('#op_pick_name').val(parent.data('addr'));
+        $('#op_choosen_pick').text(parent.data('addr'));
+      });
+    });
+
+    $('.op-shipping-type[value="' + shopContent.find('.op-shipping-id').val() + '"]').prop('checked', true).parent('.shopex-radio').trigger('click');
+    if(shopContent.find('.op-shipping-id').val() == 'ziti') {
+      $('#op_pick_addr').val(shopContent.find('.op-ziti-addr').val());
+      $('#op_pick_name').val(shopContent.find('.op-ziti-name').val());
+      $('#op_choosen_pick').text(shopContent.find('.op-ziti-name').val());
+    }
+  });
+
+});
+
+$('#settle .act-coupons-detail').on('tap', function(e) {
+  var shop = this.rel;
+  var html = template('coupons_template', checkout_info[shop]);
+  $('#coupons_content').html(html)
+    .find('input[value="' + $(this).find('.op-coupon-code').val() + '"]').prop('checked', true);
+  shopex('#coupons_content .shopex-scroll-wrapper').scroll();
+});
+
+$('#settle .act-invoice-detail').on('tap', function(e) {
+  if($('#invoice_content').html().trim()) {
+    return;
+  }
+  if(!invoice.invoice_vat) {
+    invoice.invoice_vat = {};
+  }
+  var html = template('invoice_template', invoice);
+  $('#invoice_content').html(html);
+  shopex('#invoice_content .shopex-scroll-wrapper').scroll();
+
+  $('#invoiceType .op-choose-invoice[value="' + $('#op_invoice_type').val() + '"]').prop('checked', true).parent().trigger('tap');
+});
+
+$('.act-delivery').on('tap', function() {
+  storeCheckoutInfo();
+});
+
+$('#payment').on('tap', '.shopex-radio', function() {
+  $(this).addClass('active').siblings('.active').removeClass('active');
+});
+
+$('#shipping').on('click', '.shopex-radio', function() {
+  $(this).addClass('active').siblings('.active').removeClass('active');
+
+  var value = $(this).find('input:checked').val();
+  if (value == 'ziti') {
+    $('#ziti').show();
+  }
+  else {
+    $('#ziti').hide();
+  }
+});
+
+$('#goods .act-back-clean').on('tap', function (e) {
+  $('#goods_content').empty();
+});
+
+$('#shipping .act-back-clean').on('tap', function (e) {
+  $('#shipping_content').empty();
+});
+
+$('#coupon .act-back-clean').on('tap', function (e) {
+  $('#coupons_content').empty();
+});
+
+$('#payment .act-ok').on('tap', function (e) {
+  // if(!$('#payment .op-choose-payment:checked').length) {
+  //   shopex.alert('请选择支付方式！');
+  //   return false;
+  // }
+  var radio = $(this.form).find('.op-choose-payment:checked');
+  var label = radio.prev('label');
+
+  $('#settle .op-pay-type').val(radio.val());
+  $('#settle .op-pay-name').text(label.text());
+
+  storeCheckoutInfo();
+});
+
+$('#coupon').on('tap', '.act-ok', function(e) {
+  var radio = $('#coupon input[type=radio]:checked');
+  var shopId = radio.parents('.op-coupon-list').data('shopId');
+  var coupon_handle = $('.op-shop-info[data-shop-id="' + shopId + '"]');
+
+  var callback = radio.val() == '-1' ? 'cancelCoupon' : 'useCoupon';
+  window[callback]($('.op-coupon-list'), function(rs) {
+    coupon_handle.find('.op-coupon-code').val(radio.val());
+    coupon_handle.find('.op-coupon-name').text(radio.siblings('input[type=hidden]').val());
+
+    storeCheckoutInfo();
+  });
+});
+
+$('#invoice').on('tap', '.act-ok', function(e) {
+  var radio = $('#invoiceType').find('.op-choose-invoice:checked');
+
+  $('#op_invoice_type').val(radio.val());
+  $('#op_need_invoice').val(radio.val() == 'notuse' ? 0 : 1);
+  $('#op_invoice_name').text(radio.parent('label').text());
+
+  // invoice = storeInvoiceInfo();
+  storeCheckoutInfo();
+})
+.on('tap', '#invoiceType label', function() {
+  var index = $(this).index();
+  var items = $('.invoice-content').find('.invoice-content-item');
+  $(this).addClass('active').siblings('.active').removeClass('active');
+  $(items[index]).show().siblings().hide();
+})
+.on('tap', '#titleType label', function() {
+  $(this).addClass('active').siblings().removeClass('active');
+});
+
+$('#form_settle button[type=submit]').click(function() {
+  $('#invoice').appendTo(this.form);
+});
+
+function adjustScroller(id) {
+  $(id).find('.shopex-scroll-wrapper').css('margin-bottom', '4rem');
+}
+
+function useCoupon(element, callback) {
+  $.post('<{url action=topwap_ctl_cart_checkout@useCoupon}>', {
+    mode: mode,
+    shop_id: element.data('shopId'),
+    coupon_code: element.find('input:checked').val()
+  }, function(rs) {
+    if(rs.error) {
+      shopex.toast(rs.message, function() {
+        if(rs.redirect) location.href = rs.redirect;
+      });
+      return;
+    }
+    callback && callback(rs);
+    totalPrice();
+  });
+}
+
+function cancelCoupon(element, callback) {
+  $.post('<{url action=topwap_ctl_cart_checkout@cancelCoupon}>', {
+    shop_id: element.data('shopId'),
+    coupon_code: element.find('input:checked').val()
+  }, function(rs) {
+    if(rs.error) {
+      shopex.toast(rs.message, function() {
+        if(rs.redirect) location.href = rs.redirect;
+      });
+      return;
+    }
+    callback && callback(rs);
+    totalPrice();
+  });
+}
+
+function storeCheckoutInfo() {
+  sessionStorage.setItem('_checkout_params', JSON.stringify($('#form_settle').serializeArray()));
+}
+
+function storeInvoiceInfo() {
+  var element = $('#invoice');
+  return {
+    need_invoice: 1,
+    invoice_type: element.find('input[name="invoice[invoice_type]"]:checked').val(),
+    invoice_title: element.find('input[name="invoice[invoice_title]"]:checked').val(),
+    invoice_content: element.find('input[name="invoice[invoice_content]"]').val(),
+    invoice_vat: {
+      company_name: element.find('input[name="invoice[invoice_vat][company_name]"]').val(),
+      registration_number: element.find('input[name="invoice[invoice_vat][registration_number]"]').val(),
+      company_address: element.find('input[name="invoice[invoice_vat][company_address]"]').val(),
+      bankname: element.find('input[name="invoice[invoice_vat][bankname]"]').val(),
+      bankaccount: element.find('input[name="invoice[invoice_vat][bankaccount]"]').val(),
+      company_phone: element.find('input[name="invoice[invoice_vat][company_phone]"]').val()
+    }
+  };
+}
+
+function totalPrice() {
+  var url = '<{url action=topwap_ctl_cart_checkout@total}>';
+  var add = $('.op-address').val();
+  if (add!=''){
+    $.post(url, $('#form_settle').serialize(), function(rs) {
+      if(rs.error) {
+        shopex.toast(rs.message, function() {
+          location.href = rs.redirect;
+        });
+        return;
+      }
+      $('.op-shop-info').each(function() {
+        var id = $(this).data('shopId');
+        $(this).find('.op-total').text(Currency.format(rs.shop[id].total_fee));
+        $(this).find('.op-discount').text(Currency.format(rs.shop[id].discount_fee));
+        $(this).find('.op-post').text(Currency.format(rs.shop[id].post_fee));
+      });
+      $('#op_all_payment').text(rs.allPayment);
+
+      getUserPoint(rs.allPayment, rs.allPostfee);
+    });
+  }
+}
+
+function  getUserPoint(totalPrice, postFee) {
+  $.post('<{url action=topwap_ctl_cart_checkout@ajaxGetUserPoint}>', {
+    total_price: totalPrice || 0,
+    post_fee: postFee || 0
+  }, function(rs) {
+    if(rs.error) {
+      shopex.toast(rs.message, function() {
+        location.href = rs.redirect;
+      });
+      return;
+    }
+    $('#for_point').prop('checked', false);
+    if(rs.open_point_deduction == "1" && rs.points != 0 && rs.point_deduction_max != 0) { //积分可用
+      $('.canuser-point').show();
+      var propertion = rs.point_deduction_rate;//换算比率
+      var maxpoints = rs.point_deduction_max; //最大积分
+      var points = rs.points; //总积分
+      var totalPricePoints = totalPrice * propertion;
+      var canUserPoints = 0;
+      if(maxpoints <= points) {
+        canUserPoints = maxpoints;
+      } else {
+        canUserPoints = points;
+      }
+      if(canUserPoints > totalPricePoints) {
+        canUserPoints = totalPricePoints;
+      }
+      var deduct_point = canUserPoints / propertion;
+      $('#op_left_point').text(canUserPoints);
+      $('#op_deduct_point').text(Currency.format(deduct_point));
+    } else { //积分不可用
+      $('#for_point').prop('disabled',true);
+    }
+
+    $('#for_point').off('change').on('change', function() {
+      if(this.checked) {
+        $(this).val(canUserPoints);
+        if(deduct_point){
+          $('#op_all_payment').text(Currency.format(totalPrice - deduct_point));
+        }
+      } else {
+        $('#op_all_payment').text(Currency.format(totalPrice));
+      }
+    });
+
+  });
+}
+</script>

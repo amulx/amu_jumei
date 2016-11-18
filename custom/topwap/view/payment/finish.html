@@ -1,0 +1,38 @@
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title">订单支付</div>
+</header> -->
+<{if $payment.status == "succ" || $payment.status == "progress"}>
+<section class="topHeight">
+    <section class="section-white section-container pay-order-info pay-success">
+      <i class="bbc-icon bbc-icon-right bbc-icon-full-cricle"></i>
+      <div class="pay-order-info">
+        <div class="order-status">订单支付成功</div>
+        <p>等待商家发货</p>
+      </div>
+    </section>
+    <section class="pay-op-price">
+      支付金额：<mark><{$payment.money|cur}></mark>
+    </section>
+    <section class="shopex-content-padded">
+      <a href="<{url action=topwap_ctl_member_trade@tradeList}>" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">查看我的订单</a>
+    </section>
+  </section>
+  <{else}>
+    <section class="container">
+    <section class="section-white section-container pay-order-info pay-failed">
+      <i class="bbc-icon bbc-icon-error bbc-icon-full-cricle"></i>
+      <div class="pay-order-info">
+        <div class="order-status">系统原因,订单支付失败</div>
+        <p>请到我的订单中，重新支付</p>
+      </div>
+    </section>
+    <section class="pay-op-time">
+      <p>创建时间: <span><{$payment.created_time|cdate}></span></p>
+    </section>
+    <section class="shopex-content-padded">
+      <a href="<{url action=topwap_ctl_member_trade@tradeList}>" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">我的订单</a>
+    </section>
+  </section>
+  <{/if}>
+

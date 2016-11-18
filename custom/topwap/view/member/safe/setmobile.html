@@ -1,0 +1,18 @@
+<!-- <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title"><{$title}></div>
+  </header> -->
+  <section class="container">
+    <form class="form-container" action="<{url action=topwap_ctl_member_safe@dosetmobile}>" method="post">
+    <input type="hidden" name="type" value="reset" id="sendType">
+      <section class="shopex-input-group">
+        <div class="shopex-input-row">
+          <label>手机号：</label>
+          <input type="text" class="shopex-input-clear" placeholder="请输入手机号码" name="uname" maxlength="11" required data-caution="请输入手机号码">
+        </div>
+      </section>
+      <section class="shopex-content-padded form-op-section">
+        <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning"><{t}>下一步<{/t}></button>
+      </section>
+    </form>
+  </section>

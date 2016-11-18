@@ -1,0 +1,305 @@
+<form  action="<{url action=topshop_ctl_promotion_xydiscount@save_xydiscount}>" method="post" class="form-horizontal clearfix" data-validate-onsuccess="ajaxSubmit" role="form" id="xydiscountform">
+  <input type='hidden' name='xydiscount_id' value="<{$xydiscount_id}>">
+  <div class="panel panel-default">
+    <div class="panel-heading">设置规则名称</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label for="" class="col-sm-1 control-label">名称：</label>
+        <div class="col-sm-4">
+          <input type="text" name="xydiscount_name" required value="<{$xydiscount_name}>" class="form-control" placeholder="如：2件8折">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default select-goods-panel">
+    <div class="panel-heading">
+      选择适用商品
+    </div>
+    <div class="panel-body">
+      <button class="btn btn-md btn-block btn-danger select-goods" data-remote="<{url action=topshop_ctl_selector_item@loadSelectGoodsModal}>" data-item_id="<{$notEndItem}>" data-textcol="title,price" data-view="" data-target="#goods_modal" data-fetchgoods="<{url action=topshop_ctl_selector_item@formatSelectedGoodsRow}>">选择商品</button>
+      <div class="selected-goods-list">
+
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">设置规则</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">
+          <{t}>优惠条件<{/t}>：</label>
+
+        <div class="col-sm-10">
+          <div>
+            <button id="addWholesaleRule" type="button" class="btn btn-default text-blue">
+              <i class="glyphicon glyphicon-plus"></i>
+              添加xy区间规则
+            </button>
+          </div>
+          <div class="rule-dom">
+              <{include file="topshop/promotion/xydiscount/conditionval.html"}>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">规则描述：</label>
+          <div class="col-sm-10">
+          <textarea name="role_desc" rows="3" style="resize: none;" class="form-control" placeholder="您可以自定义优惠规则描述，若不填写，将会通过促销规则自动生成。最多50个字。"><{$xydiscount_desc}></textarea>
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">可参与次数：</label>
+        <div class="col-sm-2">
+          <input type="number" required min="1" name="join_limit" value="<{$join_limit}>" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">适用会员：</label>
+        <div class="col-sm-10">
+          <label class="checkbox-inline">
+            <input type="checkbox" name="grade_all" class="grade-all">
+              全选
+          </label>
+          <{foreach from=$gradeList item=grade_item}>
+          <label class="checkbox-inline">
+            <input type="checkbox" name="grade[]" value="<{$grade_item.grade_id}>" class="grade-item" <{if $grade_item.is_checked}> checked <{/if}> ><{$grade_item.grade_name}>
+          </label>
+          <{/foreach}>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><{t}>使用平台<{/t}>：</label>
+        <div class="col-sm-10 radio">
+          <label class="form-inline">
+            <input type="radio" name="used_platform" value='0' <{if $used_platform=='0' || !$used_platform}>checked<{/if}> > 全平台
+          </label>
+          <label  class="form-inline">
+            <input type="radio" name="used_platform" value='1' <{if $used_platform=='1'}>checked<{/if}> > pc端
+          </label>
+          <label  class="form-inline">
+            <input type="radio" name="used_platform" value='2' <{if $used_platform=='2'}>checked<{/if}> > wap端
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-2 control-label"><{t}>有效期<{/t}>：</label>
+        <div class="col-sm-4">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input type="text" class="form-control pull-right reservation" style="max-width:100%;" readonly name="valid_time" value="<{$valid_time}>">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary btn-lg btn-block action-save">保存</button>
+    </div>
+    <div class="col-md-2">
+      <a href="<{url action='topshop_ctl_promotion_xydiscount@list_xydiscount'}>"><button type="button" class="btn btn-default btn-lg btn-block action-cancel">取消</button></a>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+  </div>
+</form>
+<script>
+
+//添加和删除批发规则
+$('.rule-dom').find('.wholesale-rule-discount').eq(0).find('.del-btn').remove();
+var ruleRow = 0;
+$('#addWholesaleRule').click(function(){
+    var ruleDom = $('.rule-dom').find('.wholesale-rule-discount');
+    var optionA = '<div class="wholesale-rule-discount col-sm-10"><div class="wholesale-row"><span class="form-text">满</span><div class="col-sm-2"><input type="number" min="1" required name="limit_number['+ ruleRow +']" class="form-control"></div><span class="form-text">件，给予</span><div class="col-sm-2"><input type="text"  name="discount['+ ruleRow +']" min="1" required class="form-control"></div><span class="form-text">% 折扣</span><a class="del-btn form-text" href="javascript:void(0);">删除</a></div></div>';
+    if(ruleDom.length < 5){
+        $('.rule-dom').append(optionA);
+        $('#xydiscountform').Validator('addField', 'limit_number['+ ruleRow +']');
+        $('#xydiscountform').Validator('addField', 'discount['+ ruleRow +']');
+        ruleRow ++;
+    }else{
+        $('#messagebox').message('最多添加5条规则!')
+    }
+});
+
+$('.rule-dom').on('click','.del-btn',function(){
+    $(this).parents('.wholesale-rule-discount').remove();
+});
+
+$('.reservation').daterangepicker({
+    "timePicker": true,
+    "opens": "right",
+    "timePicker24Hour": true,
+    "timePickerIncrement": 1,
+    "locale": {
+        "format": "YYYY/MM/DD HH:mm"
+    }
+});
+
+function ajaxSubmit (e) {
+  var form = e.target;
+  e.preventDefault();
+  $.post(form.action, $(form).serialize(), function(rs) {
+    if(rs.error) {
+      $('#messagebox').message(rs.message);
+      return;
+    }
+    if(rs.success) {
+      $('#messagebox').message(rs.message, 'success');
+    }
+    if(rs.redirect) {
+      location.href = rs.redirect;
+    }
+  });
+}
+
+var list = $('#op_items_list');
+var added = $('#op_items_added');
+var jsonData = '<{$notEndItem}>';
+var addedItems;
+if(jsonData == ''){
+  addedItems = []
+}else{
+  addedItems = JSON.parse(jsonData);
+}
+
+function checkNext(el) {
+  var next = el.parent().next().next().find('.add-items-select');
+  if(!next){
+    return false;
+  }else{
+    next.empty().append('<option value="">请选择</option>');
+  };
+  checkNext(next);
+}
+
+$('.add-items-select').change(function(){;
+  $('#items_name').val('');
+  if($(this).hasClass('action-select-category')){
+    getPro($(this).val());
+    getBrand($(this));
+    $('#cat_id').val($(this).val());
+  }
+  else if($(this).hasClass('action-select-brand')){
+    $('#brand_id').val($(this).val());
+    getPro($('#cat_id').val(),$('#brand_id').val());
+  }
+  else{
+    getCategory($(this));
+  }
+});
+
+$('.action-checkall').change(function(e) {
+    checkAll(this, $(this).parents('.item-filter-table').find('.action-checkitem'));
+});
+$('.action-add-item').click(function(e) {
+    e.preventDefault();
+    var items = list.find('.action-checkitem:checked');
+    var pros = added.find('.items');
+    if(pros.length ==0){
+      added.empty();
+    }
+    items.filter(function (i) {
+          if(addedItems.indexOf(this.value) < 0) {
+              addedItems.push(this.value);
+              return true;
+          }
+          $(this).parents('.item-filter-row').remove();
+          return false;
+      })
+      .prop('checked', false)
+      .parents('.item-filter-row').find('.action-checkitem').css('display','none')
+      .parents('.item-filter-row').append('<div class="item-check del"><a class="item-del" href="#">删除</a></div>').appendTo(added);
+
+    if(!list.children().length) {
+        list.parents('.item-filter-table').find('.action-checkall').prop('checked', false);
+    }
+});
+added.on('click','.item-del',function(e){
+  e.preventDefault();
+  var delVal = $(this).parents('.item-filter-row').find('.action-checkitem').val();
+  $(this)
+  .parents('.item-filter-row').find('.action-checkitem').css('display','inline-block')
+  .parents('.item-filter-row').appendTo(list)
+  .find('.del').remove();
+  var emptyDom = '<div class="item-filter-row"><div align="center">暂未添加商品</div></div>'
+  var pros = added.find('.items');
+  if(pros.length ==0){
+    added.append(emptyDom);
+  }
+  for (var i = 0; i < addedItems.length; i++) {
+    if(delVal == addedItems[i]){
+      addedItems.splice(i);
+    }
+  };
+});
+$('.action-delete-item').click(function(e) {
+    e.preventDefault();
+    added.find('.action-checkitem:checked')
+      .filter(function (i, el) {
+          addedItems.splice(addedItems.indexOf(el.value), 1);
+          var checkbox = list.find('.action-checkitem');
+          var result = true;
+          checkbox.length && checkbox.each(function() {
+              if(this.value == el.value) {
+                  $(el).parents('.item-filter-row').remove();
+                  result = false;
+              }
+          });
+          return result;
+      })
+      .prop('checked', false)
+      .parents('.item-filter-row').appendTo(list);
+
+    if(!added.children().length) {
+        added.parents('.item-filter-table').find('.action-checkall').prop('checked', false);
+    }
+});
+
+$('.items-search').click(function(){
+  var catID = $('#cat_id').val();
+  var brandID = $('#brand_id').val();
+  var itemsName = $('#items_name').val();
+  getPro(catID, brandID, itemsName)
+});
+
+$('.conditions label').click(function() {
+  var cidx = $(this).index();
+  $('.condition-view>div').hide().eq(cidx).show();
+  if($(this).hasClass('all')){
+    $('.action-add-item').hide();
+    $('.result').hide();
+  }else{
+    $('.action-add-item').show();
+    $('.result').show();
+  }
+});
+$('.action-save').click(function(e) {
+    added.find('.action-checkitem').prop('checked', true);
+});
+
+//适用会员全选
+$('.grade-all').on('change', function() {
+  checkAll($(this), $('.grade-item'));
+});
+$('.grade-item').on('change', function() {
+  var checked = $('.grade-item').filter(function(){
+                  var tmp = $(this);
+                  if(tmp.prop('checked')){
+                      return this;
+                  }
+            });
+  if(checked.length == $('.grade-item').length){
+      $('.grade-all').prop('checked',true);
+  }else{
+      $('.grade-all').prop('checked',false);
+  }
+});
+</script>

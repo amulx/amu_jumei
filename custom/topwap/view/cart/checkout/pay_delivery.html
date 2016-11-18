@@ -1,0 +1,276 @@
+<style>
+.shopex-bar {
+  position: fixed;
+  z-index: 10;
+  right: 0;
+  left: 0;
+  height: 44px;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-bottom: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  box-shadow: none;
+}
+
+.shopex-views,
+.shopex-view,
+.shopex-pages,
+.shopex-page,
+.shopex-page-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 100%;
+  /*background-color: #fff;*/
+}
+.shopex-pages {
+  top: 44px;
+  min-height: auto;
+}
+.shopex-scroll-wrapper,
+.shopex-scroll {
+  background-color: #efeff4;
+}
+.shopex-page.shopex-transitioning {
+  -webkit-transition: -webkit-transform 300ms ease;
+  transition: transform 300ms ease;
+}
+.shopex-page-left {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.shopex-ios .shopex-page-left {
+  -webkit-transform: translate3d(-20%, 0, 0);
+  transform: translate3d(-20%, 0, 0);
+}
+.shopex-navbar {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  height: 44px;
+  background-color: #fff;
+}
+.shopex-navbar .shopex-bar {
+  position: absolute;
+  background: transparent;
+  text-align: center;
+}
+.shopex-android .shopex-navbar-inner.shopex-navbar-left,
+.shopex-ios .shopex-navbar-left .shopex-left,
+.shopex-ios .shopex-navbar-left .shopex-center,
+.shopex-ios .shopex-navbar-left .shopex-right {
+  opacity: 0;
+}
+.shopex-navbar .shopex-btn-nav {
+  -webkit-transition: none;
+  transition: none;
+  -webkit-transition-duration: .0s;
+  transition-duration: .0s;
+}
+.shopex-navbar .shopex-bar .shopex-title {
+  display: inline-block;
+  width: auto;
+}
+.shopex-page-shadow {
+  position: absolute;
+  right: 100%;
+  top: 0;
+  width: 16px;
+  height: 100%;
+  z-index: -1;
+  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+}
+.shopex-navbar-inner.shopex-transitioning,
+.shopex-navbar-inner .shopex-transitioning {
+  -webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+.shopex-page {
+  display: none;
+}
+.shopex-pages .shopex-page {
+  display: block;
+}
+.shopex-fullscreen {
+  position: fixed;
+  z-index: 20;
+  background-color: #000;
+}
+/*.shopex-ios .shopex-navbar .shopex-bar .shopex-title {
+  position: static;
+}*/
+</style>
+<!--页面主结构开始-->
+<div id="app" class="shopex-views">
+  <div class="shopex-view">
+    <div class="shopex-navbar">
+    </div>
+    <div class="shopex-pages">
+    </div>
+  </div>
+</div>
+<!--页面主结构结束-->
+<!--单页面开始-->
+<div id="shipping" class="shopex-page">
+  <!--页面标题栏开始-->
+<!--   <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back shopex-left"></i>
+    <div class="shopex-center shopex-title header-title">配送方式</div>
+  </header> -->
+  <!--页面标题栏结束-->
+  <!--页面主内容区开始-->
+  <div class="shopex-page-content">
+    <form action="<{url action=topwap_ctl_cart_checkout@index}>" method="post" id="form_delivery" data-async="false">
+      <div class="section-white">
+        <div class="shopex-content-padded" id="op_shipping">
+          <label class="shopex-btn<{if $filter.shipping_type != 'ziti'}> shopex-btn-warning<{/if}>">
+            <input type="radio" name="shipping[<{$filter.shop_id}>][shipping_type]" class="shopex-hidden op-shipping-type" value="express" <{if $filter.pay_type != 'ziti'}>checked<{/if}>>
+            快递配送
+          </label>
+          <{if $filter.shop_type=="self" && $ifOpenZiti}>
+          <label class="shopex-btn<{if $filter.shipping_type == 'ziti'}> shopex-btn-warning<{/if}>">
+            <input type="radio" name="shipping[<{$filter.shop_id}>][shipping_type]" class="shopex-hidden op-shipping-type" value="ziti" <{if $filter.pay_type == 'ziti'}>checked<{/if}>>
+            门店自提
+          </label>
+          <{/if}>
+        </div>
+      </div>
+      <div id="ziti" class="section-white" style="display: none;">
+        <ul>
+          <li class="shopex-table-view-cell function-list">
+            <a href="#pick" class="shopex-navigate-right">
+              <div class="shopex-table">
+                <input type="hidden" name="ziti[<{$filter.shop_id}>][ziti_addr]" value="<{$filter.ziti_addr}>" id="op_pick_addr">
+                <input type="hidden" name="ziti[<{$filter.shop_id}>][ziti_name]" id="op_pick_name">
+                <div class="shopex-table-cell">自提地点</div>
+                <div class="shopex-table-cell shopex-text-right" id="op_choosen">
+                <{if $filter.ziti_addr}><{$filter.ziti_name}><{else}>请选择自提点<{/if}>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <footer class="shopex-content-padded action-bar">
+        <button type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning shopex-action-back shopex-left">确定</button>
+      </footer>
+    </form>
+  </div>
+  <!--页面主内容区结束-->
+</div>
+<!--单页面结束-->
+
+<div id="pick" class="shopex-page">
+  <header class="shopex-navbar-inner shopex-bar shopex-bar-nav page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back shopex-left shopex-btn-nav act-back"></i>
+    <div class="shopex-center shopex-title header-title">选择自提点</div>
+  </header>
+  <div class="shopex-page-content">
+    <div class="shopex-scroll-wrapper">
+      <div class="shopex-scroll">
+        <section class="section-white">
+          <div class="shopex-input-group">
+            <{foreach from=$data item=ziti}>
+            <div class="shopex-input-row shopex-radio bbc-radio op-choose-handle <{if $ziti_id == $ziti.id}>active<{/if}>" data-id="<{$ziti.id}>" data-addr="<{$ziti.name}>">
+              <label>
+                <p><{$ziti.name}></p>
+                <p class="ziti-ads fontS font-gray-20">
+                  <{t}>地址：<{$ziti.area}> <{$ziti.addr}><{/t}>
+                </p>
+              </label>
+              <input type="radio" name="" id="" value="<{$ziti.id}>" <{if $ziti_id == $ziti.id}>checked<{/if}>>
+            </div>
+            <{/foreach}>
+          </div>
+        </section>
+        <footer class="action-bar shopex-content-padded"><button type="submit" class="shopex-btn shopex-btn-warning bbc-btn-warning shopex-btn-block act-ok">确定</button></footer>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document.body).addClass('body-padding');
+
+shopex.init();
+
+var viewList = shopex('#app').view({
+  defaultPage: '#shipping'
+});
+//初始化单页的区域滚动
+shopex('.shopex-scroll-wrapper').scroll();
+
+var view = viewList.view;
+(function($) {
+  //处理view的后退与webview后退
+  var oldBack = $.back;
+  $.back = function() {
+    if (viewList.canBack()) { //如果view可以后退，则执行view的后退
+      viewList.back();
+    } else { //执行webview后退
+      oldBack();
+    }
+  };
+  //监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
+  //第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
+  view.addEventListener('pageBeforeShow', function(e) {
+    // console.log(e.detail.page.id + ' beforeShow');
+  });
+  view.addEventListener('pageShow', function(e) {
+    // console.log(e.detail.page.id + ' show');
+  });
+  view.addEventListener('pageBeforeBack', function(e) {
+    // console.log(e.detail.page.id + ' beforeBack');
+  });
+  view.addEventListener('pageBack', function(e) {
+    // console.log(e.detail.page.id + ' back');
+  });
+})(shopex);
+
+$('#shipping').on('tap', 'label', function() {
+  $(this).addClass('shopex-btn-warning').siblings('.shopex-btn-warning').removeClass('shopex-btn-warning');
+  var value = $(this).find('input').val();
+  // $(this).siblings('input').val(value);
+  if (value == 'ziti') {
+    $('#ziti').show();
+  }
+  else if(this.parentNode.id === 'op_shipping') {
+    $('#ziti').hide();
+  }
+}).trigger('tap');
+
+$('#form_delivery button[type=button]').on('tap', function() {
+  if($('#op_shipping_type').val() == 'ziti' && !$('#op_pick_addr').val()) {
+    shopex.alert('请选择自提点。');
+    return false;
+  }
+  var params = sessionStorage.getItem('_checkout_params');
+  var form = this.form;
+  var input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'checkout_info';
+  input.value = params;
+  form.appendChild(input);
+});
+
+
+$('#pick input[type=radio]').change(function(e) {
+  $(this).parents('.op-choose-handle').addClass('active').siblings('.active').removeClass('active');
+});
+$('#pick .act-ok').on('tap', function(e) {
+  var radio = $('#pick input[type=radio]:checked');
+  var parent = radio.parents('.op-choose-handle');
+
+  $('#op_pick_addr').val(radio.val());
+  $('#op_pick_name').val(parent.data('addr'));
+  $('#op_choosen').text(parent.data('addr'));
+});
+$('#pick .ack-back').on('tap', function(e) {
+});
+</script>

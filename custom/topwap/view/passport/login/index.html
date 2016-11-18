@@ -1,0 +1,73 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">会员登录</div>
+</header> -->
+<section class="login-page">
+  <form class="form-container" action="<{url action=topwap_ctl_passport@doLogin}>" method="post" id="login_form">
+    <input type="hidden" name="next_page" value="<{$next_page}>">
+    <input type="hidden" name="key" value="topwap_signin">
+    <section class="shopex-input-group">
+      <div class="shopex-input-row">
+        <label>手机号：</label>
+        <input type="text" name="account" value="<{$uname}>" class="shopex-input-clear" placeholder="请输入您的手机号" data-caution="请输入您的手机号" required>
+      </div>
+      <div class="shopex-input-row">
+        <label>密码：</label>
+        <input type="password" name="password" class="shopex-input-password" placeholder="请输入密码" data-caution="请输入密码" required>
+      </div>
+      <{if $isShowVcode}>
+      <div class="form-inline">
+        <div class="shopex-input-row form-inline-adaptive">
+          <label>验证码：</label>
+          <input type="text" name="verifycode" class="" placeholder="请输入验证码">
+        </div>
+        <div class="form-inline-unadaptive">
+          <img align="absmiddle" class="auto-change-verify-handle"  src="<{url action=toputil_ctl_vcode@gen_vcode key=topwap_signin width=120 height=35}>" alt="" width="100" height="30">
+        </div>
+      </div>
+      <{/if}>
+    </section>
+    <section class="content-horizontal-padded content-right">
+      <a class="fontS font-orange" href="<{url action=topwap_ctl_passport@goFindPwd}>">忘记密码</a>
+    </section>
+    <section class="content-horizontal-padded form-op-section">
+      <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" id="action_signin_submit">登录</button>
+    </section>
+  </form>
+  <section class="content-horizontal-padded kuaiSuDengLu">
+    <a class="shopex-btn shopex-btn-block" href="<{url action=topwap_ctl_passport@goRegister}>">快速注册</a>
+  </section>
+  <section class="font-gray-20 sns-login">
+    <!-- <div class="section-title">使用其他账号</div> -->
+    <div class="section-container">
+      <{if $trustInfoList}>
+      <{foreach from=$trustInfoList item=trust_info}>
+      <a href="<{$trust_info.url}>" class="section-init content-center">
+        <i class="bbc-icon bbc-icon-<{$trust_info.flag}>-member"></i><br><{$trust_info.name}>
+      </a>
+      <{/foreach}>
+      <{/if}>
+    </div>
+  </section>
+</section>
+
+<script>
+  $('#action_signin_submit').data('ajaxCallback', function(rs) {
+    var isShowVcode = "<{$isShowVcode}>"
+    if(rs.error && isShowVcode) {
+        changeCode($('.auto-change-verify-handle'));
+    }
+    if(rs.redirect) {
+      location.href = rs.redirect;
+    }
+});
+
+  $('#login_form').find('button[type=submit]').data('ajaxConfig', {
+    callback: function(rs) {
+      if(rs.error) {
+        alert(rs.message);
+      }
+    }
+  });
+</script>
+

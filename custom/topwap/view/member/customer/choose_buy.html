@@ -1,0 +1,27 @@
+<div class="tab-bg-nav">
+	<nav class="que-list-tab">
+		<a <{if $id==0}>class="current"<{/if}> href="javascript:;">注册登录</a>
+		<a <{if $id==1}>class="current"<{/if}> >商品选购</a>
+		<a <{if $id==2}>class="current"<{/if}> class="active">支付问题</a>
+	</nav>
+</div>
+<section class="content-list">
+	<div <{if $id==0}>class="current"<{/if}>>
+		<{foreach from=$注册登录 item=value key=keyz}>
+			<a href="<{url action=topwap_ctl_member@otherDetail article_id=$value.article_id}>"><p><{$value.title}><i></i></p></a>
+		<{/foreach}>
+	</div>	
+	<div <{if $id==1}>class="current"<{/if}>>
+		<{foreach from=$商品选购 item=value key=keyz}>
+			<a href="<{url action=topwap_ctl_member@otherDetail article_id=$value.article_id}>"><p><{$value.title}><i></i></p></a>
+		<{/foreach}>
+	</div>	
+	<div <{if $id==2}>class="current"<{/if}>>
+		<{foreach from=$支付问题 item=value key=keyz}>
+			<a href="<{url action=topwap_ctl_member@otherDetail article_id=$value.article_id}>"><p><{$value.title}><i></i></p></a>
+		<{/foreach}>
+	</div>
+</section>
+<footer>
+	
+</footer>

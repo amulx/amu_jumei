@@ -1,0 +1,13 @@
+
+<{foreach from=$pointdata item=point}>
+<li class="shopex-table-view-cell">
+	<div class="box-display">
+		<div class="box-item-flex1">
+			<{$point.behavior}><br>
+			<span class="fontS font-gray-60 fonts"><{$point.modified_time|cdate}></span>
+		</div>
+		<div class="box-item-flex1 content-right deposit-detail-amount <{if $point.behavior_type == 'obtain'}>font-red<{elseif $point.behavior_type == 'consume'}>font-green<{/if}>"><{if $point.behavior_type == "obtain"}>+<{elseif $point.behavior_type == "consume"}>-<{/if}><{$point.point}></div>
+	</div>
+</li>
+
+<{/foreach}>

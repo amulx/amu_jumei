@@ -1,0 +1,185 @@
+
+<!-- 选择商品规格 -->
+<form action="<{url action=topc_ctl_cart@add mode=fastbuy}>" method="post" id="package_item_action_form">
+  <div class="popup-body">
+    <div class="popup-header clearfix">
+      <h2>选择商品规格</h2>
+      <span><button type="button" title="关闭" class="popup-btn-close" hidefocus=""><i>×</i></button></span>
+    </div>
+    <div class="popup-content clearfix">
+      <{foreach from=$item key=item_id item=goods}>
+      <div class="goods-item clearfix">
+        <div class="item-left">
+          <img src="<{$goods.image_default_id}>" alt="<{$goods.title}>">
+        </div>
+        <ul class="item-info spec_select" data-item-id="<{$item_id}>">
+          <li>
+            <span class="goods-name <{if !$goods.valid}>del<{/if}>">【<{$packageInfo.package_name}>】<{$goods.title}></span>
+            <{if $goods.approve_status == 'instock'}>[商品已下架]<{/if}>
+            <{if $goods.is_delete}>[商品已删除]<{/if}>
+            <i><input type="hidden" name="package_item[<{$item_id}>][sku_id]" value="<{$goods.default_sku_id}>"></i>
+          </li>
+          <{if $goods.spec_desc}>
+          <{foreach from=$goods.spec_desc key=itemid item=spec key=spec_id}>
+          <li>
+
+            <div class="dt"><{$goods.spec.specName.$spec_id}>：</div>
+            <div class="dd choose-item-wrap">
+              <{foreach from=$spec item=spec_value key=spec_value_id }>
+              <div class="choose-item" data-item-id="<{$item_id}>" data-id="<{$spec_value_id}>">
+                <{if $spec_value.spec_image_url}>
+                <img src="<{$spec_value.spec_image_url|storager}>" width="25" height="25">
+                <{else}>
+                <{$spec_value.spec_value}>
+                <{/if}>
+              </div>
+              <{/foreach}>
+            </div>
+          </li>
+          <{/foreach}>
+          <{/if}>
+          <li>
+            <div class="dt">原  价：</div>
+            <div class="dd"><span class="del action-price"><{$goods.price|cur}></span></div>
+          </li>
+          <li>
+            <div class="dt">组合价：</div>
+            <div class="dd"><span class="action-package-price"><{$goods.package_price|cur}></span></div>
+          </li>
+          <li>
+            <div class="dt">库  存：</div>
+            <div class="dd"><span class="action-store"><{$goods.realStore|default:0}></span>件</div>
+          </li>
+        </ul>
+      </div>
+      <{/foreach}>
+    </div>
+    <div class="popup-footer">
+      <ul class="clearfix">
+        <li><{$packageInfo.package_name}></li>
+        <!--
+        <li>原价：<span class="del"><{$total_old_price|cur}></span></li>
+        -->
+        <li>优惠组合价：<span class="price coupon-price"><{$total_package_price|cur}></span></li>
+        <{if $valid }>
+        <li class="number-wrap">
+          <div class="dt">套餐数：</div>
+          <div class="number">
+            <a href="javascript:void(0);" class="btn btn-flat btn-package-reduct"><span><span>-</span></span></a>
+            <input type="number" name="package-item[quantity]" min="1" max="" value="1" class="action-package-quantity-input" onkeyup='this.value=this.value.replace(/\D/gi,"")'>
+            <a href="javascript:void(0);" class="btn btn-flat btn-package-add"><span><span>+</span></span></a>
+            <input type="hidden" name="package_id" value="<{$package_id}>">
+            <input type="hidden" name="obj_type" value="package">
+        </div>
+        </li>
+        <{/if}>
+      </ul>
+      <{if $valid }>
+      <a href="<{url action=topc_ctl_cart@add}>" class="btn-buy">加入购物车</a>
+      <{else}>
+      <a href="" class="btn-buy">暂不销售</a>
+      <{/if}>
+    </div>
+  </div>
+</form>
+<script>
+//隐藏商品规格弹出框
+$('.popup-btn-close').on('click', function() {
+  $('#goods_dialog').stop().fadeOut();
+  $('.full-bg').removeClass('full-bg-show');
+    $('body').css('overflow', 'auto');
+});
+
+
+var spec_select = $('.spec_select');
+var specSkuJson = '<{$specSkuData|json_encode}>';
+var specSku = $.parseJSON(specSkuJson);
+var spec_size = spec_select.find('.choose-item-wrap').length;
+
+spec_select.on('click', '.choose-item', function (e) {
+  e.preventDefault();
+  var parent = $(this).parent('.choose-item-wrap');
+  var itemId = $(this).attr('data-item-id');
+  $(this).addClass('on').siblings('.on').removeClass('on');
+  var currSpecSelect = $('.spec_select[data-item-id="'+itemId+'"]');
+  var itemSpecLength = $(currSpecSelect).find('.choose-item-wrap').length;
+  var itemSpecSelectedLg = $(currSpecSelect).find('.on').length
+  var key = [];
+  if(itemSpecLength == itemSpecSelectedLg) {
+    $(currSpecSelect).find('.on').each(function() {
+       key.push($(this).attr('data-id'));
+    });
+    var specinfo = key.join('_');
+    processSpec(specSku[itemId][specinfo]);
+  }
+});
+
+function processSpec(rs) {
+  var currSpecSelect = $('.spec_select[data-item-id="'+rs.item_id+'"]');
+  $(currSpecSelect).find('input[name="package_item['+rs.item_id+'][sku_id]"]').val(rs.sku_id);
+  $(currSpecSelect).find('.action-price').text(priceControl.format(rs.price));
+  $(currSpecSelect).find('.action-package-price').text(priceControl.format(rs.package_price));
+  $(currSpecSelect).find('.action-store').text(rs.store);
+}
+
+var input = $('input[name="package-item[quantity]"]');
+var value = 0;
+var min = input.attr('min');
+var max = input.attr('max');
+var msgPackage = '';
+//== 为数量选择框绑定事件
+$('.btn-package-reduct').on('click', function() {
+   value = $.trim($(input).val());
+   value = value ? Number(value) : 0;
+   if(value <= 0) {
+      input.val(min);
+      msgPackage = '此商品的最小购买数量为' + min + '件';
+   } else if(value == 1){
+      input.val(1);
+      msgPackage = '此商品的最小购买数量为' + min + '件';
+   }else {
+      input.val(value - 1);
+   }
+    Message.error(msgPackage);
+});
+$('.btn-package-add').on('click', function() {
+  value = $.trim($(input).val());
+  value = value ? Number(value) : 0;
+  if(isNaN($.trim(max)) || $.trim(max) == '') max = 999999;
+  if(value > max){
+    input.val(max);
+    Message.error('库存有限，此商品最多只能购买' + max + '件');
+  } else {
+    $(input).val(value + 1);
+  }
+});
+$('input[name="package-item[quantity]"]').on('keyup', function() {
+  var value = $.trim($(this).val());
+  if( value== '' || value == '0') {
+    $(this).val(1);
+    Message.error('此商品的最小购买数量为' + min + '件');
+  }
+});
+
+//立即购买
+$('.btn-buy').on('click', function(e) {
+  e.preventDefault();
+  if(spec_select.find('.on').size() < spec_size) {
+    return Message.error('请先选择完整规格。');
+  }
+  var form = $('#package_item_action_form');
+  var $this = $(this);
+  $.post(this.href, form.serialize(), function (rs) {
+    if(rs.error) {
+      return Message.error(rs.message);
+    }
+
+    Message.success('成功加入购物车');
+    updateCartNumber();
+
+    $('#goods_dialog').stop().fadeOut();
+    $('.full-bg').removeClass('full-bg-show');
+    $('body').css('overflow', 'auto');
+  });
+});
+</script>

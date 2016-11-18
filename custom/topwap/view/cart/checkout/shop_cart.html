@@ -1,0 +1,68 @@
+<{assign var=cartData value=$cartInfo.resultCartData}>
+<{foreach from=$cartData item=cart}>
+<!-- <div class="section-title order-goods-header">
+  <div class="title-txt"><a href="<{url action=topwap_ctl_shop@index shop_id=$cart.shop_id}>"><{$cart.shop_name}> <i class="shopex-icon shopex-icon-arrowright"></i></a></div>
+</div> -->
+<ul class="shopex-table-view function-list op-shop-info" data-shop-id="<{$cart.shop_id}>" id="op_shop_<{$cart.shop_id}>">
+  <li class="shopex-table-view-cell">
+    <a href="#goods" rel="<{$cart.shop_id}>" class="shopex-navigate-right act-goods-detail">
+      <div class="shopex-table">
+        <div class="shopex-table-cell shopex-col-xs-8 checkout-goods-list">
+          <div class="checkout-goods-warp">
+            <{foreach from=$cart.object item=itemdata}>
+            <div class="thumbnail">
+              <div class="thumb-img"><img src="<{$itemdata.image_default_id|default:$defaultImageId.T.default_image|storager}>" alt=""></div>
+            </div>
+            <{/foreach}>
+          </div>
+        </div>
+        <div class="shopex-table-cell shopex-col-xs-2 shopex-text-right">共<{$cart.cartCount.itemnum}>件</div>
+      </div>
+    </a>
+  </li>
+  <li class="shopex-table-view-cell">
+    <a href="#shipping" rel="<{$cart.shop_id}>" class="shopex-navigate-right act-shipping-detail">
+      <div class="shopex-table">
+        <div class="shopex-table-cell shopex-col-xs-3">配送方式:</div>
+        <div class="shopex-table-cell shopex-col-xs-9 shopex-text-right">
+          <input type="hidden" name="shipping[<{$cart.shop_id}>][shipping_type]" class="op-shipping-id" value="<{$shipping[$cart.shop_id].shipping_type}>">
+          <input type="hidden" name="ziti[<{$cart.shop_id}>][ziti_addr]" class="op-ziti-addr" value="<{$ziti[$cart.shop_id].ziti_addr}>">
+          <input type="hidden" name="ziti[<{$cart.shop_id}>][ziti_name]" class="op-ziti-name" value="<{$ziti[$cart.shop_id].ziti_name}>">
+          <p class="op-shipping-name"><{if $shipping[$cart.shop_id].shipping_type == "ziti"}>自提:<{$ziti[$cart.shop_id].ziti_name}><{else}>快递配送<{/if}></p>
+        </div>
+      </div>
+    </a>
+  </li>
+  <li class="shopex-table-view-cell">
+    <a href="#coupon" rel="<{$cart.shop_id}>" class="shopex-navigate-right act-coupons-detail">
+      <div class="shopex-table">
+        <div class="shopex-table-cell shopex-col-xs-3">优惠券:</div>
+        <input type="hidden" name="coupon_use[<{$cart.shop_id}>][coupon_code]" value="<{$coupon.$shop_id.coupon_code|default:'-1'}>" class="op-coupon-code">
+        <div class="shopex-table-cell shopex-col-xs-9 shopex-text-right op-coupon-name"><{$coupon.$shop_id.coupon_name|default:'不使用'}></div>
+      </div>
+    </a>
+  </li>
+  <li class="shopex-table-view-cell">
+    <div class="shopex-table">
+      <div class="shopex-table-cell shopex-col-xs-3">买家留言:</div>
+      <div class="shopex-table-cell shopex-col-xs-9"><div class="user-message">
+      <input type="text" name="mark[<{$cart.shop_id}>]" maxlength="85" placeholder="选填：内容已经和商家达成一致意见"></div></div>
+    </div>
+  </li>
+  <li class="shopex-table-view-cell">
+    <div class="shopex-table">
+      <div class="shopex-table-cell shopex-col-xs-6"></div>
+      <div class="shopex-table-cell shopex-col-xs-6">
+        <dl class="checkout-fee">
+          <dt>合计：</dt>
+          <dd class="op-total total"><{$cart.cartCount.total_fee|cur}></dd>
+          <dt>减免：</dt>
+          <dd class="op-discount">-<{$cart.cartCount.total_discount|cur}></dd>
+          <dt>运费：</dt>
+          <dd class="op-post"><{$cart.cartCount.post_fee|cur}></dd>
+        </dl>
+      </div>
+    </div>
+  </li>
+</ul>
+<{/foreach}>

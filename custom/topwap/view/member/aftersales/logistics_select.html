@@ -1,0 +1,51 @@
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+	<i class="header-right txt-func yes">确定</i>
+</header> -->
+<section>
+    <ul class="shopex-table-view shopex-table-view-radio bbc-radio">
+    <{foreach from=$corpData item=item}>
+      <li class="shopex-table-view-cell" data-value="<{$item.corp_code}>-<{$item.corp_name}>">
+        <a class="shopex-navigate-right">
+          <{$item.corp_name}>
+        </a>
+      </li>
+      <{/foreach}>
+      <li class="shopex-table-view-cell" data-value="other">
+        <a class="shopex-navigate-right">
+          其他
+        </a>
+      </li>
+    </ul>
+  </section>
+ <!--  <section style="width:100%; position:fixed; left:0; bottom:0; height:3.6rem; background:#fe474c;"><i class="header-right txt-func yes" style="height:3.6rem; line-height:3.6rem; display:block; color:#fff;">确定</i></section> -->
+<section class="shopex-content-padded form-op-section">
+  <button class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning yes">确定</button>
+</section>
+
+  <script>
+  	var yes = $('.yes');
+  	yes.on('click',function(){
+  		var corpCode = $('.shopex-selected').attr('data-value');
+  		var aftersales_bn = '<{$aftersales_bn}>';
+  		var data = {'corp_code':corpCode,'id':aftersales_bn};
+  		$.ajax({
+  		  type: "POST",
+  		  url: "<{url action=topwap_ctl_member_aftersales@ajaxcreateAfterlogistics}>",
+  		  dataType: "json",
+  		  data:data,
+  		  success:function(rs){
+  			  if(rs.error)
+  			  {
+  				  shopex.alert(rs.message);
+  				  return false;
+  			  }
+  			  
+  			  if(rs.success){
+  				  $("body").html(rs.html);
+  			  }
+  		  }
+  	  });
+  	})
+  </script>

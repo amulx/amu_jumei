@@ -1,0 +1,103 @@
+<!-- <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title">
+        <{$title}>
+    </div>
+    <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+<{if $list}>
+<section id="pullrefresh" class="fontS shopex-scroll-wrapper">
+	<div class="shopex-scroll">
+		<div class="shopex-table-view aftersales-list">
+			<{include file="topwap/member/aftersales/list.html" }>
+		</div>
+	</div>
+</section>
+<{else}>
+    <{include file="topwap/empty/aftersales.html" }>
+<{/if}>
+<!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+<div class="shopex-popover-arrow"></div>
+<div>
+  <ul class="shopex-table-view">
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+    </li>
+    <li class="shopex-table-view-cell">
+      <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+    </li>
+  </ul>
+</div>
+</div>
+<script>
+var count = 1;
+var totalpage = "<{$pagers.total}>";
+shopex.init({
+    swipeBack: false,
+    pullRefresh: {
+        container: '#pullrefresh',
+        down: {
+            callback: pulldownRefresh
+        },
+        up: {
+            contentrefresh: '正在加载...',
+            callback: pullupRefresh
+        }
+    }
+});
+/**
+ * 下拉刷新具体业务实现
+ */
+function pulldownRefresh() {
+    count = 1;
+    setTimeout(function() {
+        $.ajax({
+            url: '<{url action=topwap_ctl_member_aftersales@ajaxAftersalesList}>',
+            type: 'get',
+            dataType: 'json',
+            data: {
+            	'pages': count
+            },
+            success: function(rs) {
+                $('.aftersales-list').html(rs.html);
+                shopex('#pullrefresh').pullRefresh().endPulldownToRefresh();
+                shopex('#pullrefresh').pullRefresh().enablePullupToRefresh(); //refresh completed
+            }
+        });
+    }, 1500);
+}
+/**
+ * 上拉加载具体业务实现
+ */
+function pullupRefresh() {
+    setTimeout(function() {
+        shopex('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalpage)); //参数为true代表没有更多数据了。
+        $.ajax({
+            url: '<{url action=topwap_ctl_member_aftersales@ajaxAftersalesList}>',
+            type: 'get',
+            dataType: 'json',
+            data: {
+            	'pages': count
+            },
+            success: function(rs) {
+                $('.aftersales-list').append(rs.html);
+            }
+        });
+    }, 1500);
+}
+
+//a链接的点击事件绑定
+$(function(){
+	$('.shopex-scroll').on('tap','a',function(){
+		var link = $(this).attr('href');
+		location.href = link;
+	})
+});
+</script>

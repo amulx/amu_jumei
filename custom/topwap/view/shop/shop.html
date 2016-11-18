@@ -1,0 +1,25 @@
+<div class="shop-sign">
+  <div class="shop-sign-cover"></div>
+  <div class="shop-sign-img">
+    <img  src="<{$env.base_full_url}>/themes/jmmobilemall/images/bg.jpg" >
+  </div>
+  <!-- src="<{$logo_image.shop_logo|storager}>" -->
+  <div class="shop-sign-info">
+      <div class="shop-logo">
+        <a href="<{url action=topwap_ctl_shop@shopInfo shop_id=$shopdata.shop_id}>"><img src="<{$shopdata.shop_logo|storager}>" alt=""></a>
+      </div>
+      <div class="shop-name">
+        <a href="<{url action=topwap_ctl_shop@shopInfo shop_id=$shopdata.shop_id}>"><{$shopdata.shop_name}></a> 
+        <i class="bbc-icon bbc-icon-forward"></i>
+      </div>
+      <button id="<{if !$collect.shopCollect}>shop_collect<{/if}>" data-shopid="<{$shopdata.shop_id}>" class="shopex-btn shop-favorite-btn <{if $collect.shopCollect}>has-favorited<{/if}>"><i class="bbc-icon <{if $collect.shopCollect}>bbc-icon-faverite<{else}>bbc-icon-star-empty<{/if}>"></i>  <span><{if $collect.shopCollect}>已收藏<{else}>收藏<{/if}></span></button> 
+  </div>
+</div>
+
+<div class="shop-nav">
+  <{foreach from=$itemInfo item=item}>
+  <div class="shop-nav-item">
+      <a href="<{url action=topwap_ctl_shop_list@index shop_id=$item.shop_id widgets_type=$item.widgets_type widgets_id=$item.widgets_id}>"><{$item.params.tagsname}></a>
+  </div>
+  <{/foreach}>
+</div>

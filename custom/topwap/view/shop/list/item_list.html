@@ -1,0 +1,36 @@
+<{if $items}>
+  <{foreach from=$items item=item}>
+  <li data-link="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+    <div class="thumbnail">
+      <div class="thumb-img">
+        <{if $item.image_default_id}>
+        <a href="#"><img src="<{$item.image_default_id|storager}>" alt=""></a>
+        <{else}>
+        <a href="#"><img src="<{$image_default_id.M.default_image|storager}>" alt=""></a>
+        <{/if}>
+      </div>
+      <div class="caption">
+        <h1 class="goods-title">
+          <{if $item.activity.activity_tag}>
+          <span class="tag"><{$item.activity.activity_tag}></span>
+          <{/if}>
+          <{$item.title}>
+        </h1>
+        <div class="price">
+          <div class="amount"><{$item.price|cur}></div>
+          <div class="purchased"><{t}>已有<{/t}><{$item.sold_quantity}><{t}>人购买<{/t}></div>
+        </div>
+        <{if $item.promotion}>
+        <div class="tags-group">
+          <{foreach from=$item.promotion item=promotionRow}>
+          <{if $promotionRow.tag}>
+            <a href="<{url }>" class="tag tag-outline"><{$promotionRow.tag}></a>
+          <{/if}>
+          <{/foreach}>
+        </div>
+        <{/if}>
+      </div>
+    </div>
+  </li>
+  <{/foreach}>
+<{/if}>

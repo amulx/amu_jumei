@@ -1,0 +1,90 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">发票信息</div>
+</header> -->
+<section class="topten shopex-fullscreen">
+  <section class="section-white">
+    <div class="section-title">
+      <div class="title-txt"><i class="bbc-icon bbc-icon-invoice fontm"></i> 发票类型</div>
+    </div>
+    <div id="invoiceType" class="bbc-keyword-group content-bottom-padded">
+      <span><input type="radio" name="invoice[invoice_type]" value="normal" >普通发票</span>
+      <span><input type="radio" name="invoice[invoice_type]" value="vat" >增值税发票</span>
+      <span class="active"><input type="radio" name="invoice[invoice_type]" value="notuse" >不需要发票</span>
+    </div>
+  </section>
+  <section>
+    <div class="invoice-content">
+      <div class="section-white invoice-content-item">
+        <div class="section-title">
+          <div class="title-txt"><i class="bbc-icon bbc-icon-invoice fontm"></i> 发票抬头</div>
+        </div>
+        <div id="titleType" class="bbc-keyword-group content-bottom-padded">
+          <span class="active">
+              <input type="radio" name="invoice[invoice_title]" value="individual" >个人
+          </span>
+          <span>
+              <input type="radio" name="invoice[invoice_title]" value="unit" >企业
+          </span>
+        </div>
+        <div class="content-bottom-padded">
+          <div class="section-title">
+            <div class="title-txt">发票抬头</div>
+          </div>
+          <p class="content-horizontal-padded">
+            <input type="text" name="invoice[invoice_content]" val="" placeholder="请输入抬头">
+          </p>
+          <p class="content-horizontal-padded fontS font-gray-20">订单中的商品由入驻商家销售，发票内容由商家决定，由商家开具寄出。</p>
+        </div>
+      </div>
+      <div class="invoice-content-item" style="display: none;">
+        <div class="shopex-input-group">
+          <div class="shopex-input-row">
+            <label>公司名称</label>
+            <input type="text" name="invoice[invoice_vat][company_name]" class="shopex-input-clear" placeholder="请输入公司名称">
+          </div>
+          <div class="shopex-input-row">
+            <label>纳税人识别号</label>
+            <input type="text" name="invoice[invoice_vat][registration_number]" class="shopex-input-clear" placeholder="请输入纳税人识别号">
+          </div>
+          <div class="shopex-input-row">
+            <label>公司地址</label>
+            <input type="text" name="invoice[invoice_vat][company_address]"class="shopex-input-clear" placeholder="请输入公司地址">
+          </div>
+          <div class="shopex-input-row">
+            <label>开户银行</label>
+            <input type="text" name="invoice[invoice_vat][bankname]" class="shopex-input-clear" placeholder="请输入开户银行">
+          </div>
+          <div class="shopex-input-row">
+            <label>银行帐户</label>
+            <input type="text" name="invoice[invoice_vat][bankaccount]" class="shopex-input-clear" placeholder="请输入开户银行帐号">
+          </div>
+          <div class="shopex-input-row">
+            <label>公司电话</label>
+            <input type="text" name="invoice[invoice_vat][company_phone]" class="shopex-input-clear" placeholder="请输入公司电话">
+          </div>
+        </div>
+        <div class="content-padded fontS font-gray-20">订单中的商品由入驻商家销售，发票内容由商家决定，由商家开具寄出。</div>
+      </div>
+      <div class="invoice-content-item" style="display: none;"></div>
+    </div>
+    </div>
+  </section>
+  <section class="shopex-content-padded form-op-section">
+    <button type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">确定</button>
+  </section>
+</section>
+<script>
+shopex.init({
+  swipeBack: false,
+});
+$('#invoiceType').on('tap', 'span', function() {
+  var n = $(this).index();
+  var m = $('.invoice-content').find('.invoice-content-item');
+  $(this).addClass('active').siblings().removeClass('active');
+  $(m[n]).show().siblings().hide();
+})
+$('#titleType').on('tap', 'span', function() {
+  $(this).addClass('active').siblings().removeClass('active');
+})
+</script>

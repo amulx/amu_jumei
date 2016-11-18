@@ -1,0 +1,203 @@
+
+<body class="body-padding body-padding-big">
+  <header class="icons-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+  </header>
+  <section class="container no-header">
+    <div id="slider" class="shopex-slider bbc-slider-b theme-border-bottom">
+      <div class="shopex-slider-group shopex-slider-loop">
+        <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+        <{if $item.images}>
+        <div class="shopex-slider-item shopex-slider-item-duplicate">
+          <a href="#">
+            <img src="<{$item.first_image|storager}>">
+          </a>
+        </div>
+        <{foreach from=$item.images item=img_item}>
+        <div class="shopex-slider-item">
+          <a href="#">
+            <img src="<{$img_item|storager}>">
+          </a>
+        </div>
+        <{/foreach}>
+        <{/if}>
+        <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+        <div class="shopex-slider-item shopex-slider-item-duplicate">
+          <a href="#">
+            <img src="<{$item.last_image|default:$defaultImageId.M.default_image|storager}>">
+          </a>
+        </div>
+      </div>
+      <div class="shopex-slider-indicator">
+        <{foreach from=$item.images item=img_item name=slidername}>
+        <div class="shopex-indicator <{if $env.foreach.slidername.first}>shopex-active<{/if}>"></div>
+        <{/foreach}>
+      </div>
+    </div>
+    <section class="section-white shopex-content-padded activity">
+      <div class="goods-detail-brief">
+        <div class="goods-detail-title">
+          <h1><{$group_item.title}></h1>
+          <h2><{$item.sub_title}></h2>
+        </div>
+        <i class="bbc-icon bbc-icon-forward"></i>
+      </div>
+      <div class="goods-detail-purchase">
+        <div class="activity-countdown">
+          <{if $group_item.activity_info.end_time < $env.now }>
+          <div class="activity-closed">已结束</div>
+          <{elseif $group_item.activity_info.start_time > $env.now}>
+          <p><i class="bbc-icon bbc-icon-countdown"></i> 距离活动开始还有：</p>
+          <p><mark class="countdown-view" data-time="<{$group_item.activity_info.start_time}>"></mark></p>
+          <{elseif $env.now < $group_item.activity_info.end_time && $group_item.activity_info.start_time < $env.now}>
+          <p><i class="bbc-icon bbc-icon-countdown"></i> 距离活动结束还有：</p>
+          <p><mark class="countdown-view" data-time="<{$group_item.activity_info.end_time}>"></mark></p>
+          <{/if}>
+        </div>
+        <div class="goods-detail-purchase-num"><{$item.sold_quantity|default:0}>人购买</div>
+      </div>
+    </section>
+    <section class="section-white">
+      <div class="shopex-table-view">
+        <div class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_item_detail@itemPic item_id=$item.item_id}>" class="shopex-navigate-right section-list-item">
+            <div class="section-list-key">宝贝描述</div>
+            <div class="section-list-val"></div>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="section-white">
+      <div class="shop-goods-brand shopex-content-padded">
+        <div class="shop-goods-brand-logo"><img src="<{$shop.shop_logo|storager}>" alt="<{$shop.shopname}>"></div>
+        <div class="shop-goods-brand-name"><{$shop.shopname}></div>
+      </div>
+      <div class="action-group shopex-content-padded">
+        <div class="action-item">
+          <{if $nologin!=1}>
+          <div class="action-item"><a href="<{url action=topwap_ctl_passport@goLogin next_page=$next_page}>" class="shopex-btn shopex-btn-warning shopex-btn-outlined shopex-btn-block bbc-btn-outlined"><i class="bbc-icon bbc-icon-star-empty"></i> 收藏店铺</a></div>
+          <{else}>
+          <div class="action-item"><a href="javascript:void(0);" data-ajax-data="shop_id=<{$item.shop_id}>"  data-ajax-type="post" class="shopex-btn shopex-btn-warning shopex-btn-outlined shopex-btn-block bbc-btn-outlined collect-shop"><i class="bbc-icon <{if $collect.shopCollect}>bbc-icon-faverite<{else}>bbc-icon-star-empty<{/if}>"></i> <span><{if $collect.shopCollect}>已收藏<{else}>收藏店铺<{/if}></span></a></div>
+          <{/if}>
+        </div>
+        <div class="action-item">
+          <button class="shopex-btn shopex-btn-warning shopex-btn-outlined shopex-btn-block bbc-btn-outlined"><i class="bbc-icon bbc-icon-store-empty"></i> <a href="<{url action=topwap_ctl_shop@index shop_id=$shop.shop_id}>">进入店铺</a></button>
+        </div>
+      </div>
+    </section>
+    <section class="section-white">
+      <div class="shopex-table-view">
+        <div class="shopex-table-view-cell">
+          <a class="shopex-navigate-right" href="<{url action=topwap_ctl_item_detail@getItemRate item_id=$item.item_id}>">
+            <p>评价晒单</p>
+            <p>好评 <mark><{if !$countRate.total }>100%<{else}><{$countRate.good.percentage}><{/if}></mark> <{if !$countRate.total }>0<{else}><{$countRate.total}><{/if}>人评论</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </section>
+  <{if $group_item.activity_info.release_time < $env.now && $env.now < $group_item.activity_info.start_time && $group_item.activity_info.remind_enabled}>
+  <section class="action-bar activity-bar activity-ready">
+    <div class="box-item-flex1 content-center">
+      <div class="fontM"><i class="bbc-icon bbc-icon-tag"></i><{$group_item.activity_price|cur}></div>
+      <div class="fontS">建议价格：<span class="original-price"><{$group_item.price|cur}></span></div>
+    </div>
+    <div class="box-item-flex1 content-center">
+      <a class="shopex-btn shopex-btn-warning" href="<{url action=topwap_ctl_activity@remind activity_id=$group_item.activity_info.activity_id}>">开售提醒</a><br>
+      <span class="fonts">每人限购<{$group_item.activity_info.buy_limit}>件</span>
+    </div>
+  </section>
+  <{elseif $group_item.activity_info.start_time <= $env.now && $env.now < $group_item.activity_info.end_time }>
+  <section class="action-bar activity-bar activity-start">
+    <div class="box-item-flex1 content-center">
+      <div class="fontM"><i class="bbc-icon bbc-icon-tag"></i><{$group_item.activity_price|cur}></div>
+      <div class="fontS">建议价格：<span class="original-price"><{$group_item.price|cur}></span></div>
+    </div>
+    <div class="box-item-flex1 content-center">
+      <a class="shopex-btn  shopex-btn-warning" href="<{url action=topwap_ctl_item_detail@index item_id=$group_item.item_id}>">马上抢</a><br>
+      <span class="fonts">每人限购<{$group_item.activity_info.buy_limit}>件</span>
+    </div>
+  </section>
+  <{elseif $group_item.activity_info.end_time <= $env.now }>
+  <section class="action-bar-mini">
+    <div class="op-item op-btn goods-op-cart"><a href="<{url action=topwap_ctl_activity@detail id=$group_item.activity_id}>">去活动首页</a></div>
+    <div class="op-item op-btn goods-op-buy"><a href="<{url action=topwap_ctl_item_detail@index item_id=$group_item.item_id}>">原价购买</a></div>
+  </section>
+  <{/if}>
+
+  <!-- 右上角menu菜单 -->
+  <div id="minimenu" class="bbc-mini-menu shopex-popover">
+    <div class="shopex-popover-arrow"></div>
+    <div>
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+<script>
+var gallery = shopex("#slider");
+
+shopex.init({
+  swipeBack:false //启用右滑关闭功能
+});
+shopex('body').on('shown', '.shopex-popover', function(e) {
+  //console.log('shown', e.detail.id);//detail为当前popover元素
+});
+shopex('body').on('hidden', '.shopex-popover', function(e) {
+  //console.log('hidden', e.detail.id);//detail为当前popover元素
+});
+
+shopex('#skuScroll').scroll();
+
+$('.goods-sku-list').on('tap','.goods-sku-options span',function(){
+  $(this).addClass('checked').siblings().removeClass('checked');
+})
+
+$('body').on('tap', function(e){
+  $('body').removeClass('bbc-no-backdrop');
+})
+
+$('body').on('tap', '.btn-mini-menu', function(){
+  $('body').addClass('bbc-no-backdrop');
+})
+
+$('.btn-modal-close').on('tap',function(){
+  shopex('#sku').popover('hide');
+})
+
+//收藏店铺
+$('.collect-shop').on('tap', function(e) {
+  var $this = $(this);
+
+  if($this.find('i').hasClass('bbc-icon-faverite')) return ;
+
+  $.post('<{url action=topwap_ctl_member_favorite@ajaxAddShopCollect}>', $(this).attr('data-ajax-data'), function(rs) {
+    if(rs.success) {
+      $this.find('i').removeClass('bbc-icon-star-empty').addClass('bbc-icon-faverite');
+      $this.find('span').html("已收藏");
+    }else{
+      shopex.alert(rs.message);
+    }
+  });
+});
+
+countdown($('.countdown-view'),{
+  'start': $('.countdown-view').attr('data-time')-<{$env.now}>,
+  'secondOnly': false,
+  'callback': null
+});
+</script>

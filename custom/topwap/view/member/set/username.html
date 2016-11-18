@@ -1,0 +1,17 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">修改姓名</div>
+</header> -->
+<section>
+  <form class="form-container" action="<{url action=topwap_ctl_member@saveUserInfo}>" method="post" id="user_form">
+    <section class="shopex-input-group">
+      <div class="shopex-input-row">
+        <label>姓名：</label>
+        <input type="text" name="user[username]" value="<{$username}>" class="shopex-input-clear" placeholder="请输入您的姓名">
+      </div>
+    </section>
+    <section class="shopex-content-padded form-op-section">
+      <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning">保存</button>
+    </section>
+  </form>
+</section>

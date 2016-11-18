@@ -1,0 +1,35 @@
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title"><{$title}></div>
+</header> -->
+<section>
+	<form id="logistics_form" class="form-container" action="<{url action=topwap_ctl_member_aftersales@sendback}>" method="post">
+		<section class="shopex-input-group">
+			<input type="hidden" name="aftersales_bn" value="<{$aftersales_bn}>" />
+			<input type="hidden" name="corp_code" value="<{$corp_code}>" />
+			<{if $corp_code == "other"}>
+			<div class="shopex-input-row">
+	          <label>物流公司：</label>
+	          <input type="text" class="shopex-input-clear" placeholder="请填写物流公司名称" name="logi_name" required data-caution="请填写物流公司名称">
+	        </div>
+	        <{/if}>
+			<div class="shopex-input-row">
+				<label>物流单号：</label> <input type="text" class="shopex-input-clear"
+					placeholder="请填写快递单号" name="logi_no" required data-caution="请填写快递单号">
+			</div>
+			<div class="shopex-input-row">
+				<label>收货手机号：</label> <input type="text" class="shopex-input-clear"
+					placeholder="请填写联系人手机号码" name="mobile" required data-caution="请填写联系人手机号码">
+			</div>
+			<div class="shopex-input-row">
+				<label>收货地址：</label> <input type="text" class="shopex-input-clear"
+					placeholder="请填写收货地址" name="receiver_address" required data-caution="请填写收货地址">
+			</div>
+		</section>
+		<section class="shopex-content-padded form-op-section">
+			<button type="submit"
+				class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning"
+				>确认提交</button>
+		</section>
+	</form>
+</section>

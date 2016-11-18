@@ -1,0 +1,298 @@
+<style>
+html,
+body {
+  background-color: #efeff4;
+}
+
+.shopex-bar~.shopex-content .shopex-fullscreen {
+  top: 44px;
+  height: auto;
+}
+
+.shopex-pull-top-tips {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  margin-left: -25px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  z-index: 10;
+}
+
+.shopex-bar~.shopex-pull-top-tips {
+  top: 24px;
+}
+
+.shopex-pull-top-wrapper {
+  width: 42px;
+  height: 42px;
+  display: block;
+  text-align: center;
+  background-color: #efeff4;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  background-clip: padding-box;
+  box-shadow: 0 4px 10px #bbb;
+  overflow: hidden;
+}
+
+.shopex-pull-top-tips.shopex-transitioning {
+  -webkit-transition-duration: 200ms;
+  transition-duration: 200ms;
+}
+
+.shopex-pull-top-tips .shopex-pull-loading {
+  /*-webkit-backface-visibility: hidden;
+      -webkit-transition-duration: 400ms;
+      transition-duration: 400ms;*/
+  margin: 0;
+}
+
+.shopex-pull-top-wrapper .shopex-icon,
+.shopex-pull-top-wrapper .shopex-spinner {
+  margin-top: 7px;
+}
+
+.shopex-pull-top-wrapper .shopex-icon.shopex-reverse {
+  /*-webkit-transform: rotate(180deg) translateZ(0);*/
+}
+
+.shopex-pull-bottom-tips {
+  text-align: center;
+  background-color: #efeff4;
+  font-size: 15px;
+  line-height: 40px;
+  color: #777;
+}
+
+.shopex-pull-top-canvas {
+  overflow: hidden;
+  background-color: #fafafa;
+  border-radius: 40px;
+  box-shadow: 0 4px 10px #bbb;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+}
+
+.shopex-pull-top-canvas canvas {
+  width: 40px;
+}
+
+.shopex-slider-indicator.shopex-segmented-control {
+  background-color: #efeff4;
+}
+
+.shopex-scroll > .shopex-table-view > .shopex-table-view-cell {
+  padding: 0;
+  background: #fff;
+}
+</style>
+<!-- <header class="page-header">
+	<i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+	<div class="header-title">历史足迹</div>
+  <a href="javascript:;" class="delecticon" style="right:15px;"><i class="bbc-icon-remove"></i></a>
+  <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+</header> -->
+<section>
+  <div class="shopex-slider-group">
+  	<div class="shopex-fullscreen  shopex-control-content shopex-active">
+      <div class="shopex-scroll-wrapper">
+        <div class="shopex-scroll" data-count="1" data-url="<{url action=topwap_ctl_member_history@ajaxitems}>">
+      		<div class="shopex-table-view pro-list-normal zujiCon">
+      		  <!--足迹内容-->
+      		</div>
+        </div>
+      </div>
+  	</div>
+  </div>
+</section>
+<!-- 右上角menu菜单 -->
+<div id="minimenu" class="bbc-mini-menu shopex-popover">
+  <div class="shopex-popover-arrow"></div>
+  <div>
+    <ul class="shopex-table-view">
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i> 分类</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 进货车</a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<footer class="delect-footer-type clearfix">
+    <div class="fl cancel-delectBtn">取消</div>
+    <div class="fl delectBtn" onclick="deleteMemberHistory()">删除</div>
+</footer>
+<{script src="shopex.pullToRefresh.js" app=topwap}>
+<{script src="shopex.pullToRefresh.material.js" app=topwap}>
+<script>
+  shopex.init();
+  var totalpage;
+  //阻尼系数
+  var deceleration = shopex.os.ios ? 0.003 : 0.0009;
+  shopex('.shopex-scroll-wrapper').scroll({
+    bounce: false,
+    indicators: true, //是否显示滚动条
+    deceleration: deceleration
+  });
+  shopex.ready(function() {
+    shopex('.shopex-scroll-wrapper').scroll({
+      indicators: true //是否显示滚动条
+    });
+
+    var count = 1;
+    //循环初始化所有下拉刷新，上拉加载。
+    shopex.each(document.querySelectorAll('.shopex-slider-group .shopex-scroll'), function(index, pullRefreshEl) {
+      shopex(pullRefreshEl).pullToRefresh({
+        down: {
+          callback: function() {
+            count = 1;
+            var self = this;
+            setTimeout(function() {
+              var url = self.element.dataset.url;
+              var ul = self.element.querySelector('.shopex-table-view');
+              getList(url, count, ul, null, false);
+              self.endPullDownToRefresh();
+              shopex(self.element).pullToRefresh().refresh();
+            }, 1000);
+          }
+        },
+        up: {
+          auto: true,
+          callback: function() {
+            var self = this;
+            setTimeout(function() {
+              count = self.element.dataset.count;
+              shopex(self.element).pullToRefresh().endPullUpToRefresh(count > totalpage);
+              var url = self.element.dataset.url;
+              var ul = self.element.querySelector('.shopex-table-view');
+              var emptyel = $(self.element).parent().parent()
+              getList(url, count, ul, emptyel, true);
+              self.endPullUpToRefresh();
+            }, 1000);
+          }
+        }
+      });
+    });
+
+    var getList = function(url, num, el, emptyel, isPullup) {
+      $.ajax({
+        url: url,
+        type: 'get',
+        dataType: 'json',
+        data: {
+          'pages': num
+        },
+        success: function(rs) {
+          var pageNum = count;
+          totalpage = rs.count;
+          if (isPullup == false) {
+            $(el).html(rs.html);
+          } else {
+            if(rs.html.indexOf('nodata-wrapper') > 0) {
+              emptyel.html(rs.html);
+            } else {
+              shopex(el.parentNode).pullToRefresh().endPullUpToRefresh(++pageNum > totalpage);
+              $(el).parent().attr('data-count', pageNum);
+              $(el).append(rs.html);
+            }
+          }
+        }
+      });
+    };
+  });
+
+// $('.delecticon').click(function(){
+//   if($('.pro-list-normal').hasClass('showDelect')){
+//     $('.pro-list-normal').removeClass('showDelect');
+//     $('.delect-footer-type div').css('display','none');
+//   }else{
+//     $('.pro-list-normal').addClass('showDelect');
+//     $('.delect-footer-type div').css('display','block');
+//   }
+// });
+// $('.shopex-scroll').on('tap','.delBtnZuJi',function() {
+//   $(this).parent('li').addClass('zujiTimecheck');
+// });
+// $('.shopex-scroll').on('tap','.shopex-table-view-cell',function() {
+//   if($(this).hasClass('zujiTimecheck')){
+//     $(this).removeClass('zujiTimecheck');
+//   }else{
+//      $(this).addClass('zujiTimecheck');
+//   }
+//   var ulliLength = $(this).parent('ul').children('li').length;
+//   var falseT;
+//   for( var i=0; i<ulliLength; i++){
+//     falseT = $(this).parent('ul').children('.zujiTimecheck').length;
+//   }
+//   if(falseT == ulliLength){
+//       $(this).parent('ul').prev('span').addClass('zujiTimecheck');
+//     }else{
+//       $(this).parent('ul').prev('span').removeClass('zujiTimecheck');
+//   }
+// });
+// $('.cancel-delectBtn').click(function(){
+//     $('.pro-list-normal').removeClass('showDelect');
+//     $('.delect-footer-type div').css('display','none');
+// });
+
+//批量操作
+// function deleteMemberHistory(){
+  
+//   if(!$(".pro-list-normal .shopex-table-view-cell").hasClass("zujiTimecheck")){
+//     shopex.alert("请选择要删除的商品");
+//   }else{
+//     var data = '';
+//     $(".pro-list-normal .shopex-table-view-cell.zujiTimecheck input[type=hidden]").each(function() { 
+//       data += $(this).val()+",";
+//     });
+//     var url = '<{url action=topwap_ctl_member_history@ajaxDelItemHistory}>';
+//     shopex.confirm('确定删除历史足迹吗？','确认提示',function(e){
+//       if(e.index==1){
+//         $.post(url,{id:data},function(rs){
+//           if(rs.error){
+//             shopex.alert(rs.message);
+//           }
+//           $('.shopex-table-view li.zujiTimecheck').remove();
+//           $('.zujiTime.zujiTimecheck').remove();
+//           // window.location.reload();
+//         })
+//       }
+//     })
+//   }
+// }
+
+  //删除足迹
+  $('.shopex-scroll').on('tap','.delBtnZuJi',function(){
+    var data = $(this).attr('data-id');
+    var delLi = $(this).parent('li');
+    var ulliLength = $(this).parent('li').parent('ul').find('li').length;
+    var spanMove = $(this).parent('li').parent('ul').prev('span');
+    var url = '<{url action=topwap_ctl_member_history@ajaxDelItemHistory}>';
+    shopex.confirm('确定删除历史足迹吗？','确认提示',function(e){
+      if(e.index==1){
+        $.post(url,{id:data},function(rs){
+          if(rs.error){
+            shopex.alert(rs.message);
+          }
+          delLi.remove();
+          if(ulliLength ==1){
+          spanMove.remove();
+          }
+        })
+      }
+    })
+
+  })
+
+  $('.pro-list-normal li').eq(0).css('border-top','none');
+</script>

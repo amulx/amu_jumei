@@ -1,0 +1,35 @@
+<{foreach from=$showitems item=itemList}>
+<div class="section-title">
+  <div class="title-txt"><{$itemList.params.tagsname}></div>
+</div>
+<ul class="pro-list-grid">
+  <{foreach from=$itemList.params.itemlist.list item=item}>
+  <li>
+    <div class="thumbnail">
+      <div class="thumb-img">
+        <a href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+          <{if $item.image_default_id}>
+          <img src="<{$item.image_default_id|storager}>" alt="">
+          <{else}>
+          <img src="<{$defaultImageId.M.default_image|storager}>" alt="">
+          <{/if}>
+        </a>
+      </div>
+      <div class="caption">
+        <h1 class="goods-title"><{if $item.activity}><span class="tag"><{$item.activity.activity_tag}></span><{/if}><{$item.title}></h1>
+        <div class="price">
+          <div class="amount"><{$item.price|cur}></div>
+          <div class="purchased">已有<{$item.sold_quantity|default:0}>人购买</div>
+        </div>
+      </div>
+    </div>
+  </li>
+  <{/foreach}>
+</ul>
+<div class="section-title">
+  <div class="more-link">
+    <a href="<{url action=topwap_ctl_shop_list@index shop_id=$shopId widgets_type=$itemList.widgets_type widgets_id=$itemList.widgets_id}>">查看更多</a>
+    <i class="bbc-icon bbc-icon-forward"></i>
+  </div>
+</div>
+<{/foreach}>

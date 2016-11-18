@@ -1,0 +1,45 @@
+<!-- <header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">修改性别</div>
+</header> -->
+<section>
+  <div class="form-container">
+    <ul class="shopex-table-view shopex-table-view-radio bbc-radio">
+      <li class="shopex-table-view-cell <{if $sex==1}>shopex-selected<{/if}>">
+        <a class="shopex-navigate-right" data-value="1">
+          男
+        </a>
+      </li>
+      <li class="shopex-table-view-cell <{if $sex==0}>shopex-selected<{/if}>">
+        <a class="shopex-navigate-right" data-value="0">
+          女
+        </a>
+      </li>
+      <li class="shopex-table-view-cell <{if $sex==2}>shopex-selected<{/if}>">
+        <a class="shopex-navigate-right" data-value="2">
+          保密
+        </a>
+      </li>
+    </ul>
+    <section class="shopex-content-padded form-op-section">
+      <button type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" id="gender_btn">保存</button>
+    </section>
+  </div>
+</section>
+
+<script>
+  $('#gender_btn').on('tap',function(){
+    var val = $('.shopex-selected a').data('value');
+    // if(val){
+      $.post('<{url action=topwap_ctl_member@saveUserInfo}>',{'user[sex]':val},function(rs){
+        if(rs.success && rs.redirect){
+          shopex.alert(rs.message,'',function(){
+            location.href=rs.redirect;
+          });
+        }else{
+          shopex.alert(rs.message);
+        }
+      });
+    // }
+  })
+</script>
